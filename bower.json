@@ -1,0 +1,19 @@
+{
+  "name": "PTO_Angular",
+  "version": "0.0.0",
+  "authors": [
+    "Abe White <abelincoln.white@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular-material": "master"
+  }
+}

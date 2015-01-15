@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title></title>
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <!-- endbower -->
+</head>
+<body layout="row" ng-controller="AppCtrl">
+    <md-sidenav md-component-id="left"
+                layout="column"
+                class="md-sidenav-left md-whiteframe-z2"
+                md-is-locked-open="$media('gt-md')">
+        <md-toolbar class="md-theme-primary" layout="column">
+            <h1 class="md-toolbar-tools" flex layout="column">
+                <a href="" ng-click="goHome()" layout="row" flex>
+                    <img src="//www.chea-elks.org/wp-content/gallery/elk-images/elk-head-silhouette-2.png" height="45px">
+                    <div flex style="line-height: 40px; text-indent: 15px;">Centerville PTO</div>
+                </a>
+            </h1>
+        </md-toolbar>
+
+        <md-content flex class="md-padding">
+            <!-- <div ng-repeat="section in menu.sections"> contains navigation items-->
+            <p hide-gt-sm>Small Nav Content</p>
+            <p hide-sm>Large Nav Content</p>
+            <!-- </div> -->
+        </md-content>
+    </md-sidenav>
+
+    <div layout="column" layout-fill tabindex="-1" role="main">
+        <md-toolbar layout="column">
+            <div class="md-toolbar-tools" flex layout="column">
+                <div layout="row" flex>
+                    <div ng-click="toggleLeft()" class="menu-icon" hide-gt-md aria-label="Toggle Menu" style="position: relative; top: -5px;">
+                        <img src="img/icons/ic_menu_24px.svg"/>
+                    </div>
+                </div>
+            </div>
+        </md-toolbar>
+
+        <!-- Using the $route service, this is where page content appears -->
+        <md-content ng-view md-scroll-y flex class="md-padding"></md-content>
+    </div>
+<!-- bower:js -->
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="bower_components/angular-aria/angular-aria.js"></script>
+<script src="bower_components/hammerjs/hammer.js"></script>
+<script src="bower_components/angular-material/angular-material.js"></script>
+<!-- endbower -->
+<script type="text/javascript" src="app.js"></script>
+</body>
+</html>
