@@ -14,9 +14,9 @@ login with your real first name, lowercase -- hopefully you know the hostname, b
 
 Use github for windows to manage files in this repository 
 
-MEETING NOTES
+## MEETING NOTES ##
 
-###Basic needs###
+### Basic needs ###
 + Registration for PTA (using paypal)
 + Display member roster (ali, make the api return on a get request)
 + Files for the public (meeting notes etc. + private ones for the admin account)
@@ -24,8 +24,9 @@ MEETING NOTES
 + scholarship applications, other forms -- see (http://www.centervillehighpto.org/)
 + view scholarship essays online
 + firework regestration
-+ 
-###Pages###
+
+
+### Pages ###
 + pta registration
 + meeting notes, public files
 + scholarship
