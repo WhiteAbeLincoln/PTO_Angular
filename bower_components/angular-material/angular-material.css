@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-41c2d65
+ * v0.7.0-master-e4397de
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -3072,7 +3072,7 @@ md-card {
           flex-direction: column;
   margin: 8px;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-  md-card > img {
+  md-card > img, md-card :not(md-card-content) img {
     -webkit-order: 0;
         -ms-flex-order: 0;
             order: 0;
@@ -3312,12 +3312,13 @@ md-input-container {
     transition-property: opacity, transform;
     -webkit-transform: translate3d(0, 30px, 0);
             transform: translate3d(0, 30px, 0); }
-  md-input-container.md-input-focused:not(.md-input-has-value) .md-placeholder {
+  md-input-container.md-input-focused .md-placeholder {
     opacity: 1;
     -webkit-transform: translate3d(0, 24px, 0);
             transform: translate3d(0, 24px, 0); }
   md-input-container.md-input-has-value .md-placeholder {
-    transition: none; }
+    transition: none;
+    opacity: 0; }
   md-input-container .md-input {
     -webkit-flex: 1;
         -ms-flex: 1;
@@ -3329,11 +3330,17 @@ md-input-container {
     background: none;
     padding-top: 2px;
     padding-bottom: 1px;
+    padding-left: 2px;
+    padding-right: 2px;
     border-width: 0 0 1px 0;
     line-height: 26px;
-    -ms-flex-preferred-size: 26px; }
+    -ms-flex-preferred-size: 26px;
+    border-radius: 0; }
     md-input-container .md-input:focus {
       outline: none; }
+    md-input-container .md-input:invalid {
+      outline: none;
+      box-shadow: none; }
   md-input-container ng-messages, md-input-container data-ng-messages, md-input-container x-ng-messages, md-input-container [ng-messages], md-input-container [data-ng-messages], md-input-container [x-ng-messages] {
     -webkit-order: 3;
         -ms-flex-order: 3;
