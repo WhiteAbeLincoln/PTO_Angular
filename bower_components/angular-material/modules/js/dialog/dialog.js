@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-bfc947f
+ * v0.7.0-rc3
  */
 (function() {
 'use strict';
@@ -203,7 +203,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * Show a dialog with the specified options.
  *
  * @param {object} optionsOrPreset Either provide an `$mdDialogPreset` returned from `alert()`,
- * `confirm()`, and `build()`, or an options object with the following properties:
+ * `confirm()` or an options object with the following properties:
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
  *   of the dialog.
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual template string.
@@ -351,7 +351,7 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopIn(
         element,
         options.parent,
-        options.popInTarget.length && options.popInTarget
+        options.popInTarget && options.popInTarget.length && options.popInTarget
       )
       .then(function() {
         if (options.escapeToClose) {
@@ -408,7 +408,7 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopOut(
         element,
         options.parent,
-        options.popInTarget.length && options.popInTarget
+        options.popInTarget && options.popInTarget.length && options.popInTarget
       ).then(function() {
         options.scope.$destroy();
         element.remove();

@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-bfc947f
+ * v0.7.0-master-41c2d65
  */
 goog.provide('ng.material.core');
-goog.require('ng.material.core.theming');
+
 (function() {
 'use strict';
 
@@ -18,56 +18,50 @@ angular.module('material.core', ['material.core.theming'])
   .config(MdCoreConfigure);
 
 function MdCoreInitialize() {
-  if (typeof Hammer === 'undefined') {
-    throw new Error(
-      'ngMaterial requires HammerJS to be preloaded.'
-    );
-  }
 }
 
 function MdCoreConfigure($provide, $mdThemingProvider) {
-  $provide.decorator('$$rAF', ['$delegate', '$rootScope', rAFDecorator]);
+  $provide.decorator('$$rAF', rAFDecorator);
 
   $mdThemingProvider.theme('default')
-    .primaryColor('blue')
-    .accentColor('green')
-    .warnColor('red')
-    .backgroundColor('grey');
-
-  function rAFDecorator($$rAF, $rootScope) {
-    /**
-     * Use this to debounce events that come in often.
-     * The debounced function will always use the *last* invocation before the
-     * coming frame.
-     *
-     * For example, window resize events that fire many times a second:
-     * If we set to use an raf-debounced callback on window resize, then
-     * our callback will only be fired once per frame, with the last resize
-     * event that happened before that frame.
-     *
-     * @param {function} callback function to debounce
-     */
-    $$rAF.debounce = function(cb) {
-      var queueArgs, alreadyQueued, queueCb, context;
-      return function debounced() {
-        queueArgs = arguments;
-        context = this;
-        queueCb = cb;
-        if (!alreadyQueued) {
-          alreadyQueued = true;
-          $$rAF(function() {
-            queueCb.apply(context, queueArgs);
-            alreadyQueued = false;
-          });
-        }
-      };
-    };
-    return $$rAF;
-
-  }
-
+    .primaryPalette('indigo')
+    .accentPalette('pink')
+    .warnPalette('red')
+    .backgroundPalette('grey');
 }
 MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
+
+function rAFDecorator($delegate, $rootScope) {
+  /**
+   * Use this to throttle events that come in often.
+   * The throttled function will always use the *last* invocation before the
+   * coming frame.
+   *
+   * For example, window resize events that fire many times a second:
+   * If we set to use an raf-throttled callback on window resize, then
+   * our callback will only be fired once per frame, with the last resize
+   * event that happened before that frame.
+   *
+   * @param {function} callback function to debounce
+   */
+  $delegate.throttle = function(cb) {
+    var queueArgs, alreadyQueued, queueCb, context;
+    return function debounced() {
+      queueArgs = arguments;
+      context = this;
+      queueCb = cb;
+      if (!alreadyQueued) {
+        alreadyQueued = true;
+        $delegate(function() {
+          queueCb.apply(context, queueArgs);
+          alreadyQueued = false;
+        });
+      }
+    };
+  };
+  return $delegate;
+}
+rAFDecorator.$inject = ["$delegate", "$rootScope"];
 
 })();
 
@@ -136,7 +130,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 
            return $delegate;
          }
-       ])
+       ]);
      }]);
 
   /**
@@ -168,8 +162,8 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
 
       first: first,
       last: last,
-      next: next,
-      previous: previous,
+      next: angular.bind(null, findSubsequentItem, false),
+      previous: angular.bind(null, findSubsequentItem, true),
 
       hasPrevious: hasPrevious,
       hasNext: hasNext
@@ -294,48 +288,6 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
     }
 
     /**
-     * Find the next item. If reloop is true and at the end of the list, it will
-     * go back to the first item. If given ,the `validate` callback will be used
-     * determine whether the next item is valid. If not valid, it will try to find the
-     * next item again.
-     * @param item
-     * @param {optional} validate function
-     * @param {optional} recursion limit
-     * @returns {*}
-     */
-    function next(item, validate, limit) {
-      validate = validate || trueFn;
-
-      var index = indexOf(item) + 1;
-      var found = inRange(index) ? _items[ index ] : (reloop ? first() : null);
-
-          found = hasCheckedAll(found, limit) ? null : found;
-
-      return !found || validate(found) ? found : next(found, validate, limit || index);
-    }
-
-    /**
-     * Find the previous item. If reloop is true and at the beginning of the list, it will
-     * go back to the last item. If given ,the `validate` callback will be used
-     * determine whether the previous item is valid. If not valid, it will try to find the
-     * previous item again.
-     * @param item
-     * @param {optional} validation function
-     * @param {optional} recursion limit
-     * @returns {*}
-     */
-    function previous(item, validate, limit) {
-      validate = validate || trueFn;
-
-        var index = indexOf(item) - 1;
-        var found = inRange(index) ? _items[ index ] : (reloop ? last() : null);
-
-            found = hasCheckedAll(found, limit) ? null : found;
-
-        return !found || validate(found) ? found : previous(found, validate, limit || index);
-    }
-
-    /**
      * Return first item in the list
      * @returns {*}
      */
@@ -352,15 +304,42 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
     }
 
     /**
-     * Has the iteration checked all items in the list
-     * @param item current found item in th list
-     * @param {optional} stopAt index
-     * @returns {*|boolean}
+     * Find the next item. If reloop is true and at the end of the list, it will
+     * go back to the first item. If given ,the `validate` callback will be used
+     * determine whether the next item is valid. If not valid, it will try to find the
+     * next item again.
+     * @param item
+     * @param {optional} validate function
+     * @param {optional} recursion limit
+     * @returns {*}
      */
-    function hasCheckedAll(item, stopAt) {
-      return stopAt && item && (indexOf(item) == stopAt);
-    }
+    function findSubsequentItem(backwards, item, validate, limit) {
+      validate = validate || trueFn;
 
+      var curIndex = indexOf(item);
+      if (!inRange(curIndex)) {
+        return null;
+      }
+
+      var nextIndex = curIndex + (backwards ? -1 : 1);
+      var foundItem = null;
+      if (inRange(nextIndex)) {
+        foundItem = _items[nextIndex];
+      } else if (reloop) {
+        foundItem = backwards ? last() : first();
+        nextIndex = indexOf(foundItem);
+      }
+
+      if ((foundItem === null) || (nextIndex === limit)) {
+        return null;
+      }
+
+      if (angular.isUndefined(limit)) {
+        limit = nextIndex;
+      }
+
+      return validate(foundItem) ? foundItem : findSubsequentItem(backwards, foundItem, validate, limit);
+    }
   }
 
 })();
@@ -436,12 +415,11 @@ mdMediaFactory.$inject = ["$mdConstant", "$mdUtil", "$rootScope", "$window"];
 var nextUniqueId = ['0','0','0'];
 
 angular.module('material.core')
-.factory('$mdUtil', ["$cacheFactory", "$document", function($cacheFactory, $document) {
+.factory('$mdUtil', ["$cacheFactory", "$document", "$timeout", function($cacheFactory, $document, $timeout) {
   var Util;
+
   return Util = {
     now: window.performance ? angular.bind(window.performance, window.performance.now) : Date.now,
-
-    attachDragBehavior: attachDragBehavior,
 
     elementRect: function(element, offsetParent) {
       var node = element[0];
@@ -459,10 +437,14 @@ angular.module('material.core')
 
     fakeNgModel: function() {
       return {
+        $fake: true,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
           this.$viewChangeListeners.forEach(function(cb) { cb(); });
+        },
+        $isEmpty: function(value) {
+          return (''+value).length === 0;
         },
         $parsers: [],
         $formatters: [],
@@ -478,18 +460,23 @@ angular.module('material.core')
 
     // Returns a function, that, as long as it continues to be invoked, will not
     // be triggered. The function will be called after it stops being called for
-    // N milliseconds. If `immediate` is passed, trigger the function on the
-    // leading edge, instead of the trailing.
-    debounce: function debounce(func, wait, immediate) {
-      var timeout;
+    // N milliseconds.
+    // @param wait Integer value of msecs to delay (since last debounce reset); default value 10 msecs
+    // @param invokeApply should the $timeout trigger $digest() dirty checking
+    debounce: function (func, wait, scope, invokeApply) {
+      var timer;
+
       return function debounced() {
-        var context = this, args = arguments;
-        clearTimeout(timeout);
-        timeout = setTimeout(function() {
-          timeout = null;
-          if (!immediate) func.apply(context, args);
-        }, wait);
-        if (immediate && !timeout) func.apply(context, args);
+        var context = scope,
+          args = Array.prototype.slice.call(arguments);
+
+        $timeout.cancel(timer);
+        timer = $timeout(function() {
+
+          timer = undefined;
+          func.apply(context, args);
+
+        }, wait || 10, invokeApply );
       };
     },
 
@@ -503,7 +490,7 @@ angular.module('material.core')
         var args = arguments;
         var now = Util.now();
 
-        if (!recent || recent - now > delay) {
+        if (!recent || (now - recent > delay)) {
           func.apply(context, args);
           recent = now;
         }
@@ -583,108 +570,24 @@ angular.module('material.core')
       } else {
         parent.$$childHead = parent.$$childTail = child;
       }
+    },
+  /*
+   * getClosest replicates jQuery.closest() to walk up the DOM tree until it finds a matching nodeName
+   *
+   * @param el Element to start walking the DOM from
+   * @param tagName Tag name to find closest to el, such as 'form'
+   */
+    getClosest: function getClosest(el, tagName) {
+      tagName = tagName.toUpperCase();
+      do {
+        if (el.nodeName === tagName) {
+          return el;
+        }
+      } while (el = el.parentNode);
+      return null;
     }
   };
 
-
-  function attachDragBehavior(scope, element, options) {
-    // The state of the current drag & previous drag
-    var drag;
-    var previousDrag;
-    // Whether the pointer is currently down on this element.
-    var pointerIsDown;
-    var START_EVENTS = 'mousedown touchstart pointerdown';
-    var MOVE_EVENTS = 'mousemove touchmove pointermove';
-    var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
-
-    // Listen to move and end events on document. End events especially could have bubbled up
-    // from the child.
-    element.on(START_EVENTS, startDrag);
-    $document.on(MOVE_EVENTS, doDrag)
-      .on(END_EVENTS, endDrag);
-
-    scope.$on('$destroy', cleanup);
-
-    return cleanup;
-
-    function cleanup() {
-      if (cleanup.called) return;
-      cleanup.called = true;
-
-      element.off(START_EVENTS, startDrag);
-      $document.off(MOVE_EVENTS, doDrag)
-        .off(END_EVENTS, endDrag);
-      drag = pointerIsDown = false;
-    }
-
-    function startDrag(ev) {
-      var eventType = ev.type.charAt(0);
-      var now = Util.now();
-      // iOS & old android bug: after a touch event, iOS sends a click event 350 ms later.
-      // Don't allow a drag of a different pointerType than the previous drag if it has been
-      // less than 400ms.
-      if (previousDrag && previousDrag.pointerType !== eventType &&
-          (now - previousDrag.endTime < 400)) {
-        return;
-      }
-      if (pointerIsDown) return;
-      pointerIsDown = true;
-
-      drag = {
-        // Restrict this drag to whatever started it: if a mousedown started the drag,
-        // don't let anything but mouse events continue it.
-        pointerType: eventType,
-        startX: getPosition(ev),
-        startTime: now
-      };
-
-      element.one('$md.dragstart', function(ev) {
-        // Allow user to cancel by preventing default
-        if (ev.defaultPrevented) drag = null;
-      });
-      element.triggerHandler('$md.dragstart', drag);
-    }
-    function doDrag(ev) {
-      if (!drag || !isProperEventType(ev, drag)) return;
-
-      if (drag.pointerType === 't' || drag.pointerType === 'p') {
-        // No scrolling for touch/pointer events
-        ev.preventDefault();
-      }
-      updateDragState(ev);
-      element.triggerHandler('$md.drag', drag);
-    }
-    function endDrag(ev) {
-      pointerIsDown = false;
-      if (!drag || !isProperEventType(ev, drag)) return;
-
-      drag.endTime = Util.now();
-      updateDragState(ev);
-
-      element.triggerHandler('$md.dragend', drag);
-
-      previousDrag = drag;
-      drag = null;
-    }
-
-    function updateDragState(ev) {
-      var x = getPosition(ev);
-      drag.distance = drag.startX - x;
-      drag.direction = drag.distance > 0 ? 'left' : (drag.distance < 0 ? 'right' : '');
-      drag.duration = drag.startTime - Util.now();
-      drag.velocity = Math.abs(drag.duration) / drag.time;
-    }
-    function getPosition(ev) {
-      ev = ev.originalEvent || ev; //support jQuery events
-      var point = (ev.touches && ev.touches[0]) ||
-        (ev.changedTouches && ev.changedTouches[0]) ||
-        ev;
-      return point.pageX;
-    }
-    function isProperEventType(ev, drag) {
-      return drag && ev && (ev.type || '').charAt(0) === drag.pointerType;
-    }
-  }
 
   /*
    * Inject a 'keys()' method into Angular's $cacheFactory. Then
@@ -833,6 +736,7 @@ angular.module('material.core')
   .service('$mdCompiler', mdCompilerService);
 
 function mdCompilerService($q, $http, $injector, $compile, $controller, $templateCache) {
+  /* jshint validthis: true */
 
   /*
    * @ngdoc service
@@ -968,6 +872,382 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
 (function() {
 'use strict';
 
+/*
+ * TODO: Add support for multiple fingers on the `pointer` object (enables pinch gesture)
+ */
+
+var START_EVENTS = 'mousedown touchstart pointerdown';
+var MOVE_EVENTS = 'mousemove touchmove pointermove';
+var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
+var HANDLERS;
+
+document.addEventListener('click', function(ev) {
+  // Prevent clicks unless they're sent by material
+  if (!ev.$material) {
+    ev.preventDefault();
+    ev.stopPropagation();
+  }
+}, true);
+
+angular.element(document)
+  .on(START_EVENTS, gestureStart)
+  .on(MOVE_EVENTS, gestureMove)
+  .on(END_EVENTS, gestureEnd)
+  // For testing
+  .on('$$mdGestureReset', function() {
+    lastPointer = pointer = null;
+  });
+
+// The state of the current and previous 'pointer' (user's hand)
+var pointer, lastPointer;
+
+function runHandlers(handlerEvent, event) {
+  var handler;
+  for (var handlerName in HANDLERS) {
+    handler = HANDLERS[handlerName];
+    if (handlerEvent === 'start') {
+      // Run cancel to reset any handlers' state
+      handler.cancel();
+    }
+    handler[handlerEvent](event, pointer);
+  }
+}
+
+function gestureStart(ev) {
+  // If we're already touched down, abort
+  if (pointer) return;
+
+  var now = +Date.now();
+  // iOS & old android bug: after a touch event, a click event is sent 350 ms later.
+  // If <400ms have passed, don't allow an event of a different type than the previous event
+  if (lastPointer && !typesMatch(ev, lastPointer) && (now - lastPointer.endTime < 400)) {
+    return;
+  }
+
+  pointer = makeStartPointer(ev);
+
+  runHandlers('start', ev);
+}
+
+function gestureMove(ev) {
+  if (!pointer || !typesMatch(ev, pointer)) return;
+
+  updatePointerState(ev, pointer);
+  runHandlers('move', ev);
+}
+
+function gestureEnd(ev) {
+  if (!pointer || !typesMatch(ev, pointer)) return;
+
+  updatePointerState(ev, pointer);
+  pointer.endTime = +Date.now();
+
+  runHandlers('end', ev);
+
+  lastPointer = pointer;
+  pointer = null;
+}
+
+/******** Helpers *********/
+function typesMatch(ev, pointer) {
+  return ev && pointer && ev.type.charAt(0) === pointer.type;
+}
+
+function getEventPoint(ev) {
+  ev = ev.originalEvent || ev; // support jQuery events
+  return (ev.touches && ev.touches[0]) ||
+    (ev.changedTouches && ev.changedTouches[0]) ||
+    ev;
+}
+
+function updatePointerState(ev, pointer) {
+  var point = getEventPoint(ev);
+  var x = pointer.x = point.pageX;
+  var y = pointer.y = point.pageY;
+
+  pointer.distanceX = x - pointer.startX;
+  pointer.distanceY = y - pointer.startY;
+  pointer.distance = Math.sqrt(
+    pointer.distanceX * pointer.distanceX + pointer.distanceY * pointer.distanceY
+  );
+
+  pointer.directionX = pointer.distanceX > 0 ? 'right' : pointer.distanceX < 0 ? 'left' : '';
+  pointer.directionY = pointer.distanceY > 0 ? 'up' : pointer.distanceY < 0 ? 'down' : '';
+
+  pointer.duration = +Date.now() - pointer.startTime;
+  pointer.velocityX = pointer.distanceX / pointer.duration;
+  pointer.velocityY = pointer.distanceY / pointer.duration;
+}
+
+
+function makeStartPointer(ev) {
+  var point = getEventPoint(ev);
+  var startPointer = {
+    startTime: +Date.now(),
+    target: ev.target,
+    // 'p' for pointer, 'm' for mouse, 't' for touch
+    type: ev.type.charAt(0)
+  };
+  startPointer.startX = startPointer.x = point.pageX;
+  startPointer.startY = startPointer.y = point.pageY;
+  return startPointer;
+}
+
+angular.module('material.core')
+.run(["$mdGesture", function($mdGesture) {}]) // make sure $mdGesture is always instantiated
+.factory('$mdGesture', ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
+  HANDLERS = {};
+
+  addHandler('click', {
+    options: {
+      maxDistance: 6
+    },
+    onEnd: function(ev, pointer) {
+      if (pointer.distance < this.state.options.maxDistance) {
+        this.dispatchEvent(ev, 'click');
+      }
+    }
+  });
+
+  addHandler('press', {
+    onStart: function(ev, pointer) {
+      this.dispatchEvent(ev, '$md.pressdown');
+    },
+    onEnd: function(ev, pointer) {
+      this.dispatchEvent(ev, '$md.pressup');
+    }
+  });
+
+
+  addHandler('hold', {
+    options: {
+      // If the user keeps his finger within the same <maxDistance> area for
+      // <delay> ms, dispatch a hold event.
+      maxDistance: 6,
+      delay: 500,
+    },
+    onCancel: function() {
+      $timeout.cancel(this.state.timeout);
+    },
+    onStart: function(ev, pointer) {
+      // For hold, require a parent to be registered with $mdGesture.register()
+      // Because we prevent scroll events, this is necessary.
+      if (!this.state.registeredParent) return this.cancel();
+
+      this.state.pos = {x: pointer.x, y: pointer.y};
+      this.state.timeout = $timeout(angular.bind(this, function holdDelayFn() {
+        this.dispatchEvent(ev, '$md.hold');
+        this.cancel(); //we're done!
+      }), this.state.options.delay, false);
+    },
+    onMove: function(ev, pointer) {
+      // Don't scroll while waiting for hold
+      ev.preventDefault();
+      var dx = this.state.pos.x - pointer.x;
+      var dy = this.state.pos.y - pointer.y;
+      if (Math.sqrt(dx*dx + dy*dy) > this.options.maxDistance) {
+        this.cancel();
+      }
+    },
+    onEnd: function(ev, pointer) {
+      this.onCancel();
+    },
+  });
+
+  addHandler('drag', {
+    options: {
+      minDistance: 6,
+      horizontal: true,
+    },
+    onStart: function(ev) {
+      // For drag, require a parent to be registered with $mdGesture.register()
+      if (!this.state.registeredParent) this.cancel();
+    },
+    onMove: function(ev, pointer) {
+      var shouldStartDrag, shouldCancel;
+      // Don't allow touch events to scroll while we're dragging or
+      // deciding if this touchmove is a proper drag
+      ev.preventDefault();
+
+      if (!this.state.dragPointer) {
+        if (this.state.options.horizontal) {
+          shouldStartDrag = Math.abs(pointer.distanceX) > this.state.options.minDistance;
+          shouldCancel = Math.abs(pointer.distanceY) > this.state.options.minDistance * 1.5;
+        } else {
+          shouldStartDrag = Math.abs(pointer.distanceY) > this.state.options.minDistance;
+          shouldCancel = Math.abs(pointer.distanceX) > this.state.options.minDistance * 1.5;
+        }
+
+        if (shouldStartDrag) {
+          // Create a new pointer, starting at this point where the drag started.
+          this.state.dragPointer = makeStartPointer(ev);
+          updatePointerState(ev, this.state.dragPointer);
+          this.dispatchEvent(ev, '$md.dragstart', this.state.dragPointer);
+
+        } else if (shouldCancel) {
+          this.cancel();
+        }
+      } else {
+        this.dispatchDragMove(ev);
+      }
+    },
+    // Only dispatch these every frame; any more is unnecessray
+    dispatchDragMove: $$rAF.throttle(function(ev) {
+      // Make sure the drag didn't stop while waiting for the next frame
+      if (this.state.isRunning) {
+        updatePointerState(ev, this.state.dragPointer);
+        this.dispatchEvent(ev, '$md.drag', this.state.dragPointer);
+      }
+    }),
+    onEnd: function(ev, pointer) {
+      if (this.state.dragPointer) {
+        updatePointerState(ev, this.state.dragPointer);
+        this.dispatchEvent(ev, '$md.dragend', this.state.dragPointer);
+      }
+    }
+  });
+
+  addHandler('swipe', {
+    options: {
+      minVelocity: 0.65,
+      minDistance: 10,
+    },
+    onEnd: function(ev, pointer) {
+      if (Math.abs(pointer.velocityX) > this.state.options.minVelocity &&
+          Math.abs(pointer.distanceX) > this.state.options.minDistance) {
+        var eventType = pointer.directionX == 'left' ? '$md.swipeleft' : '$md.swiperight';
+        this.dispatchEvent(ev, eventType);
+      }
+    }
+  });
+
+  var self;
+  return self = {
+    handler: addHandler,
+    register: register
+  };
+
+  function addHandler(name, definition) {
+    var handler = new $$MdGestureHandler(name);
+    angular.extend(handler, definition);
+    HANDLERS[name] = handler;
+    return self;
+  }
+
+  function register(element, handlerName, options) {
+    var handler = HANDLERS[ handlerName.replace(/^\$md./, '') ];
+    if (!handler) {
+      throw new Error('Failed to register element with handler ' + handlerName + '. ' +
+                      'Available handlers: ' + Object.keys(HANDLERS).join(', '));
+    }
+    return handler.registerElement(element, options);
+  }
+}])
+.factory('$$MdGestureHandler', ["$$rAF", function($$rAF) {
+
+  function GestureHandler(name) {
+    this.name = name;
+    this.state = {};
+  }
+  GestureHandler.prototype = {
+    onStart: angular.noop,
+    onMove: angular.noop,
+    onEnd: angular.noop,
+    onCancel: angular.noop,
+    options: {},
+
+    dispatchEvent: dispatchEvent,
+
+    start: function(ev, pointer) {
+      if (this.state.isRunning) return;
+      var parentTarget = this.getNearestParent(ev.target);
+      var parentTargetOptions = parentTarget && parentTarget.$mdGesture[this.name] || {};
+
+      this.state = {
+        isRunning: true,
+        options: angular.extend({}, this.options, parentTargetOptions),
+        registeredParent: parentTarget
+      };
+      this.onStart(ev, pointer);
+    },
+    move: function(ev, pointer) {
+      if (!this.state.isRunning) return;
+      this.onMove(ev, pointer);
+    },
+    end: function(ev, pointer) {
+      if (!this.state.isRunning) return;
+      this.onEnd(ev, pointer);
+      this.state.isRunning = false;
+    },
+    cancel: function(ev, pointer) {
+      this.onCancel(ev, pointer);
+      this.state = {};
+    },
+
+    // Find and return the nearest parent element that has been registered via
+    // $mdGesture.register(element, 'handlerName').
+    getNearestParent: function(node) {
+      var current = node;
+      while (current) {
+        if ( (current.$mdGesture || {})[this.name] ) {
+          return current;
+        }
+        current = current.parentNode;
+      }
+    },
+
+    registerElement: function(element, options) {
+      var self = this;
+      element[0].$mdGesture = element[0].$mdGesture || {};
+      element[0].$mdGesture[this.name] = options || {};
+      element.on('$destroy', onDestroy);
+
+      return onDestroy;
+      
+      function onDestroy() {
+        delete element[0].$mdGesture[self.name];
+        element.off('$destroy', onDestroy);
+      }
+    },
+  };
+
+  var customEventOptions = {
+    bubbles: true,
+    cancelable: true
+  };
+  /*
+   * NOTE: dispatchEvent is very performance sensitive. 
+   */
+  function dispatchEvent(srcEvent, eventType, eventPointer) {
+    eventPointer = eventPointer || pointer;
+    var eventObj;
+    if (eventType === 'click') {
+      eventObj = new MouseEvent('click', {
+        clientX: eventPointer.x,
+        clientY: eventPointer.y,
+        screenX: eventPointer.x,
+        screenY: eventPointer.y,
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+    } else {
+      eventObj = new CustomEvent(eventType, customEventOptions);
+    }
+    eventObj.$material = true;
+    eventObj.pointer = eventPointer;
+    eventObj.srcEvent = srcEvent;
+    eventPointer.target.dispatchEvent(eventObj);
+  }
+
+  return GestureHandler;
+}]);
+
+})();
+
+(function() {
+'use strict';
+
 angular.module('material.core')
   .provider('$$interimElement', InterimElementProvider);
 
@@ -1055,8 +1335,6 @@ function InterimElementProvider() {
         optionsFactory: definition.options,
         argOption: definition.argOption
       };
-      if (definition.argOption) {
-      }
       return provider;
     }
 
@@ -1345,7 +1623,7 @@ function InterimElementProvider() {
      * for interpolation. This allows pre-defined templates (for components such as dialog, toast etc)
      * to continue to work in apps that use custom interpolation start-/endSymbols.
      *
-     * @param {string} text The test in which to replace `{{` / `}}`
+     * @param {string} text The text in which to replace `{{` / `}}`
      * @returns {string} The modified string using the actual interpolation start-/endSymbols
      */
     function replaceInterpolationSymbols(text) {
@@ -1470,13 +1748,13 @@ function InterimElementProvider() {
 
           return deferred.promise;
         }
-        return $q.reject("Invalid `md-component-id` value.")
+        return $q.reject("Invalid `md-component-id` value.");
       }
 
     };
 
     function isValidID(handle){
-      return handle && (handle != "");
+      return handle && (handle !== "");
     }
 
   }
@@ -1558,7 +1836,7 @@ function InkRippleService($window, $timeout) {
       isMenuItem: false
     }, options);
 
-    var rippleContainer, rippleSize,
+    var rippleSize,
         controller = element.controller('mdInkRipple') || {},
         counter = 0,
         ripples = [],
@@ -1567,13 +1845,13 @@ function InkRippleService($window, $timeout) {
         isActive = false,
         isHeld = false,
         node = element[0],
-        hammertime = new Hammer(node),
         color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
     // expose onInput for ripple testing
-    scope._onInput = onInput;
-
-    options.mousedown && hammertime.on('hammer.input', onInput);
+    if (options.mousedown) {
+      element.on('$md.pressdown', onPressDown)
+        .on('$md.pressup', onPressUp);
+    }
 
     controller.createRipple = createRipple;
 
@@ -1589,9 +1867,25 @@ function InkRippleService($window, $timeout) {
 
     // Publish self-detach method if desired...
     return function detach() {
-      hammertime.destroy();
-      rippleContainer && rippleContainer.remove();
+      element.off('$md.pressdown', onPressDown)
+        .off('$md.pressup', onPressUp);
+      getRippleContainer().remove();
     };
+
+    /**
+     * Gets the current ripple container
+     * If there is no ripple container, it creates one and returns it
+     *
+     * @returns {angular.element} ripple container element
+     */
+    function getRippleContainer() {
+      var container = element.data('$mdRippleContainer');
+      if (container) return container;
+      container = angular.element('<div class="md-ripple-container">');
+      element.append(container);
+      element.data('$mdRippleContainer', container);
+      return container;
+    }
 
     function parseColor(color) {
       if (!color) return;
@@ -1628,7 +1922,7 @@ function InkRippleService($window, $timeout) {
        * @returns {string} rgba color with 0.1 alpha
        */
       function rgbToRGBA(color) {
-        return color.replace(')', ', 0.1)').replace('(', 'a(')
+        return color.replace(')', ', 0.1)').replace('(', 'a(');
       }
 
     }
@@ -1636,7 +1930,7 @@ function InkRippleService($window, $timeout) {
     function removeElement(elem, wait) {
       ripples.splice(ripples.indexOf(elem), 1);
       if (ripples.length === 0) {
-        rippleContainer && rippleContainer.css({ backgroundColor: '' });
+        getRippleContainer().css({ backgroundColor: '' });
       }
       $timeout(function () { elem.remove(); }, wait, false);
     }
@@ -1795,53 +2089,39 @@ function InkRippleService($window, $timeout) {
           return color.replace('rgba', 'rgb').replace(/,[^\)\,]+\)/, ')');
         }
       }
-
-      /**
-       * Gets the current ripple container
-       * If there is no ripple container, it creates one and returns it
-       *
-       * @returns {angular.element} ripple container element
-       */
-      function getRippleContainer() {
-        if (rippleContainer) return rippleContainer;
-        var container = rippleContainer = angular.element('<div class="md-ripple-container"></div>');
-        element.append(container);
-        return container;
-      }
     }
 
     /**
      * Handles user input start and stop events
      *
-     * @param {event} event fired by hammer.js
      */
-    function onInput(ev) {
-      var ripple, index;
-      if (ev.eventType === Hammer.INPUT_START && ev.isFirst && isRippleAllowed()) {
-        ripple = createRipple(ev.center.x, ev.center.y);
-        isHeld = true;
-      } else if (ev.eventType === Hammer.INPUT_END && ev.isFinal) {
-        isHeld = false;
-        index = ripples.length - 1;
-        ripple = ripples[index];
-        $timeout(function () { updateElement(ripple); }, 0, false);
-      }
+    function onPressDown(ev) {
+      if (!isRippleAllowed()) return;
 
-      /**
-       * Determines if the ripple is allowed
-       *
-       * @returns {boolean} true if the ripple is allowed, false if not
-       */
-      function isRippleAllowed() {
-        var parent = node.parentNode;
-        var grandparent = parent && parent.parentNode;
-        var ancestor = grandparent && grandparent.parentNode;
-        return !node.hasAttribute('disabled') &&
-          !(parent && parent.hasAttribute && parent.hasAttribute('disabled')) &&
-          !(grandparent && grandparent.hasAttribute('disabled')) &&
-          !(ancestor && ancestor.hasAttribute('disabled'));
+      var ripple = createRipple(ev.pointer.x, ev.pointer.y);
+      isHeld = true;
+    }
+    function onPressUp(ev) {
+      isHeld = false;
+      var ripple = ripples[ ripples.length - 1 ];
+      $timeout(function () { updateElement(ripple); }, 0, false);
+    }
+
+    /**
+     * Determines if the ripple is allowed
+     *
+     * @returns {boolean} true if the ripple is allowed, false if not
+     */
+    function isRippleAllowed() {
+      var parent = node.parentNode;
+      var grandparent = parent && parent.parentNode;
+      var ancestor = grandparent && grandparent.parentNode;
+      return !isDisabled(node) && !isDisabled(parent) && !isDisabled(grandparent) && !isDisabled(ancestor);
+      function isDisabled (elem) {
+        return elem && elem.hasAttribute && elem.hasAttribute('disabled');
       }
     }
+
   }
 }
 InkRippleService.$inject = ["$window", "$timeout"];
@@ -1889,7 +2169,373 @@ function attrNoDirective() {
 (function() {
 'use strict';
 
-angular.module('material.core.theming', [])
+angular.module('material.core.theming.palette', [])
+.constant('$mdColorPalette', {
+  'red': {
+    '50': '#ffebee',
+    '100': '#ffcdd2',
+    '200': '#ef9a9a',
+    '300': '#e57373',
+    '400': '#ef5350',
+    '500': '#f44336',
+    '600': '#e53935',
+    '700': '#d32f2f',
+    '800': '#c62828',
+    '900': '#b71c1c',
+    'A100': '#ff8a80',
+    'A200': '#ff5252',
+    'A400': '#ff1744',
+    'A700': '#d50000',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
+  },
+  'pink': {
+    '50': '#fce4ec',
+    '100': '#f8bbd0',
+    '200': '#f48fb1',
+    '300': '#f06292',
+    '400': '#ec407a',
+    '500': '#e91e63',
+    '600': '#d81b60',
+    '700': '#c2185b',
+    '800': '#ad1457',
+    '900': '#880e4f',
+    'A100': '#ff80ab',
+    'A200': '#ff4081',
+    'A400': '#f50057',
+    'A700': '#c51162',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 A200 A400 A700'
+  },
+  'purple': {
+    '50': '#f3e5f5',
+    '100': '#e1bee7',
+    '200': '#ce93d8',
+    '300': '#ba68c8',
+    '400': '#ab47bc',
+    '500': '#9c27b0',
+    '600': '#8e24aa',
+    '700': '#7b1fa2',
+    '800': '#6a1b9a',
+    '900': '#4a148c',
+    'A100': '#ea80fc',
+    'A200': '#e040fb',
+    'A400': '#d500f9',
+    'A700': '#aa00ff',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400 A700'
+  },
+  'deep-purple': {
+    '50': '#ede7f6',
+    '100': '#d1c4e9',
+    '200': '#b39ddb',
+    '300': '#9575cd',
+    '400': '#7e57c2',
+    '500': '#673ab7',
+    '600': '#5e35b1',
+    '700': '#512da8',
+    '800': '#4527a0',
+    '900': '#311b92',
+    'A100': '#b388ff',
+    'A200': '#7c4dff',
+    'A400': '#651fff',
+    'A700': '#6200ea',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200'
+  },
+  'indigo': {
+    '50': '#e8eaf6',
+    '100': '#c5cae9',
+    '200': '#9fa8da',
+    '300': '#7986cb',
+    '400': '#5c6bc0',
+    '500': '#3f51b5',
+    '600': '#3949ab',
+    '700': '#303f9f',
+    '800': '#283593',
+    '900': '#1a237e',
+    'A100': '#8c9eff',
+    'A200': '#536dfe',
+    'A400': '#3d5afe',
+    'A700': '#304ffe',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 A100',
+    'contrastStrongLightColors': '300 400 A200 A400'
+  },
+  'blue': {
+    '50': '#e3f2fd',
+    '100': '#bbdefb',
+    '200': '#90caf9',
+    '300': '#64b5f6',
+    '400': '#42a5f5',
+    '500': '#2196f3',
+    '600': '#1e88e5',
+    '700': '#1976d2',
+    '800': '#1565c0',
+    '900': '#0d47a1',
+    'A100': '#82b1ff',
+    'A200': '#448aff',
+    'A400': '#2979ff',
+    'A700': '#2962ff',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '100 200 300 400 A100',
+    'contrastStrongLightColors': '500 600 700 A200 A400 A700'
+  },
+  'light-blue': {
+    '50': '#e1f5fe',
+    '100': '#b3e5fc',
+    '200': '#81d4fa',
+    '300': '#4fc3f7',
+    '400': '#29b6f6',
+    '500': '#03a9f4',
+    '600': '#039be5',
+    '700': '#0288d1',
+    '800': '#0277bd',
+    '900': '#01579b',
+    'A100': '#80d8ff',
+    'A200': '#40c4ff',
+    'A400': '#00b0ff',
+    'A700': '#0091ea',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900 A700',
+    'contrastStrongLightColors': '500 600 700 800 A700'
+  },
+  'cyan': {
+    '50': '#e0f7fa',
+    '100': '#b2ebf2',
+    '200': '#80deea',
+    '300': '#4dd0e1',
+    '400': '#26c6da',
+    '500': '#00bcd4',
+    '600': '#00acc1',
+    '700': '#0097a7',
+    '800': '#00838f',
+    '900': '#006064',
+    'A100': '#84ffff',
+    'A200': '#18ffff',
+    'A400': '#00e5ff',
+    'A700': '#00b8d4',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700 800'
+  },
+  'teal': {
+    '50': '#e0f2f1',
+    '100': '#b2dfdb',
+    '200': '#80cbc4',
+    '300': '#4db6ac',
+    '400': '#26a69a',
+    '500': '#009688',
+    '600': '#00897b',
+    '700': '#00796b',
+    '800': '#00695c',
+    '900': '#004d40',
+    'A100': '#a7ffeb',
+    'A200': '#64ffda',
+    'A400': '#1de9b6',
+    'A700': '#00bfa5',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
+  },
+  'green': {
+    '50': '#e8f5e9',
+    '100': '#c8e6c9',
+    '200': '#a5d6a7',
+    '300': '#81c784',
+    '400': '#66bb6a',
+    '500': '#4caf50',
+    '600': '#43a047',
+    '700': '#388e3c',
+    '800': '#2e7d32',
+    '900': '#1b5e20',
+    'A100': '#b9f6ca',
+    'A200': '#69f0ae',
+    'A400': '#00e676',
+    'A700': '#00c853',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '500 600 700 800 900',
+    'contrastStrongLightColors': '500 600 700'
+  },
+  'light-green': {
+    '50': '#f1f8e9',
+    '100': '#dcedc8',
+    '200': '#c5e1a5',
+    '300': '#aed581',
+    '400': '#9ccc65',
+    '500': '#8bc34a',
+    '600': '#7cb342',
+    '700': '#689f38',
+    '800': '#558b2f',
+    '900': '#33691e',
+    'A100': '#ccff90',
+    'A200': '#b2ff59',
+    'A400': '#76ff03',
+    'A700': '#64dd17',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '800 900',
+    'contrastStrongLightColors': '800 900'
+  },
+  'lime': {
+    '50': '#f9fbe7',
+    '100': '#f0f4c3',
+    '200': '#e6ee9c',
+    '300': '#dce775',
+    '400': '#d4e157',
+    '500': '#cddc39',
+    '600': '#c0ca33',
+    '700': '#afb42b',
+    '800': '#9e9d24',
+    '900': '#827717',
+    'A100': '#f4ff81',
+    'A200': '#eeff41',
+    'A400': '#c6ff00',
+    'A700': '#aeea00',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '900',
+    'contrastStrongLightColors': '900'
+  },
+  'yellow': {
+    '50': '#fffde7',
+    '100': '#fff9c4',
+    '200': '#fff59d',
+    '300': '#fff176',
+    '400': '#ffee58',
+    '500': '#ffeb3b',
+    '600': '#fdd835',
+    '700': '#fbc02d',
+    '800': '#f9a825',
+    '900': '#f57f17',
+    'A100': '#ffff8d',
+    'A200': '#ffff00',
+    'A400': '#ffea00',
+    'A700': '#ffd600',
+    'contrastDefaultColor': 'dark'
+  },
+  'amber': {
+    '50': '#fff8e1',
+    '100': '#ffecb3',
+    '200': '#ffe082',
+    '300': '#ffd54f',
+    '400': '#ffca28',
+    '500': '#ffc107',
+    '600': '#ffb300',
+    '700': '#ffa000',
+    '800': '#ff8f00',
+    '900': '#ff6f00',
+    'A100': '#ffe57f',
+    'A200': '#ffd740',
+    'A400': '#ffc400',
+    'A700': '#ffab00',
+    'contrastDefaultColor': 'dark'
+  },
+  'orange': {
+    '50': '#fff3e0',
+    '100': '#ffe0b2',
+    '200': '#ffcc80',
+    '300': '#ffb74d',
+    '400': '#ffa726',
+    '500': '#ff9800',
+    '600': '#fb8c00',
+    '700': '#f57c00',
+    '800': '#ef6c00',
+    '900': '#e65100',
+    'A100': '#ffd180',
+    'A200': '#ffab40',
+    'A400': '#ff9100',
+    'A700': '#ff6d00',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '800 900',
+    'contrastStrongLightColors': '800 900'
+  },
+  'deep-orange': {
+    '50': '#fbe9e7',
+    '100': '#ffccbc',
+    '200': '#ffab91',
+    '300': '#ff8a65',
+    '400': '#ff7043',
+    '500': '#ff5722',
+    '600': '#f4511e',
+    '700': '#e64a19',
+    '800': '#d84315',
+    '900': '#bf360c',
+    'A100': '#ff9e80',
+    'A200': '#ff6e40',
+    'A400': '#ff3d00',
+    'A700': '#dd2c00',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300 400 A100 A200',
+    'contrastStrongLightColors': '500 600 700 800 900 A400 A700'
+  },
+  'brown': {
+    '50': '#efebe9',
+    '100': '#d7ccc8',
+    '200': '#bcaaa4',
+    '300': '#a1887f',
+    '400': '#8d6e63',
+    '500': '#795548',
+    '600': '#6d4c41',
+    '700': '#5d4037',
+    '800': '#4e342e',
+    '900': '#3e2723',
+    'A100': '#d7ccc8',
+    'A200': '#bcaaa4',
+    'A400': '#8d6e63',
+    'A700': '#5d4037',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200',
+    'contrastStrongLightColors': '300 400'
+  },
+  'grey': {
+    '0': '#ffffff',
+    '50': '#fafafa',
+    '100': '#f5f5f5',
+    '200': '#eeeeee',
+    '300': '#e0e0e0',
+    '400': '#bdbdbd',
+    '500': '#9e9e9e',
+    '600': '#757575',
+    '700': '#616161',
+    '800': '#424242',
+    '900': '#212121',
+    '1000': '#000000',
+    'A100': '#ffffff',
+    'A200': '#eeeeee',
+    'A400': '#bdbdbd',
+    'A700': '#616161',
+    'contrastDefaultColor': 'dark',
+    'contrastLightColors': '600 700 800 900'
+  },
+  'blue-grey': {
+    '50': '#eceff1',
+    '100': '#cfd8dc',
+    '200': '#b0bec5',
+    '300': '#90a4ae',
+    '400': '#78909c',
+    '500': '#607d8b',
+    '600': '#546e7a',
+    '700': '#455a64',
+    '800': '#37474f',
+    '900': '#263238',
+    'A100': '#cfd8dc',
+    'A200': '#b0bec5',
+    'A400': '#78909c',
+    'A700': '#455a64',
+    'contrastDefaultColor': 'light',
+    'contrastDarkColors': '50 100 200 300',
+    'contrastStrongLightColors': '400 500'
+  }
+});
+})();
+
+(function() {
+'use strict';
+
+angular.module('material.core.theming', ['material.core.theming.palette'])
   .directive('mdTheme', ThemingDirective)
   .directive('mdThemable', ThemableDirective)
   .provider('$mdTheming', ThemingProvider)
@@ -1937,11 +2583,12 @@ var LIGHT_FOREGROUND = {
   '4': 'rgba(255,255,255,0.12)'
 };
 
-var DARK_SHADOW = '1px 1px 0px rgba(black, 0.4), -1px -1px 0px rgba(black, 0.4)';
+var DARK_SHADOW = '1px 1px 0px rgba(0,0,0,0.4), -1px -1px 0px rgba(0,0,0,0.4)';
 var LIGHT_SHADOW = '';
 
 var DARK_CONTRAST_COLOR = colorToRgbaArray('rgba(0,0,0,0.87)');
-var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
+var LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgba(255,255,255,0.87');
+var STRONG_LIGHT_CONTRAST_COLOR = colorToRgbaArray('rgb(255,255,255)');
 
 var THEME_COLOR_TYPES = ['primary', 'accent', 'warn', 'background'];
 var DEFAULT_COLOR_TYPE = 'primary';
@@ -1949,10 +2596,10 @@ var DEFAULT_COLOR_TYPE = 'primary';
 // A color in a theme will use these hues by default, if not specified by user.
 var LIGHT_DEFAULT_HUES = {
   'accent': {
-    'default': 'A700',
-    'hue-1': 'A200',
+    'default': 'A200',
+    'hue-1': 'A100',
     'hue-2': 'A400',
-    'hue-3': 'A100'
+    'hue-3': 'A700'
   }
 };
 var DARK_DEFAULT_HUES = {
@@ -1980,14 +2627,14 @@ var VALID_HUE_VALUES = [
   '700', '800', '900', 'A100', 'A200', 'A400', 'A700'
 ];
 
-function ThemingProvider() {
+function ThemingProvider($mdColorPalette) {
   PALETTES = {};
   THEMES = {};
   var defaultTheme = 'default';
   var alwaysWatchTheme = false;
 
-  // Load CSS defined palettes (generated from scss)
-  readPaletteCss();
+  // Load JS Defined Palettes
+  angular.extend(PALETTES, $mdColorPalette);
 
   // Default theme defined in core.js
 
@@ -2011,28 +2658,6 @@ function ThemingProvider() {
     _parseRules: parseRules,
     _rgba: rgba
   };
-
-  // Use a temporary element to read the palettes from the content of a decided selector as JSON
-  function readPaletteCss() {
-    var element = document.createElement('div');
-    element.classList.add('md-color-palette-definition');
-    document.body.appendChild(element);
-
-    var backgroundImage = getComputedStyle(element).backgroundImage;
-    if (backgroundImage === 'none' || !backgroundImage) {
-      backgroundImage = '{}';
-    }
-
-    backgroundImage = backgroundImage
-      .replace(/^.*?\{/, '{') // get rid of everything before opening brace
-      .replace(/\}.\).*?$/, '}') // get rid of everything after closing brace and paren
-      .replace(/_/g, '"'); // we output underscores as placeholders for quotes
-
-    // Remove backslashes that firefox gives
-    var parsed = JSON.parse(decodeURI(backgroundImage));
-    angular.extend(PALETTES, parsed);
-    document.body.removeChild(element);
-  }
 
   // Example: $mdThemingProvider.definePalette('neonRed', { 50: '#f5fafa', ... });
   function definePalette(name, map) {
@@ -2065,7 +2690,7 @@ function ThemingProvider() {
   // Register a theme (which is a collection of color palettes to use with various states
   // ie. warn, accent, primary )
   // Optionally inherit from an existing theme
-  // $mdThemingProvider.theme('custom-theme').primaryColor('red');
+  // $mdThemingProvider.theme('custom-theme').primaryPalette('red');
   function registerTheme(name, inheritFrom) {
     inheritFrom = inheritFrom || 'default';
     if (THEMES[name]) return THEMES[name];
@@ -2130,7 +2755,7 @@ function ThemingProvider() {
 
     THEME_COLOR_TYPES.forEach(function(colorType) {
       var defaultHues = (self.isDark ? DARK_DEFAULT_HUES : LIGHT_DEFAULT_HUES)[colorType];
-      self[colorType + 'Color'] = function setColorType(paletteName, hues) {
+      self[colorType + 'Palette'] = function setPaletteType(paletteName, hues) {
         var color = self.colors[colorType] = {
           name: paletteName,
           hues: angular.extend({}, defaultHues, hues)
@@ -2159,8 +2784,14 @@ function ThemingProvider() {
             );
           }
         });
-
         return self;
+      };
+
+      self[colorType + 'Color'] = function() {
+        var args = Array.prototype.slice.call(arguments);
+        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been depricated. ' +
+                     'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
+        return self[colorType + 'Palette'].apply(self, args);
       };
     });
   }
@@ -2224,6 +2855,7 @@ function ThemingProvider() {
     }
   }
 }
+ThemingProvider.$inject = ["$mdColorPalette"];
 
 function ThemingDirective($interpolate) {
   return {
@@ -2258,7 +2890,7 @@ function parseRules(theme, colorType, rules) {
 
   var themeNameRegex = new RegExp('.md-' + theme.name + '-theme', 'g');
   // Matches '{{ primary-color }}', etc
-  var hueRegex = new RegExp('(\'|\")?{{\\s*\(' + colorType + '\)-\(color|contrast\)\-\?\(\\d\\.\?\\d\*\)\?\\s*}}(\"|\')?','g');
+  var hueRegex = new RegExp('(\'|")?{{\\s*(' + colorType + ')-(color|contrast)-?(\\d\\.?\\d*)?\\s*}}(\"|\')?','g');
   var simpleVariableRegex = /'?"?\{\{\s*([a-zA-Z]+)-(A?\d+|hue\-[0-3]|shadow)-?(\d\.?\d*)?\s*\}\}'?"?/g;
   var palette = PALETTES[color.name];
 
@@ -2313,7 +2945,7 @@ function generateThemes($injector) {
   THEME_COLOR_TYPES.forEach(function(type) {
     rulesByType[type] = '';
   });
-  var ruleMatchRegex = new RegExp('md-\(' + THEME_COLOR_TYPES.join('\|') + '\)', 'g');
+  var ruleMatchRegex = new RegExp('md-(' + THEME_COLOR_TYPES.join('|') + ')', 'g');
 
   // Sort the rules based on type, allowing us to do color substitution on a per-type basis
   rules.forEach(function(rule) {
@@ -2345,6 +2977,10 @@ function generateThemes($injector) {
     THEME_COLOR_TYPES.forEach(function(colorType) {
       styleString += parseRules(theme, colorType, rulesByType[colorType] + '');
     });
+    if (theme.colors.primary.name == theme.colors.accent.name) {
+      console.warn("$mdThemingProvider: Using the same palette for primary and" +
+                   "accent. This violates the material design spec.");
+    }
   });
 
   // Insert our newly minted styles into the DOM
@@ -2361,19 +2997,23 @@ function generateThemes($injector) {
   function sanitizePalette(palette) {
     var defaultContrast = palette.contrastDefaultColor;
     var lightColors = palette.contrastLightColors || [];
+    var strongLightColors = palette.contrastStrongLightColors || [];
     var darkColors = palette.contrastDarkColors || [];
 
-    // Sass provides these colors as space-separated lists
+    // These colors are provided as space-separated lists
     if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
+    if (typeof strongLongColors === 'string') strongLightColors = strongLightColors.split(' ');
     if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
 
     // Cleanup after ourselves
     delete palette.contrastDefaultColor;
     delete palette.contrastLightColors;
+    delete palette.contrastStrongLightColors;
     delete palette.contrastDarkColors;
 
     // Change { 'A100': '#fffeee' } to { 'A100': { value: '#fffeee', contrast:DARK_CONTRAST_COLOR }
     angular.forEach(palette, function(hueValue, hueName) {
+      if (angular.isObject(hueValue)) return; // Already converted
       // Map everything to rgb colors
       var rgbValue = colorToRgbaArray(hueValue);
       if (!rgbValue) {
@@ -2389,9 +3029,19 @@ function generateThemes($injector) {
       };
       function getContrastColor() {
         if (defaultContrast === 'light') {
-          return darkColors.indexOf(hueName) > -1 ? DARK_CONTRAST_COLOR : LIGHT_CONTRAST_COLOR;
+          if (darkColors.indexOf(hueName) > -1) {
+            return DARK_CONTRAST_COLOR;
+          } else {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
+              : LIGHT_CONTRAST_COLOR;
+          }
         } else {
-          return lightColors.indexOf(hueName) > -1 ? LIGHT_CONTRAST_COLOR : DARK_CONTRAST_COLOR;
+          if (lightColors.indexOf(hueName) > -1) {
+            return strongLightColors.indexOf(hueName) > -1 ? STRONG_LIGHT_CONTRAST_COLOR 
+              : LIGHT_CONTRAST_COLOR;
+          } else {
+            return DARK_CONTRAST_COLOR;
+          }
         }
       }
     });
@@ -2415,12 +3065,12 @@ function checkValidPalette(theme, colorType) {
 function colorToRgbaArray(clr) {
   if (angular.isArray(clr) && clr.length == 3) return clr;
   if (/^rgb/.test(clr)) {
-    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value) {
-      return parseInt(value, 10);
+    return clr.replace(/(^\s*rgba?\(|\)\s*$)/g, '').split(',').map(function(value, i) {
+      return i == 3 ? parseFloat(value, 10) : parseInt(value, 10);
     });
   }
   if (clr.charAt(0) == '#') clr = clr.substring(1);
-  if (!/^([a-f0-9]{3}){1,2}$/g.test(clr)) return;
+  if (!/^([a-fA-F0-9]{3}){1,2}$/g.test(clr)) return;
 
   var dig = clr.length / 3;
   var red = clr.substr(0, dig);
@@ -2435,8 +3085,11 @@ function colorToRgbaArray(clr) {
 }
 
 function rgba(rgbArray, opacity) {
-  if (rgbArray.length == 4) opacity = rgbArray.pop();
-  return opacity && opacity.length ?
+  if (rgbArray.length == 4) {
+    rgbArray = angular.copy(rgbArray);
+    opacity = rgbArray.pop();
+  }
+  return opacity && (typeof opacity == 'number' || (typeof opacity == 'string' && opacity.length)) ?
     'rgba(' + rgbArray.join(',') + ',' + opacity + ')' :
     'rgb(' + rgbArray.join(',') + ')';
 }

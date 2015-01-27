@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-rc1-master-bfc947f
+ * v0.7.0-master-41c2d65
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -206,7 +206,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * Show a dialog with the specified options.
  *
  * @param {object} optionsOrPreset Either provide an `$mdDialogPreset` returned from `alert()`,
- * `confirm()`, and `build()`, or an options object with the following properties:
+ * `confirm()` or an options object with the following properties:
  *   - `templateUrl` - `{string=}`: The url of a template that will be used as the content
  *   of the dialog.
  *   - `template` - `{string=}`: Same as templateUrl, except this is an actual template string.
@@ -341,20 +341,22 @@ function MdDialogProvider($$interimElementProvider) {
       configureAria(element.find('md-dialog'));
 
       if (options.hasBackdrop) {
+        var parentOffset = options.parent.prop('scrollTop');
         options.backdrop = angular.element('<md-backdrop class="md-dialog-backdrop md-opaque">');
         $mdTheming.inherit(options.backdrop, options.parent);
         $animate.enter(options.backdrop, options.parent);
+        element.css('top', parentOffset +'px');
       }
 
       if (options.disableParentScroll) {
-        options.oldOverflowStyle = options.parent.css('overflow');
+        options.lastOverflow = options.parent.css('overflow');
         options.parent.css('overflow', 'hidden');
       }
 
       return dialogPopIn(
         element,
         options.parent,
-        options.popInTarget.length && options.popInTarget
+        options.popInTarget && options.popInTarget.length && options.popInTarget
       )
       .then(function() {
         if (options.escapeToClose) {
@@ -367,9 +369,9 @@ function MdDialogProvider($$interimElementProvider) {
         }
 
         if (options.clickOutsideToClose) {
-          options.dialogClickOutsideCallback = function(e) {
+          options.dialogClickOutsideCallback = function(ev) {
             // Only close if we click the flex container outside the backdrop
-            if (e.target === element[0]) {
+            if (ev.target === element[0]) {
               $timeout($mdDialog.cancel);
             }
           };
@@ -399,8 +401,8 @@ function MdDialogProvider($$interimElementProvider) {
         $animate.leave(options.backdrop);
       }
       if (options.disableParentScroll) {
-        options.parent.css('overflow', options.oldOverflowStyle);
-        $document[0].removeEventListener('scroll', options.captureScroll, true);
+        options.parent.css('overflow', options.lastOverflow);
+        delete options.lastOverflow;
       }
       if (options.escapeToClose) {
         $rootElement.off('keyup', options.rootElementKeyupCallback);
@@ -411,7 +413,7 @@ function MdDialogProvider($$interimElementProvider) {
       return dialogPopOut(
         element,
         options.parent,
-        options.popInTarget.length && options.popInTarget
+        options.popInTarget && options.popInTarget.length && options.popInTarget
       ).then(function() {
         options.scope.$destroy();
         element.remove();
