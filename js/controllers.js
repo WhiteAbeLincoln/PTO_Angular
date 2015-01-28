@@ -13,7 +13,14 @@
     appControllers.controller('FormCtrl', ['$scope', function($scope){
         $scope.numStudents = 0;
         $scope.user = {
-            "students": []
+            "students": [
+                {
+                    "first": "",
+                    "last": "",
+                    "grade": "",
+                    "unit": ""
+                }
+            ]
         };
         $scope.changeStudents = function(num){
             var oldLength = this.user.students.length;
