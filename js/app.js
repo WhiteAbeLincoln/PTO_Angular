@@ -9,23 +9,17 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'appControllers'])
             .when('/', {
                 templateUrl: 'partials/home.tmpl.html'
             })
-            .when('/layout/:tmpl', {
+            .when('/forms/:tmpl', {
                 templateUrl: function(params){
-                    return 'partials/layout-' + params.tmpl + '.tmpl.html';
+                  return  'partials/forms/' + params.tmpl + '.tmpl.html'
                 }
+
             });
 
         $mdThemingProvider.theme('default')
-            .primaryColor('amber')
-            .accentColor('blue-grey');
+            .primaryPalette('amber')
+            .accentPalette('blue-grey');
     }]);
 
-    myApp.controller('AppCtrl', function($scope, $timeout, $mdSidenav, $log) {
-        $scope.toggleLeft = function() {
-            $mdSidenav('left').toggle()
-                .then(function(){
-                    $log.debug("toggle left done")
-                });
-        };
-    });
+
 })();

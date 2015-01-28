@@ -9,4 +9,28 @@
                 });
         };
     });
+
+    appControllers.controller('FormCtrl', ['$scope', function($scope){
+        $scope.numStudents = 0;
+        $scope.user = {
+            "students": []
+        };
+        $scope.changeStudents = function(num){
+            var oldLength = this.user.students.length;
+            if (num > oldLength){
+                for (var i = 0; i < (num - oldLength); i++){
+                    this.user.students.push({
+                        "first": "",
+                        "last": "",
+                        "grade": "",
+                        "unit": ""
+                    });
+                }
+            } else {
+                for (var i = 0; i < (oldLength - num); i++){
+                    this.user.students.pop();
+                }
+            }
+        }
+    }]);
 })();

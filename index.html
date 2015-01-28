@@ -7,6 +7,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
     <!-- endbower -->
+    <link rel="stylesheet" href="css/styles.css"/>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
 </head>
@@ -26,8 +27,8 @@
 
         <md-content flex class="md-padding">
             <!-- <div ng-repeat="section in menu.sections"> contains navigation items-->
-            <p hide-gt-sm>Small Nav Content</p>
-            <p hide-sm>Large Nav Content</p>
+            <p hide-gt-md>Small Nav Content</p>
+            <p hide-md>Large Nav Content</p>
             <!-- </div> -->
         </md-content>
     </md-sidenav>
@@ -54,12 +55,11 @@
         <!-- Using the $route service, this is where page content appears -->
         <md-content ng-view md-scroll-y flex class="md-padding"></md-content>
     </div>
-    <!-- bower:js -->
 
+    <!-- bower:js -->
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
-
     <!-- endbower -->
     <script type="text/javascript" src="js/app.js"></script>
     <script type="text/javascript" src="js/controllers.js"></script>

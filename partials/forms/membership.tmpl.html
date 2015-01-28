@@ -1,0 +1,74 @@
+<!--TODO: Consider splitting this up into a 'staged donation' page, using tabs -->
+<form ng-controller="FormCtrl" name="userForm" style="max-width: 864px; margin: auto;">
+    <md-subheader class="md-primary">Parent or Guardian</md-subheader>
+    <div layout layout-sm="column">
+        <md-input-container flex>
+            <label>First Name</label>
+            <input ng-model="user.first">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Last Name</label>
+            <input ng-model="user.last">
+        </md-input-container>
+    </div>
+
+    <md-input-container flex>
+        <label>Address</label>
+        <input ng-model="user.address">
+    </md-input-container>
+
+    <div layout layout-sm="column">
+        <md-input-container flex>
+            <label>City</label>
+            <input ng-model="user.city">
+        </md-input-container>
+        <md-input-container flex>
+            <label>State</label>
+            <input ng-model="user.state">
+        </md-input-container>
+        <md-input-container flex>
+            <label>Zip Code</label>
+            <input ng-model="user.postalCode">
+        </md-input-container>
+    </div>
+    <md-subheader class="md-primary">Students</md-subheader>
+
+        <md-slider md-discrete ng-model="numStudents"
+                   ng-change="changeStudents(numStudents)"
+                   step="1" min="0" max="7"
+                   layout-wrap></md-slider>
+
+    <div ng-repeat="student in user.students">
+        <h3 class="md-primary">Student {{$index+1}}</h3>
+        <div layout layout-sm="column">
+            <md-input-container flex>
+                <label>First Name</label>
+                <input ng-model="student.first">
+            </md-input-container>
+            <md-input-container flex>
+                <label>Last Name</label>
+                <input ng-model="student.last">
+            </md-input-container>
+        </div>
+        <div layout layout-sm="column">
+
+            <md-input-container flex>
+                <select class='md-input' ng-mousedown="toggle" ng-model="student.grade">
+                    <option value="" disabled selected>Grade</option>
+                    <option value="9">Freshmen</option>
+                    <option value="10">Sophomore</option>
+                    <option value="11">Junior</option>
+                    <option value="12">Senior</option>
+                </select>
+            </md-input-container>
+            <md-input-container flex>
+                <select class='md-input' ng-mousedown="toggle" ng-model="student.unit">
+                    <option value="" disabled selected>Unit</option>
+                    <option value="E">East</option>
+                    <option value="S">South</option>
+                    <option value="W">West</option>
+                </select>
+            </md-input-container>
+        </div>
+    </div>
+</form>
