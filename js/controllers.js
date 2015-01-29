@@ -11,6 +11,24 @@
     });
 
     appControllers.controller('MembershipCtrl', ['$scope', function($scope){
+       /* $scope.card = new Card({
+            form: 'userForm',
+            container: '.card-wrapper',
+            formSelectors: {
+                numberInput: 'input#payment-number',
+                expiryInput: 'input#payment-exp',
+                cvcInput: 'input#payment-cvc',
+                nameInput: 'input#payment-first, input#payment-last'
+            },
+
+            formatting: true,
+
+            messages: {
+                validDate: 'valid\ndate', // optional - default 'valid\nthru'
+                monthYear: 'mm/yy', // optional - default 'month/year'
+            },
+            debug: true
+        });*/
         $scope.numStudents = 0;
         $scope.data = {
             'accepted': false,
@@ -35,6 +53,18 @@
                     "unit": ""
                 }
             ]
+        };
+        $scope.payment = {
+            "card": {
+                "type":"",
+                "number":"",
+                "exp_month":"",
+                "exp_year":"",
+                "cvv2":"",
+                "first_name":"",
+                "last_name":""
+            },
+            "amount": ""
         };
         $scope.changeStudents = function(num){
             var oldLength = this.user.students.length;

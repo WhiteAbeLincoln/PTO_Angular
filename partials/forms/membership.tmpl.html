@@ -56,10 +56,6 @@
                             <input ng-model="user.postalCode">
                         </md-input-container>
                     </div>
-                    <div layout="row" layout-align="space-between center">
-                        <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
-                        <md-button class="md-raised md-primary" ng-click="data.index = data.index + 1">Next</md-button>
-                    </div>
                 </div>
             </md-tab>
             <md-tab label="Students" ng-disabled="!data.accepted">
@@ -104,16 +100,39 @@
                             </md-input-container>
                         </div>
                     </div>
-                    <div layout="row" layout-align="space-between center">
-                        <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
-                        <md-button class="md-raised md-primary" ng-click="data.index = data.index + 1">Next</md-button>
-                    </div>
+
                 </div>
             </md-tab>
             <md-tab label="Donate" ng-disabled="!data.accepted">
 
-                <div layout="row" layout-align="space-between center">
-                    <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
+                <div layout-margin layout="column">
+                    <div id="card" class=".card-wrapper">
+
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label>Number</label>
+                            <input id="payment-number" ng-model="payment.number">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>First</label>
+                            <input id="payment-first" ng-model="payment.first">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Last</label>
+                            <input id="payment-last" ng-model="payment.last">
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex="33">
+                            <label>MM/YY</label>
+                            <input id="payment-exp" ng-model="payment.date">
+                        </md-input-container>
+                        <md-input-container flex="33">
+                            <label>CVC</label>
+                            <input id="payment-cvc" ng-model="payment.cvv2">
+                        </md-input-container>
+                    </div>
                 </div>
             </md-tab>
        </md-tabs>
