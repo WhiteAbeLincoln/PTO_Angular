@@ -10,9 +10,23 @@
         };
     });
 
-    appControllers.controller('FormCtrl', ['$scope', function($scope){
+    appControllers.controller('MembershipCtrl', ['$scope', function($scope){
         $scope.numStudents = 0;
+        $scope.data = {
+            'accepted': false,
+            'index': 0,
+            'accept': function(){
+                this.accepted = true;
+                this.index = 1;
+            }
+            };
         $scope.user = {
+            "first":"",
+            "last":"",
+            "address":"",
+            "city":"",
+            "state":"",
+            "postalCode":"",
             "students": [
                 {
                     "first": "",
