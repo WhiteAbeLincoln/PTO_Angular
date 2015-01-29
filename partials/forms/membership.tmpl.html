@@ -5,8 +5,8 @@
             <md-tab label="Why">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin>
                     <div>
-                        <h2>Please Join the Centerville High School PTO!</h2>
-                        <p>Joining helps support teachers, students, parents:</p>
+                        <h2>Join the Centerville High School PTO!</h2>
+                        <p>Joining helps support teachers, students, and parents:</p>
                         <ul>
                             <li>PTO Scholarships for Students</li>
                             <li>After-Prom</li>
@@ -56,6 +56,10 @@
                             <input ng-model="user.postalCode">
                         </md-input-container>
                     </div>
+                    <div layout="row" layout-align="space-between center">
+                        <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
+                        <md-button class="md-raised md-primary" ng-click="data.index = data.index + 1">Next</md-button>
+                    </div>
                 </div>
             </md-tab>
             <md-tab label="Students" ng-disabled="!data.accepted">
@@ -100,10 +104,17 @@
                             </md-input-container>
                         </div>
                     </div>
+                    <div layout="row" layout-align="space-between center">
+                        <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
+                        <md-button class="md-raised md-primary" ng-click="data.index = data.index + 1">Next</md-button>
+                    </div>
                 </div>
             </md-tab>
             <md-tab label="Donate" ng-disabled="!data.accepted">
 
+                <div layout="row" layout-align="space-between center">
+                    <md-button class="md-raised md-primary" ng-click="data.index = data.index - 1">Previous</md-button>
+                </div>
             </md-tab>
        </md-tabs>
     </form>
