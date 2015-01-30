@@ -64,8 +64,7 @@
                         <label>Add a Student</label>
                         <md-slider md-discrete ng-model="numStudents"
                                   ng-change="changeStudents(numStudents)"
-                                  step="1" min="1" max="7"
-                                  layout-wrap></md-slider>
+                                  step="1" min="1" max="7"></md-slider>
                     </div>
                     <div ng-repeat="student in user.students">
                         <h3 class="md-primary">Student {{$index+1}}</h3>
@@ -106,9 +105,10 @@
             <md-tab label="Donate" ng-disabled="!data.accepted">
 
                 <div layout-margin layout="column">
-                    <div id="card" class=".card-wrapper">
-
+                    <div layout="column" layout-align="center center" layout-fill>
+                        <input type="number" ng-model="payment.amount">{{ payment.amount | currency }}</h3>
                     </div>
+                    <md-slider ng-model="payment.amount" min="0" max="500"></md-slider>
                     <div layout="row">
                         <md-input-container flex>
                             <label>Number</label>
