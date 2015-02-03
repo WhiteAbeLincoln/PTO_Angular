@@ -6,22 +6,9 @@
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin>
                     <div>
                         <h2>Centerville High School PTO Scholarship Application</h2>
-                        <p>Joining helps support teachers, students, and parents:</p>
-                        <ul>
-                            <li>PTO Scholarships for Students</li>
-                            <li>After-Prom</li>
-                            <li>College Information Night</li>
-                            <li>Various clubs and activities</li>
-                            <li>ELK PRIDE</li>
-                            <li>Teacher Recognition Luncheon</li>
-                            <li>Academic Volunteer program</li>
-                            <li>College and Career fair</li>
-                            <li>Open House</li>
-                            <li>College Financial Aid Information Night</li>
-                            <li>ELK NEWS daily email service</li>
-                        </ul>
+						<p>Sign up for the Centerville PTO Scholarship Today!</p>
                     </div>
-                    <md-button class="md-raised md-primary" ng-click="data.accept()">Join</md-button>
+                    <md-button class="md-raised md-primary" ng-click="data.accept()">Apply</md-button>
                 </div>
             </md-tab>
             <md-tab label="You" ng-disabled="!data.accepted">
@@ -30,6 +17,10 @@
                         <md-input-container flex>
                             <label>First Name</label>
                             <input ng-model="user.first">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>Middle Name</label>
+                            <input ng-model="user.middle">
                         </md-input-container>
                         <md-input-container flex>
                             <label>Last Name</label>
@@ -54,6 +45,16 @@
                         <md-input-container flex>
                             <label>Zip Code</label>
                             <input ng-model="user.postalCode">
+                        </md-input-container>
+                    </div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Phone Number</label>
+                            <input ng-model="user.phone">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Email</label>
+                            <input ng-model="user.email">
                         </md-input-container>
                     </div>
                 </div>

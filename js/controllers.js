@@ -115,11 +115,14 @@
             };
         $scope.user = {
             "first":"",
+			"middle":"",
             "last":"",
             "address":"",
             "city":"",
             "state":"",
             "postalCode":"",
+			"phone":"",
+			"email":"",
             "students": [
                 {
                     "first": "",
