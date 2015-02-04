@@ -23,12 +23,19 @@
             "postalCode":"",
             "phone":"",
             "email":"",
-            "students": [
+			"gpa":"",
+			"nine":"",
+			"ten":"",
+			"eleven":"",
+			"twelve":"",
+			
+			
+            "activities": [
                 {
-                    "first": "",
-                    "last": "",
-                    "grade": "",
-                    "unit": ""
+                    "name": "",
+                    "om": "",
+                    "hours": "",
+                    "grades": ""
                 }
             ]
         };
@@ -44,20 +51,20 @@
             },
             "amount": ""
         };
-        $scope.changeStudents = function(num){
-            var oldLength = this.user.students.length;
+        $scope.changeSActivity = function(num){
+            var oldLength = this.user.activities.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.students.push({
-                        "first": "",
-                        "last": "",
-                        "grade": "",
-                        "unit": ""
+                    this.user.activities.push({
+                        "name": "",
+                    "om": "",
+                    "hours": "",
+                    "grades": ""
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.students.pop();
+                    this.user.activities.pop();
                 }
             }
         }
