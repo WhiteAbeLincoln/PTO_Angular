@@ -2,7 +2,7 @@
  * Created by abe on 1/7/15.
  */
 (function(){
-var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'appControllers'])
+var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers'])
     .config(['$mdThemingProvider', '$routeProvider', function($mdThemingProvider, $routeProvider){
 
         $routeProvider
