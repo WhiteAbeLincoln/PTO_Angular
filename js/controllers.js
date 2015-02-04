@@ -2,7 +2,7 @@
     var appControllers = angular.module('myApp.controllers', ['ngResource'])
 
     .factory('Member', ['$resource', function($resource){
-           return $resource('localhost:8080/api/members/:id');
+           return $resource('http://localhost:8080/api/members/:id');
     }]);
 
     appControllers.controller('AppCtrl', ['$scope', '$mdSidenav', '$log', function($scope, $mdSidenav, $log) {

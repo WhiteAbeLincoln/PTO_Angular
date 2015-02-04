@@ -3,7 +3,7 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('MembershipCtrl', ['$scope', 'Member', function($scope, Member){
+        .controller('MembershipCtrl', ['$scope', '$log', '$http', 'Member', function($scope, $log, $http, Member){
         $scope.numStudents = 0;
         $scope.data = {
             'accepted': false,
@@ -30,15 +30,11 @@
             ]
         };
         $scope.payment = {
-            "card": {
-                "type":"",
-                "number":"",
-                "exp_month":"",
-                "exp_year":"",
-                "cvv2":"",
-                "first_name":"",
-                "last_name":""
-            },
+            "number":"",
+            "exp_date":"",
+            "cvv2":"",
+            "first":"",
+            "last":"",
             "amount": ""
         };
 
@@ -58,7 +54,7 @@
                     this.user.students.pop();
                 }
             }
-        }
+        };
 
         $scope.newMember = function() {
             $scope.postData = {};
@@ -66,6 +62,9 @@
             $scope.postData.payment = $scope.payment;
             $scope.member = new Member($scope.postData);
 
+            $log.debug($scope.postData);
+
+            //sends the post data to the server.
             $scope.member.$save();
         }
     }]);
