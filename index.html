@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
-<head lang="en">
+<html ng-app="myApp" ng-controller="AppCtrl" ng-strict-di lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <title></title>
@@ -11,7 +11,7 @@
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
 </head>
-<body layout="row" ng-controller="AppCtrl">
+<body layout="row">
     <md-sidenav md-component-id="left"
                 layout="column"
                 class="md-sidenav-left md-whiteframe-z2"

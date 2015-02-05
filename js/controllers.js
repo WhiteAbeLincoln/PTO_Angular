@@ -12,6 +12,14 @@
                     $log.debug("toggle left done")
                 });
         };
+
+
+        //for the menuLink directive
+        $scope.isSelected = isSelected;
+
+        function isSelected(page) {
+            return menu.isPageSelected(page);
+        }
     }]);
 	
 })();

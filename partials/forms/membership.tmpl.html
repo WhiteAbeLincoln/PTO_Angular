@@ -29,31 +29,31 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>First Name</label>
-                            <input ng-model="user.first">
+                            <input ng-model="user.first" required>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Last Name</label>
-                            <input ng-model="user.last">
+                            <input ng-model="user.last" required>
                         </md-input-container>
                     </div>
                     <div>
                         <md-input-container flex>
                             <label>Address</label>
-                            <input ng-model="user.address">
+                            <input ng-model="user.address" required>
                         </md-input-container>
                     </div>
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>City</label>
-                            <input ng-model="user.city">
+                            <input ng-model="user.city" required>
                         </md-input-container>
                         <md-input-container flex>
                             <label>State</label>
-                            <input ng-model="user.state">
+                            <input ng-model="user.state" required>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Zip Code</label>
-                            <input ng-model="user.postalCode">
+                            <input ng-model="user.postalCode" required>
                         </md-input-container>
                     </div>
                 </div>
@@ -71,17 +71,17 @@
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>First Name</label>
-                               <input ng-model="student.first">
+                               <input ng-model="student.first" required>
                            </md-input-container>
                            <md-input-container flex>
                                <label>Last Name</label>
-                               <input ng-model="student.last">
+                               <input ng-model="student.last" required>
                            </md-input-container>
                         </div>
                         <div layout layout-sm="column">
 
                             <md-input-container flex>
-                                <select class='md-input' ng-model="student.grade">
+                                <select class='md-input' ng-model="student.grade" required>
                                     <option value="" disabled selected>Grade</option>
                                     <option value="9">Freshmen</option>
                                     <option value="10">Sophomore</option>
@@ -90,7 +90,7 @@
                                 </select>
                             </md-input-container>
                             <md-input-container flex>
-                                <select class='md-input' ng-mousedown="toggle" ng-model="student.unit">
+                                <select class='md-input' ng-model="student.unit" required>
                                     <option value="" disabled selected>Unit</option>
                                     <option value="E">East</option>
                                     <option value="S">South</option>
@@ -113,25 +113,25 @@
                         <div layout="row">
                             <md-input-container flex>
                                 <label>First</label>
-                                <input id="payment-first" ng-model="payment.first">
+                                <input id="payment-first" ng-model="payment.first" required>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>Last</label>
-                                <input id="payment-last" ng-model="payment.last">
+                                <input id="payment-last" ng-model="payment.last" required>
                             </md-input-container>
                         </div>
                         <div layout="row">
                             <md-input-container flex="66">
                                 <label>Number</label>
-                                <input id="payment-number" ng-model="payment.number">
+                                <input id="payment-number" ng-model="payment.number" required>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>MM/YY</label>
-                                <input id="payment-exp" ng-model="payment.exp_date">
+                                <input id="payment-exp" ng-model="payment.exp_date" required>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>CVC</label>
-                                <input id="payment-cvc" ng-model="payment.cvv2">
+                                <input id="payment-cvc" ng-model="payment.cvv2" required>
                             </md-input-container>
                         </div>
                     </div>
