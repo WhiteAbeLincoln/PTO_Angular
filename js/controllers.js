@@ -4,6 +4,14 @@
     .factory('Member', ['$resource', function($resource){
            return $resource('http://localhost:8080/api/members/:id');
     }]);
+	
+	.factory('Scholar', ['$resource', function($resource){
+           return $resource('http://localhost:8080/api/scholars/normal/:id');
+    }]);
+	
+	.factory('Scholar', ['$resource', function($resource){
+           return $resource('http://localhost:8080/api/scholars/service/:id');
+    }]);
 
     appControllers.controller('AppCtrl', ['$scope', '$mdSidenav', '$log', function($scope, $mdSidenav, $log) {
         $scope.toggleLeft = function() {

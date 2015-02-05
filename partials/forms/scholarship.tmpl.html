@@ -1,4 +1,3 @@
-<!--TODO: Consider splitting this up into a 'staged donation' page, using tabs -->
 <div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
     <form ng-controller="ScholarshipCtrl" name="userForm">
         <md-tabs md-selected="data.index">
@@ -260,7 +259,7 @@
 						<p>What has been your most important extracurricular activity, your most important contribution to it, and what has your participation in it meant to you as an individual?</p>
                     <md-input-container flex>
 						<label>Essay</label>
-						<textarea ng-model="user.essay" minlength="300" md-maxlength="500" required></textarea>
+						<textarea ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
 					</md-input-container>
                 </div>
             </md-tab>
