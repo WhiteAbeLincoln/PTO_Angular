@@ -28,16 +28,49 @@
 			"ten":"",
 			"eleven":"",
 			"twelve":"",
-			
-			
-            "activities": [
+			"SchoolActivities": [
                 {
                     "name": "",
                     "om": "",
                     "hours": "",
-                    "grades": ""
+					"cb9": false,
+					"cb10": false,
+					"cb11": false,
+					"cb12": false
                 }
-            ]
+            ],
+			"CommunityActivities": [
+                {
+                    "name": "",
+                    "om": "",
+                    "hours": "",
+                    "cb9": false,
+					"cb10": false,
+					"cb11": false,
+					"cb12": false
+                }
+            ],
+			"Honors": [
+                {
+                    "name": "",
+                    "cb9": false,
+					"cb10": false,
+					"cb11": false,
+					"cb12": false
+                }
+            ],
+			"Jobs": [
+                {
+                    "name": "",
+					"hours": "",
+					"months": "",
+					"cb9": false,
+					"cb10": false,
+					"cb11": false,
+					"cb12": false
+                }
+            ],
+			"essay":""
         };
         $scope.payment = {
             "card": {
@@ -51,23 +84,84 @@
             },
             "amount": ""
         };
-        $scope.changeSActivity = function(num){
-            var oldLength = this.user.activities.length;
+        $scope.changeSchoolActivity = function(num){
+            var oldLength = this.user.SchoolActivities.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.activities.push({
+                    this.user.SchoolActivities.push({
                         "name": "",
-                    "om": "",
-                    "hours": "",
-                    "grades": ""
+						"om": "",
+						"hours": "",
+						"cb9": false,
+						"cb10": false,
+						"cb11": false,
+						"cb12": false
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.activities.pop();
+                    this.user.SchoolActivities.pop();
                 }
             }
-        }
+        };
+		$scope.changeCommunityActivity = function(num){
+            var oldLength = this.user.CommunityActivities.length;
+            if (num > oldLength){
+                for (var i = 0; i < (num - oldLength); i++){
+                    this.user.CommunityActivities.push({
+                        "name": "",
+						"om": "",
+						"hours": "",
+						"cb9": false,
+						"cb10": false,
+						"cb11": false,
+						"cb12": false
+                    });
+                }
+            } else {
+                for (var i = 0; i < (oldLength - num); i++){
+                    this.user.CommunityActivities.pop();
+                }
+            }
+        };
+		$scope.changeHonors = function(num){
+            var oldLength = this.user.Honors.length;
+            if (num > oldLength){
+                for (var i = 0; i < (num - oldLength); i++){
+                    this.user.Honors.push({
+                        "name": "",
+						"cb9": false,
+						"cb10": false,
+						"cb11": false,
+						"cb12": false
+                    });
+                }
+            } else {
+                for (var i = 0; i < (oldLength - num); i++){
+                    this.user.Honors.pop();
+                }
+            }
+        };
+		$scope.changeJob = function(num){
+            var oldLength = this.user.Jobs.length;
+            if (num > oldLength){
+                for (var i = 0; i < (num - oldLength); i++){
+                    this.user.Jobs.push({
+                        "name": "",
+						"hours": "",
+						"months": "",
+						"cb9": false,
+						"cb10": false,
+						"cb11": false,
+						"cb12": false
+                    });
+                }
+            } else {
+                for (var i = 0; i < (oldLength - num); i++){
+                    this.user.Jobs.pop();
+                }
+            }
+        };
     }]);
 
 })();
