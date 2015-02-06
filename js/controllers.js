@@ -6,11 +6,11 @@
     }])
 	
 	.factory('Scholar', ['$resource', function($resource){
-           return $resource('http://localhost:8080/api/scholars/normal/:id');
+           return $resource('http://localhost:8080/api/scholars/:id');
     }])
 	
 	.factory('Service', ['$resource', function($resource){
-           return $resource('http://localhost:8080/api/scholars/service/:id');
+           return $resource('http://localhost:8080/api/service/:id');
     }]);
 
     appControllers.controller('AppCtrl', ['$scope', '$mdSidenav', '$log', function($scope, $mdSidenav, $log) {
