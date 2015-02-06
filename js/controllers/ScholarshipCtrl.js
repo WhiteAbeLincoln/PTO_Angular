@@ -3,7 +3,7 @@
  */
 (function() {
     angular.module('myApp.controllers')
-        .controller('ScholarshipCtrl', ['$scope', function($scope){
+        .controller('ScholarshipCtrl', ['$scope', '$log', '$http', 'Scholar', function($scope, $log, $http, Scholar){
         $scope.numStudents = 0;
         $scope.data = {
             'accepted': false,
@@ -71,18 +71,6 @@
                 }
             ],
 			"essay":""
-        };
-        $scope.payment = {
-            "card": {
-                "type":"",
-                "number":"",
-                "exp_month":"",
-                "exp_year":"",
-                "cvv2":"",
-                "first_name":"",
-                "last_name":""
-            },
-            "amount": ""
         };
         $scope.changeSchoolActivity = function(num){
             var oldLength = this.user.SchoolActivities.length;
@@ -162,6 +150,17 @@
                 }
             }
         };
+		
+		$scope.newScholar = function() {
+            $scope.postData = {};
+            $scope.postData.user = $scope.user;
+            $scope.scholar = new Scholar($scope.postData);
+
+            $log.debug($scope.postData);
+
+            //sends the post data to the server.
+            $scope.scholar.$save();
+        }
     }]);
 
 })();

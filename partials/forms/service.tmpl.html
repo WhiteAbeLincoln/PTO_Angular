@@ -1,0 +1,172 @@
+<div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
+    <form ng-controller="ServiceCtrl" ng-submit="newServer()" name="userForm" novalidate>
+        <md-tabs md-selected="data.index">
+            <md-tab label="Why">
+                <div layout="row" layout-sm="column" layout-align="center center" layout-margin layout-padding>
+                    <div>
+                        <h2>Centerville High School PTO Student Service Challenge Scholarship Application</h2>
+						<p>The PTO Student Service Challenge Scholarship is intended to reward and encourage activities that have a significant impact in meeting the needs of the Local Centerville/Dayton area community. High school seniors who have contributed 150 hours of community service within their junior and senior years in high school are eligible.</p>
+						<p>Representatives of the PTO Board will review the information contained herein. An interview may be required after the initial screening of applications. The information obtained will be held in strict confidence.</p>
+                    </div>
+                    <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Join</md-button>
+                </div>
+            </md-tab>
+           <md-tab label="You" ng-disabled="!data.accepted">
+                <div layout-margin layout="column">
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>First Name</label>
+                            <input ng-model="user.first">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>Middle Name</label>
+                            <input ng-model="user.middle">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Last Name</label>
+                            <input ng-model="user.last">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container flex>
+                            <label>Address</label>
+                            <input ng-model="user.address">
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>City</label>
+                            <input ng-model="user.city">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>State</label>
+                            <input ng-model="user.state">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Zip Code</label>
+                            <input ng-model="user.postalCode">
+                        </md-input-container>
+                    </div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Phone Number</label>
+                            <input ng-model="user.phone">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Email</label>
+                            <input ng-model="user.email">
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-tab>
+			<md-tab label="Essay" ng-disabled="!data.accepted">
+                <div layout-margin>
+					<p>Please write an essay reflecting on the significance of community service to you personally, as well as, the impact of your service on your local community.</p>
+                    <md-input-container flex>
+						<label>Essay</label>
+						<textarea ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
+					</md-input-container>
+                </div>
+            </md-tab>
+			<md-tab label="Community Service/Activities" ng-disabled="!data.accepted">
+                <div layout-margin>
+                    <div>
+                        <label><strong>Add Community Service/Activity</strong></label>
+                        <md-slider md-discrete ng-model="num"
+                                  ng-change="changeActivity(num)"
+                                  step="1" min="1" max="10"></md-slider>
+                    </div>
+                    <div ng-repeat="activities in user.Activity">
+                        <h3 class="md-primary">Community Service/Activity {{$index+1}}</h3>
+                        <div layout layout-sm="column">
+                           <md-input-container flex>
+                               <label>Activity Name</label>
+                               <input ng-model="Activity.name">
+                           </md-input-container>
+                        </div>
+						<div layout-margin>
+							<md-input-container flex>
+								<label>Description of Community based activity</label>
+								<textarea ng-model="user.description" md-maxlength="1000" required></textarea>
+							</md-input-container>
+						</div>
+						<div layout layout-sm="column">
+                           <md-input-container flex>
+                               <label>Location of Service</label>
+                               <input ng-model="Activity.location">
+                           </md-input-container>
+						   <md-input-container flex>
+                               <label>Position</label>
+                               <input ng-model="Activity.position">
+                           </md-input-container>
+                        </div>
+						<label>Hours of Service Performed per year:</label>
+						<div layout="row" layout-sm="column">
+							<md-input-container flex>
+								<label>9th Grade</label>
+								<input ng-model="user.nine">
+							</md-input-container>
+							<md-input-container flex>
+								<label>10th Grade</label>
+								<input ng-model="user.ten">
+							</md-input-container>
+							<md-input-container flex>
+								<label>11th Grade</label>
+								<input ng-model="user.eleven">
+							</md-input-container>
+							<md-input-container flex>
+								<label>12th Grade</label>
+								<input ng-model="user.twelve">
+							</md-input-container>
+							<md-input-container flex>
+								<label>Total Hours</label>
+								<input ng-model="user.total">
+							</md-input-container>
+						</div>
+						<div layout-margin>
+							<md-input-container flex>
+								<label>Description in detail your commitment and responsibilities to this community activity</label>
+								<textarea ng-model="user.commitment" md-maxlength="5500" required></textarea>
+							</md-input-container>
+						</div>
+						<div layout layout-sm="column">
+                           <md-input-container flex>
+                               <label>Name of Adult Verifying Service</label>
+                               <input ng-model="Activity.adult">
+                           </md-input-container>
+						   <md-input-container flex>
+                               <label>Relation to Service Project</label>
+                               <input ng-model="Activity.relation">
+                           </md-input-container>
+                        </div>
+						
+						
+						
+						<!--finished here-->
+                        <div layout layout-sm="column">
+                            <md-input-container flex>
+                                <select class='md-input' ng-model="Activity.om">
+                                    <option value="" disabled selected>Officer or Member</option>
+                                    <option value="o">Officer</option>
+                                    <option value="m">Member</option>
+                                </select>
+                            </md-input-container>
+							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Activity.cb9" class="md-primary">
+								<label>9th</label>
+							</md-checkbox>
+							<md-checkbox md-no-ink aria-label="10th Grade" ng-model="Activity.cb10" class="md-primary">
+								<label>10th</label>
+							</md-checkbox>
+							<md-checkbox md-no-ink aria-label="11th Grade" ng-model="Activity.cb11" class="md-primary">
+								<label>11th</label>
+							</md-checkbox>
+							<md-checkbox md-no-ink aria-label="12th Grade" ng-model="Activity.cb12" class="md-primary">
+								<label>12th</label>
+							</md-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+       </md-tabs>
+    </form>
+</div>
