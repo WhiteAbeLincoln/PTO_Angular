@@ -87,6 +87,41 @@
                     </div>
                 </div>
             </md-tab>
+			<!--finish tomorrow-->
+			<md-tab label="Availability" ng-disabled="!data.accepted">
+                <div layout-margin layout="column">
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Weekday Mornings</label>
+                            <input ng-model="user.daymorn">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>10th Grade</label>
+                            <input ng-model="user.endmorn">
+                        </md-input-container>
+                    </div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>11th Grade</label>
+                            <input ng-model="user.daymorn">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>11th Grade</label>
+                            <input ng-model="user.endmorn">
+                        </md-input-container>
+                    </div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>12th Grade</label>
+                            <input ng-model="user.daymorn">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>12th Grade</label>
+                            <input ng-model="user.endmorn">
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-tab>
        </md-tabs>
     </form>
 </div>
