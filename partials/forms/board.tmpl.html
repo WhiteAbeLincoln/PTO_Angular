@@ -1,5 +1,5 @@
 <div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
-    <form ng-controller="ServiceCtrl" ng-submit="newServer()" name="userForm" novalidate>
+    <form ng-controller="BoardCtrl" ng-submit="newBoard()" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
             <md-tab label="Why">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin layout-padding>
@@ -78,6 +78,10 @@
                            <md-input-container flex>
                                <label>Child's Name</label>
                                <input ng-model="Children.name">
+                           </md-input-container>
+						   <md-input-container flex>
+                               <label>Child's School</label>
+                               <input ng-model="Children.School">
                            </md-input-container>
                         </div>
                     </div>

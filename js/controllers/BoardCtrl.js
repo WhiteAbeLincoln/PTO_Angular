@@ -24,7 +24,8 @@
 			"essay":"",
 			"Children": [
                 {
-                    "name": ""
+                    "name": "",
+					"school": ""
                 }
             ]
         };
@@ -33,7 +34,8 @@
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
                     this.user.Children.push({
-                        "name": ""
+                        "name": "",
+						"school": ""
                     });
                 }
             } else {
