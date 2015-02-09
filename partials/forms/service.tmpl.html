@@ -139,31 +139,36 @@
                                <input ng-model="Activity.relation">
                            </md-input-container>
                         </div>
-						
-						
-						
-						<!--finished here-->
-                        <div layout layout-sm="column">
-                            <md-input-container flex>
-                                <select class='md-input' ng-model="Activity.om">
-                                    <option value="" disabled selected>Officer or Member</option>
-                                    <option value="o">Officer</option>
-                                    <option value="m">Member</option>
-                                </select>
-                            </md-input-container>
-							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Activity.cb9" class="md-primary">
-								<label>9th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="10th Grade" ng-model="Activity.cb10" class="md-primary">
-								<label>10th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="11th Grade" ng-model="Activity.cb11" class="md-primary">
-								<label>11th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="12th Grade" ng-model="Activity.cb12" class="md-primary">
-								<label>12th</label>
-							</md-checkbox>
-                        </div>
+						<div>
+							<md-input-container flex>
+								<label>Address</label>
+								<input ng-model="user.adultaddress">
+							</md-input-container>
+						</div>
+						<div layout="row" layout-sm="column">
+							<md-input-container flex>
+								<label>City</label>
+								<input ng-model="user.adultcity">
+							</md-input-container>
+							<md-input-container flex>
+								<label>State</label>
+								<input ng-model="user.adultstate">
+							</md-input-container>
+							<md-input-container flex>
+								<label>Zip Code</label>
+								<input ng-model="user.adultpostalCode">
+							</md-input-container>
+						</div>
+						<div layout="row" layout-sm="column">
+							<md-input-container flex>
+								<label>Phone Number</label>
+								<input ng-model="user.adultphone">
+							</md-input-container>
+							<md-input-container flex>
+								<label>Email</label>
+								<input ng-model="user.adultemail">
+							</md-input-container>
+						</div>
                     </div>
                 </div>
             </md-tab>

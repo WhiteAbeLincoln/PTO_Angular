@@ -42,7 +42,13 @@
 			"total":"",
 			"commitment":"",
 			"adult":"",
-			"relation":""
+			"relation":"",
+			"adultaddress":"",
+            "adultcity":"",
+            "adultstate":"",
+            "adultpostalCode":"",
+            "adultphone":"",
+            "adultemail":""
         };
 		$scope.changeActivity = function(num){
             var oldLength = this.user.Activity.length;
