@@ -11,6 +11,10 @@
 	
 	.factory('Service', ['$resource', function($resource){
            return $resource('http://localhost:8080/api/service/:id');
+    }])
+	
+	.factory('Board', ['$resource', function($resource){
+           return $resource('http://localhost:8080/api/board/:id');
     }]);
 
     appControllers.controller('AppCtrl', ['$scope', '$mdSidenav', '$log', function($scope, $mdSidenav, $log) {

@@ -24,31 +24,25 @@
 			"Activity": [
                 {
                     "name": "",
-                    "om": "",
-                    "hours": "",
-					"cb9": false,
-					"cb10": false,
-					"cb11": false,
-					"cb12": false
+					"description":"",
+					"location":"",
+					"position":"",
+					"nine":"",
+					"ten":"",
+					"eleven":"",
+					"twelve":"",
+					"total":"",
+					"commitment":"",
+					"adult":"",
+					"relation":"",
+					"adultaddress":"",
+					"adultcity":"",
+					"adultstate":"",
+					"adultpostalCode":"",
+					"adultphone":"",
+					"adultemail":""
                 }
-            ],
-			"description":"",
-			"location":"",
-			"position":"",
-			"nine":"",
-			"ten":"",
-			"eleven":"",
-			"twelve":"",
-			"total":"",
-			"commitment":"",
-			"adult":"",
-			"relation":"",
-			"adultaddress":"",
-            "adultcity":"",
-            "adultstate":"",
-            "adultpostalCode":"",
-            "adultphone":"",
-            "adultemail":""
+            ]
         };
 		$scope.changeActivity = function(num){
             var oldLength = this.user.Activity.length;
@@ -56,12 +50,23 @@
                 for (var i = 0; i < (num - oldLength); i++){
                     this.user.Activity.push({
                         "name": "",
-						"om": "",
-						"hours": "",
-						"cb9": false,
-						"cb10": false,
-						"cb11": false,
-						"cb12": false
+						"description":"",
+						"location":"",
+						"position":"",
+						"nine":"",
+						"ten":"",
+						"eleven":"",
+						"twelve":"",
+						"total":"",
+						"commitment":"",
+						"adult":"",
+						"relation":"",
+						"adultaddress":"",
+						"adultcity":"",
+						"adultstate":"",
+						"adultpostalCode":"",
+						"adultphone":"",
+						"adultemail":""
                     });
                 }
             } else {

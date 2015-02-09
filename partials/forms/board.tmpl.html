@@ -1,0 +1,88 @@
+<div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
+    <form ng-controller="ServiceCtrl" ng-submit="newServer()" name="userForm" novalidate>
+        <md-tabs md-selected="data.index">
+            <md-tab label="Why">
+                <div layout="row" layout-sm="column" layout-align="center center" layout-margin layout-padding>
+                    <div>
+                        <h2>CHS PTO Board Application</h2>
+						<p>Each year the CHS PTO elects new members to the board to replace outgoing members. We seek individuals and couples interested in serving on the PTO board. The term of commitment is a minimum of three years with an option for a fourth year if interested. The current board votes on a specified number of applicants based on the number of outgoing members. Board meetings are held on the first Wednesday of each month with committees meeting as needed.</p>
+                    </div>
+                    <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Join</md-button>
+                </div>
+            </md-tab>
+           <md-tab label="You" ng-disabled="!data.accepted">
+                <div layout-margin layout="column">
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>First Name</label>
+                            <input ng-model="user.first">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>Middle Name</label>
+                            <input ng-model="user.middle">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Last Name</label>
+                            <input ng-model="user.last">
+                        </md-input-container>
+                    </div>
+                    <div>
+                        <md-input-container flex>
+                            <label>Address</label>
+                            <input ng-model="user.address">
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>City</label>
+                            <input ng-model="user.city">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>State</label>
+                            <input ng-model="user.state">
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Zip Code</label>
+                            <input ng-model="user.postalCode">
+                        </md-input-container>
+                    </div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Home Phone Number</label>
+                            <input ng-model="user.homephone">
+                        </md-input-container>
+						<md-input-container flex>
+                            <label>Work Phone Number</label>
+                            <input ng-model="user.workphone">
+                        </md-input-container>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-input-container flex>
+                            <label>Email</label>
+                            <input ng-model="user.email">
+                        </md-input-container>
+                    </div>
+                </div>
+            </md-tab>
+			<md-tab label="Children" ng-disabled="!data.accepted">
+                <div layout-margin>
+                    <div>
+                        <label><strong>Children</strong></label>
+                        <md-slider md-discrete ng-model="num"
+                                  ng-change="changeChildren(num)"
+                                  step="1" min="1" max="7"></md-slider>
+                    </div>
+                    <div ng-repeat="children in user.Children">
+                        <h3 class="md-primary">Child {{$index+1}}</h3>
+                        <div layout layout-sm="column">
+                           <md-input-container flex>
+                               <label>Child's Name</label>
+                               <input ng-model="Children.name">
+                           </md-input-container>
+                        </div>
+                    </div>
+                </div>
+            </md-tab>
+       </md-tabs>
+    </form>
+</div>
