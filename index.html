@@ -25,11 +25,13 @@
             </h1>
         </md-toolbar>
 
-        <md-content flex class="md-padding">
-            <!-- <div ng-repeat="section in menu.sections"> contains navigation items-->
-            <p hide-gt-md>Small Nav Content</p>
-            <p hide-md>Large Nav Content</p>
-            <!-- </div> -->
+        <md-content flex>
+            <ul class="menu">
+                <li ng-repeat="section in menu.sections" class="parent-list-item" ng-class="{'parentActive' : isSectionSelected(section)}">
+                    <menu-link section="section" ng-if="section.type === 'link'"></menu-link>
+                    <menu-toggle section="section" ng-if="section.type === 'toggle'"></menu-toggle>
+                </li>
+            </ul>
         </md-content>
     </md-sidenav>
 
@@ -37,7 +39,7 @@
         <md-toolbar class="md-whiteframe-z1" md-scroll-shrink  layout="column">
             <div class="md-toolbar-tools" flex>
                 <div layout="row" layout-align="start center" flex>
-                    <div ng-click="toggleLeft()" class="menu-icon" hide-gt-md aria-label="Toggle Menu">
+                    <div ng-click="openMenu()" class="menu-icon" hide-gt-md aria-label="Toggle Menu">
                         <img src="img/icons/ic_menu_24px.svg"/>
                     </div>
                     <span flex></span>

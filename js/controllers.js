@@ -15,23 +15,78 @@
 	
 	.factory('Board', ['$resource', function($resource){
            return $resource('http://localhost:8080/api/board/:id');
-    }]);
+    }])
 
-    appControllers.controller('AppCtrl', ['$scope', '$mdSidenav', '$log', function($scope, $mdSidenav, $log) {
-        $scope.toggleLeft = function() {
+    .controller('AppCtrl', ['$scope', '$mdSidenav', '$log', '$location', 'menu', function($scope, $mdSidenav, $log, $location, menu) {
+        /*$scope.toggleLeft = function() {
             $mdSidenav('left').toggle()
-                .then(function(){
+                .then(function () {
                     $log.debug("toggle left done")
                 });
-        };
+        };*/
+
+        $scope.menu = menu;
+
+        $scope.path = path;
+        $scope.goHome = goHome;
+        $scope.openMenu = openMenu;
+        $scope.closeMenu = closeMenu;
+        $scope.isSectionSelected = isSectionSelected;
 
 
-        //for the menuLink directive
-        $scope.isSelected = isSelected;
+        // used by menuLink and menuToggle directives
+        this.isOpen = isOpen;               //used in menuToggle directive toggle() function (app.js line 151)
+        this.isSelected = isSelected;
+        this.toggleOpen = toggleOpen;       //used in menuToggle directive toggle() function (app.js line 154)
 
-        function isSelected(page) {
+        var mainContent = document.querySelector("[role='main']"); // for ARIA
+
+        //INTERNAL METHODS
+
+        function closeMenu() {
+            $mdSidenav('left').close();
+        }
+
+        function openMenu(){
+            $mdSidenav('left').open();
+        }
+
+        function path(){
+            return $location.path();
+        }
+
+        function goHome($event) {
+            menu.selectPage(null, null);
+            $location.path('/');
+        }
+
+        function openPage(){
+            $scope.closeMenu();
+            mainContent.focus();
+        }
+
+        function isSelected(page){
             return menu.isPageSelected(page);
         }
+
+        function isSectionSelected(section){
+            var selected = false;
+            var openedSection = menu.openedSection;
+            if (openedSection === section){
+                selected = true;
+            }
+            return selected;
+        }
+
+        function isOpen(section){
+            return menu.isSectionSelected(section);
+        }
+
+        function toggleOpen(section){
+            menu.toggleSelectSection(section);
+        }
+
+        $log.debug($scope.menu.sections);
     }]);
 	
 })();

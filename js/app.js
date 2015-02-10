@@ -21,7 +21,7 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
             .accentPalette('blue-grey');
     }])
 
-    .factory('menu' ['$location', '$rootScope', function($location, $rootScope){
+    .factory('menu', ['$location', '$rootScope', '$log', function($location, $rootScope, $log){
 
         var sections = [{       //sample link
             name: 'News',
@@ -45,12 +45,12 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
                 },
                 {
                     name: 'Service Scholarship Application',
-                    url: '/forms/service-scholarship',
+                    url: '/forms/service',
                     type: 'link'
                 },
                 {
                     name: 'Board Membership',
-                    url: '/forms/board-membership',
+                    url: '/forms/board',
                     type: 'link'
                 }]
         });
@@ -63,15 +63,19 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
             },
             {
                 name:'Meet the Board',
-                url: '/about-board'
+                url: '/about-board',
+                type: 'link'
             },
             {
                 name:'Downloads',
-                url: '/downloads'
+                url: '/downloads',
+                type: 'link'
             }
         );
 
         var self;
+
+        $rootScope.$on('$locationChangeSuccess', onLocationChange);
 
         return self = {
             sections: sections,
@@ -84,32 +88,38 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
             isSectionSelected: function(section){
                 return self.openedSection === section;
             },
-
             selectPage: function(section, page){
                 page && page.url && $location.path(page.url);
                 self.currentSection = section;
                 self.currentPage = page;
+                //$log.debug('current page: '+ self.currentPage.name);
             },
-            isPageSelected: function(section, page){
+            isPageSelected: function(page){
+                //$log.debug('selected page ' + page.name);
                 return self.currentPage === page;
             }
         };
 
         function onLocationChange() {
-            var activated = false;
             var path = $location.path();
-            sections.forEach(function(section){
-                section.pages.forEach(function(page){
-                  if (path === page.url){
-                      self.selectSection(section);
-                      self.selectPage(section, page);
-                      activated = true;
-                  }
-                });
+
+            var matchPage = function (section, page) {
+              if (path === page.url){
+                  self.selectSection(section);
+                  self.selectPage(section, page);
+              }
+            };
+
+            sections.forEach(function(section) {
+                //if (section.children) -- not needed, since we don't have any headers
+                if (section.pages) { //matches top-level toggles, like Forms
+                    section.pages.forEach(function (page) {
+                        matchPage(section, page);
+                    });
+                } else if (section.type === 'link') {
+                    matchPage(section, section);
+                }
             });
-            if (!activated){
-                self.selectSection(sections[3]);
-            }
         }
     }])
 
@@ -117,19 +127,38 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
         return {
             restrict: 'E',
             scope: {
-                page: '=' //on the page use attribute page=yourPage. the controller will look like $scope.yourPage, $scope.theirPage
+                section: '=' //on the page use attribute section=yourPage. the controller will look like $scope.yourPage, $scope.theirPage
             },
-            templateUrl: '/partials/menu-link.tmpl.html',
+            templateUrl: 'partials/menu-link.tmpl.html',
             link: function($scope, $element){   //directives that modify DOM typically use link option
                 var controller = $element.parent().controller();
 
                 $scope.isSelected = function() {
-                    return controller.isSelected($scope.page);
+                    return controller.isSelected($scope.section);
                 };
             }
         };
 
     })
 
+    .directive('menuToggle', function() {
+        return {
+            restrict: 'E',
+            scope: {
+                section: '='
+            },
+            templateUrl: 'partials/menu-toggle.tmpl.html',
+            link: function($scope, $element){
+                var controller = $element.parent().controller();
+
+                $scope.isOpen = function() {
+                    return controller.isOpen($scope.section);
+                };
+                $scope.toggle = function() {
+                    controller.toggleOpen($scope.section);
+                };
+            }
+        };
+    });
 
 })();

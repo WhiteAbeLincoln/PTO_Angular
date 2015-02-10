@@ -1,0 +1,18 @@
+<!-- shamelessly grabbed from the material.angularjs docs -->
+<md-button class="md-button-toggle"
+           ng-click="toggle()"
+           flex layout="row"
+           aria-expanded="{{isOpen()}}">
+    {{section.name}}
+  <span aria-hidden="true" class="md-toggle-icon"
+        ng-class="{'toggled' : isOpen()}"></span>
+  <span class="visuallyhidden">     <!-- for aria screen readers -->
+    Toggle {{isOpen()? 'expanded' : 'collapsed'}}
+  </span>
+</md-button>
+
+<ul ng-show="isOpen()" class="menu-toggle-list">
+    <li ng-repeat="page in section.pages">
+        <menu-link section="page"></menu-link>
+    </li>
+</ul>
