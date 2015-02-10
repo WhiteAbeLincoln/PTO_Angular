@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 goog.provide('ng.material.components.swipe');
 
@@ -55,7 +55,7 @@ var module = angular.module('material.components.swipe',[]);
   var directiveName = 'md' + name;
   var eventName = '$md.' + name.toLowerCase();
 
-  module.directive(directiveName, function($parse) {
+  module.directive(directiveName, /*@ngInject*/ ["$parse", function($parse) {
     return {
       restrict: 'A',
       link: postLink
@@ -73,7 +73,7 @@ var module = angular.module('material.components.swipe',[]);
       });
 
     }
-  });
+  }]);
 });
 
 })();

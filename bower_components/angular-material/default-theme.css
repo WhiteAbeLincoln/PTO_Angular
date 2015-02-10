@@ -134,10 +134,11 @@ md-input-container.md-THEME_NAME-theme.md-input-invalid label {
   color: '{{warn-500}}'; }
 md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {
   color: '{{warn-500}}'; }
-md-input-container.md-THEME_NAME-theme .md-input[disabled] {
+md-input-container.md-THEME_NAME-theme .md-input[disabled], [disabled] md-input-container.md-THEME_NAME-theme .md-input {
   border-bottom-color: transparent;
   color: '{{foreground-3}}';
-  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%); }
+  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%);
+  background-image: -ms-linear-gradient(left, transparent 0%, '{{foreground-4}}' 100%); }
 
 md-progress-circular.md-THEME_NAME-theme {
   background-color: transparent; }
@@ -240,17 +241,17 @@ md-slider.md-THEME_NAME-theme .md-disabled-thumb {
 md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {
   background-color: '{{background-hue-3}}'; }
 md-slider.md-THEME_NAME-theme .md-track.md-track-fill {
-  background-color: '{{primary-color}}'; }
+  background-color: '{{accent-color}}'; }
 md-slider.md-THEME_NAME-theme .md-thumb:after {
-  border-color: '{{primary-color}}';
-  background-color: '{{primary-color}}'; }
+  border-color: '{{accent-color}}';
+  background-color: '{{accent-color}}'; }
 md-slider.md-THEME_NAME-theme .md-sign {
-  background-color: '{{primary-color}}'; }
+  background-color: '{{accent-color}}'; }
   md-slider.md-THEME_NAME-theme .md-sign:after {
-    border-top-color: '{{primary-color}}'; }
+    border-top-color: '{{accent-color}}'; }
 md-slider.md-THEME_NAME-theme .md-thumb-text {
-  color: '{{primary-contrast}}'; }
-md-slider.md-THEME_NAME-theme.md-warn .md-track-fill {
+  color: '{{accent-contrast}}'; }
+md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {
   background-color: '{{warn-color}}'; }
 md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {
   border-color: '{{warn-color}}';
@@ -261,7 +262,7 @@ md-slider.md-THEME_NAME-theme.md-warn .md-sign {
     border-top-color: '{{warn-color}}'; }
 md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {
   color: '{{warn-contrast}}'; }
-md-slider.md-THEME_NAME-theme.md-primary .md-track-fill {
+md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {
   background-color: '{{primary-color}}'; }
 md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {
   border-color: '{{primary-color}}';

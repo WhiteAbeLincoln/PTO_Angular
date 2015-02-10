@@ -2,12 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 md-sidenav {
   position: absolute;
   width: 304px;
   min-width: 304px;
+  max-width: 304px;
   bottom: 0;
   z-index: 60;
   background-color: white;
@@ -35,7 +36,8 @@ md-sidenav {
             transform: translate3d(0, 0, 0); }
   md-sidenav.md-locked-open {
     width: 304px;
-    min-width: 304px; }
+    min-width: 304px;
+    max-width: 304px; }
   md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
     position: static;
     display: -webkit-flex;
@@ -79,3 +81,8 @@ md-sidenav {
   .md-sidenav-right.md-closed {
     -webkit-transform: translate3d(0%, 0, 0);
             transform: translate3d(0%, 0, 0); }
+
+@media (max-width: 360px) {
+  md-sidenav {
+    width: 85%; }
+ }

@@ -114,7 +114,7 @@ select, option:disabled {
 .menu-toggle-list.ng-hide {
     max-height: 0;
 }
-.docs-menu .menu-toggle-list a.md-button {
+.menu .menu-toggle-list a.md-button {
     display: block;
     padding: 0 16px 0 32px;
     text-transform: none;
@@ -135,3 +135,5 @@ select, option:disabled {
     -webkit-transform: rotate(180deg);
 }
 /* End Docs Menu */
+
+.menu-icon

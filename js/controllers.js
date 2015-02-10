@@ -33,6 +33,10 @@
         $scope.closeMenu = closeMenu;
         $scope.isSectionSelected = isSectionSelected;
 
+            $scope.social = function (url){
+                window.location.href = url;
+            };
+
         //event that occurs when $location changes the page, calls openPage() to close the menu
         $rootScope.$on('$locationChangeSuccess', openPage);
 

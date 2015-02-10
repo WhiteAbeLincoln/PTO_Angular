@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.core');
@@ -59,7 +59,7 @@ function MdTabInkDirective($$rAF) {
   };
 
   function postLink(scope, element, attr, ctrls) {
-    if (ctrls[0]) return;
+    var mdNoBar = !!ctrls[0];
 
     var tabsCtrl = ctrls[1],
         debouncedUpdateBar = $$rAF.throttle(updateBar);
@@ -70,7 +70,7 @@ function MdTabInkDirective($$rAF) {
 
     function updateBar() {
       var selected = tabsCtrl.getSelectedItem();
-      var hideInkBar = !selected || tabsCtrl.count() < 2;
+      var hideInkBar = !selected || tabsCtrl.count() < 2 || mdNoBar;
 
       element.css('display', hideInkBar ? 'none' : 'block');
 
@@ -474,7 +474,7 @@ angular.module('material.components.tabs')
  * @restrict E
  *
  * @description
- * `<md-tab>` is the nested directive used [within `<md-tabs>`] to specify each tab with a **label** and optional *view content*.
+ * Use the `<md-tab>` a nested directive used within `<md-tabs>` to specify a tab with a **label** and optional *view content*.
  *
  * If the `label` attribute is not specified, then an optional `<md-tab-label>` tag can be used to specify more
  * complex tab header markup. If neither the **label** nor the **md-tab-label** are specified, then the nested
@@ -552,6 +552,8 @@ function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant, $timeout) 
 
       var tabItemCtrl = ctrls[0]; // Controller for THIS tabItemCtrl
       var tabsCtrl = ctrls[1]; // Controller for ALL tabs
+
+      $timeout(element.addClass.bind(element, 'md-tab-themed'), 0, false);
 
       scope.$watch(
           function () { return attr.label; },
@@ -860,7 +862,7 @@ angular.module('material.components.tabs')
  *    <md-tab label="Tab #1"></md-tab>
  *    <md-tab label="Tab #2"></md-tab>
  *    <md-tab label="Tab #3"></md-tab>
- *  <md-tabs>
+ *  </md-tabs>
  *  </hljs>
  *
  * Tabs supports three (3) usage scenarios:

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 goog.provide('ng.material.core');
 
@@ -13,15 +13,13 @@ goog.provide('ng.material.core');
  * Initialization function that validates environment
  * requirements.
  */
-angular.module('material.core', ['material.core.theming'])
-  .run(MdCoreInitialize)
+angular
+  .module('material.core', ['material.core.theming'])
   .config(MdCoreConfigure);
 
-function MdCoreInitialize() {
-}
 
 function MdCoreConfigure($provide, $mdThemingProvider) {
-  $provide.decorator('$$rAF', rAFDecorator);
+  $provide.decorator('$$rAF', ["$delegate", rAFDecorator]);
 
   $mdThemingProvider.theme('default')
     .primaryPalette('indigo')
@@ -31,7 +29,7 @@ function MdCoreConfigure($provide, $mdThemingProvider) {
 }
 MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
 
-function rAFDecorator($delegate, $rootScope) {
+function rAFDecorator( $delegate ) {
   /**
    * Use this to throttle events that come in often.
    * The throttled function will always use the *last* invocation before the
@@ -61,7 +59,6 @@ function rAFDecorator($delegate, $rootScope) {
   };
   return $delegate;
 }
-rAFDecorator.$inject = ["$delegate", "$rootScope"];
 
 })();
 
@@ -109,7 +106,15 @@ function MdConstantFactory($$rAF, $sniffer) {
       'gt-md': '(min-width: 960px)',
       'lg': '(min-width: 960px) and (max-width: 1200px)',
       'gt-lg': '(min-width: 1200px)'
-    }
+    },
+    MEDIA_PRIORITY: [
+      'gt-lg',
+      'lg',
+      'gt-md',
+      'md',
+      'gt-sm',
+      'sm'
+    ]
   };
 }
 MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
@@ -309,8 +314,8 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
      * determine whether the next item is valid. If not valid, it will try to find the
      * next item again.
      * @param item
-     * @param {optional} validate function
-     * @param {optional} recursion limit
+     * @param {optional} validate Validate function
+     * @param {optional} limit Recursion limit
      * @returns {*}
      */
     function findSubsequentItem(backwards, item, validate, limit) {
@@ -356,9 +361,15 @@ angular.module('material.core')
  * @example $mdMedia('(min-width: 1200px)') == true if device-width >= 1200px
  * @example $mdMedia('max-width: 300px') == true if device-width <= 300px (sanitizes input, adding parens)
  */
-function mdMediaFactory($mdConstant, $rootScope, $window, $cacheFactory) {
+function mdMediaFactory($mdConstant, $rootScope, $window) {
   var queries = {};
+  var mqls = {};
   var results = {};
+  var normalizeCache = {};
+
+  $mdMedia.getResponsiveAttribute = getResponsiveAttribute;
+  $mdMedia.getQuery = getQuery;
+  $mdMedia.watchResponsiveAttributes = watchResponsiveAttributes;
 
   return $mdMedia;
 
@@ -382,20 +393,69 @@ function mdMediaFactory($mdConstant, $rootScope, $window, $cacheFactory) {
   }
 
   function add(query) {
-    var result = $window.matchMedia(query);
+    var result = mqls[query] = $window.matchMedia(query);
     result.addListener(onQueryChange);
     return (results[result.media] = !!result.matches);
   }
 
-  function onQueryChange() {
-    var query = this;
+  function onQueryChange(query) {
     $rootScope.$evalAsync(function() {
       results[query.media] = !!query.matches;
     });
   }
 
+  function getQuery(name) {
+    return mqls[name];
+  }
+
+  function getResponsiveAttribute(attrs, attrName) {
+    for (var i = 0; i < $mdConstant.MEDIA_PRIORITY.length; i++) {
+      var mediaName = $mdConstant.MEDIA_PRIORITY[i];
+      if (!mqls[queries[mediaName]].matches) {
+        continue;
+      }
+
+      var normalizedName = getNormalizedName(attrs, attrName + '-' + mediaName);
+      if (attrs[normalizedName]) {
+        return attrs[normalizedName];
+      }
+    }
+
+    // fallback on unprefixed
+    return attrs[getNormalizedName(attrs, attrName)];
+  }
+
+  function watchResponsiveAttributes(attrNames, attrs, watchFn) {
+    var unwatchFns = [];
+    attrNames.forEach(function(attrName) {
+      var normalizedName = getNormalizedName(attrs, attrName);
+      if (attrs[normalizedName]) {
+        unwatchFns.push(
+            attrs.$observe(normalizedName, angular.bind(void 0, watchFn, null)));
+      }
+
+      for (var mediaName in $mdConstant.MEDIA) {
+        var normalizedName = getNormalizedName(attrs, attrName + '-' + mediaName);
+        if (!attrs[normalizedName]) {
+          return;
+        }
+
+        unwatchFns.push(attrs.$observe(normalizedName, angular.bind(void 0, watchFn, mediaName)));
+      }
+    });
+
+    return function unwatch() {
+      unwatchFns.forEach(function(fn) { fn(); })
+    };
+  }
+
+  // Improves performance dramatically
+  function getNormalizedName(attrs, attrName) {
+    return normalizeCache[attrName] ||
+        (normalizeCache[attrName] = attrs.$normalize(attrName));
+  }
 }
-mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window", "$cacheFactory"];
+mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
 
 (function() {
 'use strict';
@@ -432,6 +492,7 @@ angular.module('material.core')
     fakeNgModel: function() {
       return {
         $fake: true,
+        $setTouched : angular.noop,
         $setViewValue: function(value) {
           this.$viewValue = value;
           this.$render(value);
@@ -484,6 +545,16 @@ angular.module('material.core')
           recent = now;
         }
       };
+    },
+
+    /**
+     * Measures the number of milliseconds taken to run the provided callback
+     * function. Uses a high-precision timer if available.
+     */
+    time: function time(cb) {
+      var start = Util.now();
+      cb();
+      return Util.now() - start;
     },
 
     /**
@@ -830,13 +901,27 @@ var MOVE_EVENTS = 'mousemove touchmove pointermove';
 var END_EVENTS = 'mouseup mouseleave touchend touchcancel pointerup pointercancel';
 var HANDLERS;
 
-document.addEventListener('click', function(ev) {
-  // Prevent clicks unless they're sent by material
-  if (!ev.$material) {
+document.contains || (document.contains = function(node) {
+  return document.body.contains(node);
+});
+
+// TODO add windows phone to this
+var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+var isIos = userAgent.match(/iPad/i) || userAgent.match(/iPhone/i) || userAgent.match(/iPod/i);
+var isAndroid = userAgent.match(/Android/i);
+var shouldHijackClicks = isIos || isAndroid;
+
+if (shouldHijackClicks) {
+  document.addEventListener('click', function(ev) {
+    // Space/enter on a button, and submit events, can send clicks
+    var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
+    if (isKeyClick || ev.$material) return;
+
+    // Prevent clicks unless they're sent by material
     ev.preventDefault();
     ev.stopPropagation();
-  }
-}, true);
+  }, true);
+}
 
 angular.element(document)
   .on(START_EVENTS, gestureStart)
@@ -867,9 +952,10 @@ function gestureStart(ev) {
   if (pointer) return;
 
   var now = +Date.now();
+
   // iOS & old android bug: after a touch event, a click event is sent 350 ms later.
   // If <400ms have passed, don't allow an event of a different type than the previous event
-  if (lastPointer && !typesMatch(ev, lastPointer) && (now - lastPointer.endTime < 400)) {
+  if (lastPointer && !typesMatch(ev, lastPointer) && (now - lastPointer.endTime < 1500)) {
     return;
   }
 
@@ -947,16 +1033,18 @@ angular.module('material.core')
 .factory('$mdGesture', ["$$MdGestureHandler", "$$rAF", "$timeout", function($$MdGestureHandler, $$rAF, $timeout) {
   HANDLERS = {};
 
-  addHandler('click', {
-    options: {
-      maxDistance: 6
-    },
-    onEnd: function(ev, pointer) {
-      if (pointer.distance < this.state.options.maxDistance) {
-        this.dispatchEvent(ev, 'click');
+  if (shouldHijackClicks) {
+    addHandler('click', {
+      options: {
+        maxDistance: 6
+      },
+      onEnd: function(ev, pointer) {
+        if (pointer.distance < this.state.options.maxDistance) {
+          this.dispatchEvent(ev, 'click');
+        }
       }
-    }
-  });
+    });
+  }
 
   addHandler('press', {
     onStart: function(ev, pointer) {
@@ -1105,7 +1193,9 @@ angular.module('material.core')
     onCancel: angular.noop,
     options: {},
 
-    dispatchEvent: dispatchEvent,
+    dispatchEvent: typeof jQuery !== 'undefined' && angular.element === jQuery ? 
+      jQueryDispatchEvent : 
+      nativeDispatchEvent,
 
     start: function(ev, pointer) {
       if (this.state.isRunning) return;
@@ -1160,28 +1250,48 @@ angular.module('material.core')
     },
   };
 
-  var customEventOptions = {
-    bubbles: true,
-    cancelable: true
-  };
+  function jQueryDispatchEvent(srcEvent, eventType, eventPointer) {
+    eventPointer = eventPointer || pointer;
+    var eventObj = new angular.element.Event(eventType)
+
+    eventObj.$material = true;
+    eventObj.pointer = eventPointer;
+    eventObj.srcEvent = srcEvent;
+
+    angular.extend(eventObj, {
+      clientX: eventPointer.x,
+      clientY: eventPointer.y,
+      screenX: eventPointer.x,
+      screenY: eventPointer.y,
+      pageX: eventPointer.x,
+      pageY: eventPointer.y,
+      ctrlKey: srcEvent.ctrlKey,
+      altKey: srcEvent.altKey,
+      shiftKey: srcEvent.shiftKey,
+      metaKey: srcEvent.metaKey
+    });
+    angular.element(eventPointer.target).trigger(eventObj);
+  }
+
   /*
-   * NOTE: dispatchEvent is very performance sensitive. 
+   * NOTE: nativeDispatchEvent is very performance sensitive. 
    */
-  function dispatchEvent(srcEvent, eventType, eventPointer) {
+  function nativeDispatchEvent(srcEvent, eventType, eventPointer) {
     eventPointer = eventPointer || pointer;
     var eventObj;
+
     if (eventType === 'click') {
-      eventObj = new MouseEvent('click', {
-        clientX: eventPointer.x,
-        clientY: eventPointer.y,
-        screenX: eventPointer.x,
-        screenY: eventPointer.y,
-        bubbles: true,
-        cancelable: true,
-        view: window
-      });
+      eventObj = document.createEvent('MouseEvents');
+      eventObj.initMouseEvent(
+        'click', true, true, window, srcEvent.detail,
+        eventPointer.x, eventPointer.y, eventPointer.x, eventPointer.y,
+        srcEvent.ctrlKey, srcEvent.altKey, srcEvent.shiftKey, srcEvent.metaKey,
+        srcEvent.button, srcEvent.relatedTarget || null
+      );
+
     } else {
-      eventObj = new CustomEvent(eventType, customEventOptions);
+      eventObj = document.createEvent('CustomEvent');
+      eventObj.initCustomEvent(eventType, true, true, {});
     }
     eventObj.$material = true;
     eventObj.pointer = eventPointer;
@@ -1236,12 +1346,16 @@ function InterimElementProvider() {
    */
   function createInterimElementProvider(interimFactoryName) {
     var EXPOSED_METHODS = ['onHide', 'onShow', 'onRemove'];
+
+    var customMethods = {};
     var providerConfig = {
       presets: {}
     };
+
     var provider = {
       setDefaults: setDefaults,
       addPreset: addPreset,
+      addMethod: addMethod,
       $get: factory
     };
 
@@ -1262,6 +1376,15 @@ function InterimElementProvider() {
     function setDefaults(definition) {
       providerConfig.optionsFactory = definition.options;
       providerConfig.methods = (definition.methods || []).concat(EXPOSED_METHODS);
+      return provider;
+    }
+
+    /**
+     * Add a method to the factory that isn't specific to any interim element operations
+     */
+
+    function addMethod(name, fn) {
+      customMethods[name] = fn;
       return provider;
     }
 
@@ -1310,6 +1433,11 @@ function InterimElementProvider() {
       defaultMethods = providerConfig.methods || [];
       // This must be invoked after the publicService is initialized
       defaultOptions = invokeFactory(providerConfig.optionsFactory, {});
+
+      // Copy over the simple custom methods
+      angular.forEach(customMethods, function(fn, name) {
+        publicService[name] = fn;
+      });
 
       angular.forEach(providerConfig.presets, function(definition, name) {
         var presetDefaults = invokeFactory(definition.optionsFactory, {});
@@ -1439,15 +1567,16 @@ function InterimElementProvider() {
        */
       function show(options) {
         if (stack.length) {
-          service.cancel();
+          return service.cancel().then(function() {
+            return show(options);
+          });
+        } else {
+          var interimElement = new InterimElement(options);
+          stack.push(interimElement);
+          return interimElement.show().then(function() {
+            return interimElement.deferred.promise;
+          });
         }
-
-        var interimElement = new InterimElement(options);
-
-        stack.push(interimElement);
-        return interimElement.show().then(function() {
-          return interimElement.deferred.promise;
-        });
       }
 
       /*
@@ -1464,11 +1593,9 @@ function InterimElementProvider() {
        */
       function hide(response) {
         var interimElement = stack.shift();
-        interimElement && interimElement.remove().then(function() {
+        return interimElement && interimElement.remove().then(function() {
           interimElement.deferred.resolve(response);
         });
-
-        return interimElement ? interimElement.deferred.promise : $q.when(response);
       }
 
       /*
@@ -1480,16 +1607,14 @@ function InterimElementProvider() {
        * Removes the `$interimElement` from the DOM and rejects the promise returned from `show`
        *
        * @param {*} reason Data to reject the promise with
-       * @returns Promise that will be rejected after the element has been removed.
+       * @returns Promise that will be resolved after the element has been removed.
        *
        */
       function cancel(reason) {
         var interimElement = stack.shift();
-        interimElement && interimElement.remove().then(function() {
+        return interimElement && interimElement.remove().then(function() {
           interimElement.deferred.reject(reason);
         });
-
-        return interimElement ? interimElement.deferred.promise : $q.reject(reason);
       }
 
 
@@ -1518,10 +1643,12 @@ function InterimElementProvider() {
           options.template = processTemplate(options.template);
         }
 
+        var showFailed;
         return self = {
           options: options,
           deferred: $q.defer(),
           show: function() {
+            showFailed = false;
             return $mdCompiler.compile(options).then(function(compileData) {
               angular.extend(compileData.locals, self.options);
 
@@ -1548,7 +1675,7 @@ function InterimElementProvider() {
                   hideTimeout = $timeout(service.cancel, options.hideDelay) ;
                 }
               }
-            });
+            }, function(reason) { showFailed = true; self.deferred.reject(reason); });
           },
           cancelTimeout: function() {
             if (hideTimeout) {
@@ -1558,7 +1685,12 @@ function InterimElementProvider() {
           },
           remove: function() {
             self.cancelTimeout();
-            var ret = options.onRemove(options.scope, element, options);
+            var ret;
+            if (showFailed) {
+              ret = true;
+            } else {
+              ret = options.onRemove(options.scope, element, options);
+            }
             return $q.when(ret).then(function() {
               options.scope.$destroy();
             });
@@ -1757,7 +1889,8 @@ function InkRippleService($window, $timeout) {
   function attachCheckboxBehavior(scope, element, options) {
     return attach(scope, element, angular.extend({
       center: true,
-      dimBackground: false
+      dimBackground: false,
+      fitRipple: true
     }, options));
   }
 
@@ -1782,7 +1915,8 @@ function InkRippleService($window, $timeout) {
       dimBackground: false,
       outline: false,
       isFAB: false,
-      isMenuItem: false
+      isMenuItem: false,
+      fitRipple: false
     }, options);
 
     var rippleSize,
@@ -1794,7 +1928,17 @@ function InkRippleService($window, $timeout) {
         isActive = false,
         isHeld = false,
         node = element[0],
+        rippleSizeSetting = element.attr('md-ripple-size'),
         color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
+
+    switch (rippleSizeSetting) {
+      case 'full':
+        options.isFAB = true;
+        break;
+      case 'partial':
+        options.isFAB = false;
+        break;
+    }
 
     // expose onInput for ripple testing
     if (options.mousedown) {
@@ -1987,7 +2131,10 @@ function InkRippleService($window, $timeout) {
           size = 2 * Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2));
         } else {
           multiplier = options.isFAB ? 1.1 : 0.8;
-          size = Math.max(width, height) * multiplier;
+          size = Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)) * multiplier;
+          if (options.fitRipple) {
+            size = Math.min(height, width, size);
+          }
         }
         return size;
       }
@@ -2528,7 +2675,7 @@ var LIGHT_FOREGROUND = {
   name: 'light',
   '1': 'rgba(255,255,255,1.0)',
   '2': 'rgba(255,255,255,0.7)',
-  '3': 'rgba(255,255,255,0.35)',
+  '3': 'rgba(255,255,255,0.3)',
   '4': 'rgba(255,255,255,0.12)'
 };
 
@@ -2738,7 +2885,7 @@ function ThemingProvider($mdColorPalette) {
 
       self[colorType + 'Color'] = function() {
         var args = Array.prototype.slice.call(arguments);
-        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been depricated. ' +
+        console.warn('$mdThemingProviderTheme.' + colorType + 'Color() has been deprecated. ' +
                      'Use $mdThemingProviderTheme.' + colorType + 'Palette() instead.');
         return self[colorType + 'Palette'].apply(self, args);
       };
@@ -2782,8 +2929,9 @@ function ThemingProvider($mdColorPalette) {
       }
 
       function changeTheme(theme) {
-        if (!registered(name)) {
-          $log.warn('attempted to use unregistered theme \'' + theme + '\'');
+        if (!registered(theme)) {
+          $log.warn('Attempted to use unregistered theme \'' + theme + '\'. ' +
+                    'Register it with $mdThemingProvider.theme().');
         }
         var oldTheme = el.data('$mdThemeName');
         if (oldTheme) el.removeClass('md-' + oldTheme +'-theme');
@@ -2793,6 +2941,9 @@ function ThemingProvider($mdColorPalette) {
     };
 
     applyTheme.registered = registered;
+    applyTheme.defaultTheme = function() {
+      return defaultTheme;
+    };
 
     return applyTheme;
 
@@ -2941,7 +3092,7 @@ function generateThemes($injector) {
     });
     if (theme.colors.primary.name == theme.colors.accent.name) {
       console.warn("$mdThemingProvider: Using the same palette for primary and" +
-                   "accent. This violates the material design spec.");
+                   " accent. This violates the material design spec.");
     }
   });
 
@@ -2964,7 +3115,7 @@ function generateThemes($injector) {
 
     // These colors are provided as space-separated lists
     if (typeof lightColors === 'string') lightColors = lightColors.split(' ');
-    if (typeof strongLongColors === 'string') strongLightColors = strongLightColors.split(' ');
+    if (typeof strongLightColors === 'string') strongLightColors = strongLightColors.split(' ');
     if (typeof darkColors === 'string') darkColors = darkColors.split(' ');
 
     // Cleanup after ourselves

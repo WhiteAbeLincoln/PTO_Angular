@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 goog.provide('ng.material.components.tooltip');
 goog.require('ng.material.core');
@@ -63,6 +63,11 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
   function postLink(scope, element, attr, contentCtrl) {
     $mdTheming(element);
     var parent = element.parent();
+
+    // Keep looking for a higher parent if our current one has no pointer events
+    while ($window.getComputedStyle(parent[0])['pointer-events'] == 'none') {
+      parent = parent.parent();
+    }
 
     // Look for the nearest parent md-content, stopping at the rootElement.
     var current = element.parent()[0];

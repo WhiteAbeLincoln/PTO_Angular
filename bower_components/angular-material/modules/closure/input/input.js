@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 goog.provide('ng.material.components.input');
 goog.require('ng.material.core');
@@ -36,6 +36,8 @@ angular.module('material.components.input', [
  * Input and textarea elements will not behave properly unless the md-input-container 
  * parent is provided.
  *
+ * @param md-is-error {expression=} When the given expression evaluates to true, the input container will go into error state. Defaults to erroring if the input has been touched and is invalid.
+ *
  * @usage
  * <hljs lang="html">
  *
@@ -51,8 +53,8 @@ angular.module('material.components.input', [
  *
  * </hljs>
  */
-function mdInputContainerDirective($mdTheming) {
-  ContainerCtrl.$inject = ["$scope", "$element", "$mdUtil"];
+function mdInputContainerDirective($mdTheming, $parse) {
+  ContainerCtrl.$inject = ["$scope", "$element", "$attrs"];
   return {
     restrict: 'E',
     link: postLink,
@@ -62,8 +64,10 @@ function mdInputContainerDirective($mdTheming) {
   function postLink(scope, element, attr) {
     $mdTheming(element);
   }
-  function ContainerCtrl($scope, $element, $mdUtil) {
+  function ContainerCtrl($scope, $element, $attrs) {
     var self = this;
+
+    self.isErrorGetter = $attrs.mdIsError && $parse($attrs.mdIsError);
 
     self.element = $element;
     self.setFocused = function(isFocused) {
@@ -75,7 +79,6 @@ function mdInputContainerDirective($mdTheming) {
     self.setInvalid = function(isInvalid) {
       $element.toggleClass('md-input-invalid', !!isInvalid);
     };
-
     $scope.$watch(function() {
       return self.label && self.input;
     }, function(hasLabelAndInput) {
@@ -85,7 +88,7 @@ function mdInputContainerDirective($mdTheming) {
     });
   }
 }
-mdInputContainerDirective.$inject = ["$mdTheming"];
+mdInputContainerDirective.$inject = ["$mdTheming", "$parse"];
 
 function labelDirective() {
   return {
@@ -104,12 +107,12 @@ function labelDirective() {
 
 /**
  * @ngdoc directive
- * @name input
+ * @name mdInput
  * @restrict E
  * @module material.components.input
  *
  * @description
- * Must be placed as a child of an `<md-input-container>`. 
+ * Use the `<input>` as a child of an `<md-input-container>`.
  *
  * Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/input).
  *
@@ -139,12 +142,12 @@ function labelDirective() {
  */
 /**
  * @ngdoc directive
- * @name textarea
+ * @name mdTextarea
  * @restrict E
  * @module material.components.input
  *
  * @description
- * Must be placed as a child of an `<md-input-container>`. 
+ * Use the `<textarea>` as a child of an `<md-input-container>`
  *
  * Behaves like the [AngularJS input directive](https://docs.angularjs.org/api/ng/directive/textarea).
  *
@@ -199,19 +202,10 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       setupTextarea();
     }
 
-    function ngModelPipelineCheckValue(arg) {
-      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
-      return arg;
-    }
-    function inputCheckValue() {
-      // An input's value counts if its length > 0,
-      // or if the input's validity state says it has bad input (eg string in a number input)
-      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
-    }
-
-    scope.$watch(function() {
-      return ngModelCtrl.$dirty && ngModelCtrl.$invalid;
-    }, containerCtrl.setInvalid);
+    var isErrorGetter = containerCtrl.isErrorGetter || function() {
+      return ngModelCtrl.$invalid && ngModelCtrl.$touched;
+    };
+    scope.$watch(isErrorGetter, containerCtrl.setInvalid);
       
     ngModelCtrl.$parsers.push(ngModelPipelineCheckValue);
     ngModelCtrl.$formatters.push(ngModelPipelineCheckValue);
@@ -227,6 +221,9 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
           containerCtrl.setFocused(false);
           inputCheckValue();
         });
+
+      ngModelCtrl.$setTouched();
+      if( ngModelCtrl.$invalid ) containerCtrl.setInvalid();
     }
 
     scope.$on('$destroy', function() {
@@ -234,6 +231,19 @@ function inputTextareaDirective($mdUtil, $window, $compile, $animate) {
       containerCtrl.setHasValue(false);
       containerCtrl.input = null;
     });
+
+    /**
+     *
+     */
+    function ngModelPipelineCheckValue(arg) {
+      containerCtrl.setHasValue(!ngModelCtrl.$isEmpty(arg));
+      return arg;
+    }
+    function inputCheckValue() {
+      // An input's value counts if its length > 0,
+      // or if the input's validity state says it has bad input (eg string in a number input)
+      containerCtrl.setHasValue(element.val().length > 0 || (element[0].validity||{}).badInput);
+    }
 
     function setupTextarea() {
       var node = element[0];
@@ -333,11 +343,13 @@ mdMaxlengthDirective.$inject = ["$animate"];
 function placeholderDirective() {
   return {
     restrict: 'A',
-    require: '^mdInputContainer',
+    require: '^^?mdInputContainer',
     link: postLink
   };
 
   function postLink(scope, element, attr, inputContainer) {
+    if (!inputContainer) return;
+
     var placeholderText = attr.placeholder;
     element.removeAttr('placeholder');
 

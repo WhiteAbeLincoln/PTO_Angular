@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.0-master-e4397de
+ * v0.7.1-master-66fa1e3
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2968,6 +2968,10 @@ md-bottom-sheet {
   overflow: hidden;
   transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), -webkit-transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), background-color 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .md-button:focus {
+    outline: none; }
+  .md-button:hover {
+    text-decoration: none; }
   .md-button.ng-hide {
     transition: none; }
   .md-button.md-cornered {
@@ -3017,6 +3021,11 @@ md-bottom-sheet {
     .md-button.md-fab md-icon {
       line-height: 56px;
       margin-top: 0; }
+    .md-button.md-fab.md-mini {
+      width: 40px;
+      height: 40px; }
+      .md-button.md-fab.md-mini md-icon {
+        line-height: 40px; }
   .md-button:not([disabled]).md-raised:focus, .md-button:not([disabled]).md-raised:hover, .md-button:not([disabled]).md-fab:focus, .md-button:not([disabled]).md-fab:hover {
     -webkit-transform: translate3d(0, -1px, 0);
             transform: translate3d(0, -1px, 0); }
@@ -3072,7 +3081,7 @@ md-card {
           flex-direction: column;
   margin: 8px;
   box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
-  md-card > img, md-card :not(md-card-content) img {
+  md-card > img, md-card > :not(md-card-content) img {
     -webkit-order: 0;
         -ms-flex-order: 0;
             order: 0;
@@ -3222,7 +3231,7 @@ md-dialog {
     padding: 24px;
     overflow: auto;
     -webkit-overflow-scrolling: touch; }
-    md-dialog md-content:not([layout=row]) *:first-child {
+    md-dialog md-content:not([layout=row]) > *:first-child:not(.md-subheader) {
       margin-top: 0px; }
   md-dialog .md-actions {
     display: -webkit-flex;
@@ -3252,23 +3261,69 @@ md-divider {
   md-divider[md-inset] {
     margin-left: 80px; }
 
+md-grid-list, md-grid-tile {
+  display: block; }
+
+md-grid-list {
+  position: relative; }
+
+md-grid-tile {
+  position: absolute; }
+  md-grid-tile figure {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 0;
+    margin: 0; }
+  md-grid-tile md-grid-tile-header, md-grid-tile md-grid-tile-footer {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
+    height: 48px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.18);
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0; }
+    md-grid-tile md-grid-tile-header h3, md-grid-tile md-grid-tile-header h4, md-grid-tile md-grid-tile-footer h3, md-grid-tile md-grid-tile-footer h4 {
+      font-weight: 400;
+      margin: 0 0 0 16px; }
+    md-grid-tile md-grid-tile-header h3, md-grid-tile md-grid-tile-footer h3 {
+      font-size: 14px; }
+    md-grid-tile md-grid-tile-header h4, md-grid-tile md-grid-tile-footer h4 {
+      font-size: 12px; }
+  md-grid-tile md-grid-tile-header {
+    top: 0; }
+  md-grid-tile md-grid-tile-footer {
+    bottom: 0; }
+
 md-icon {
   margin: auto;
-  padding: 0;
-  display: inline-block;
-  margin-top: 5px;
   background-repeat: no-repeat no-repeat;
-  pointer-events: none;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  z-index: 0; }
-  md-icon object.md-icon {
-    display: inline-block; }
-
-svg, object {
-  fill: currentColor;
-  color: currentColor; }
+  display: inline-block;
+  vertical-align: middle;
+  fill: currentcolor;
+  height: 24px;
+  width: 24px; }
 
 md-input-container {
   display: -webkit-flex;
@@ -3373,7 +3428,7 @@ md-input-container {
   md-input-container.md-input-focused .md-input, md-input-container .md-input.ng-invalid.ng-dirty {
     padding-bottom: 0px;
     border-width: 0 0 2px 0; }
-  md-input-container .md-input[disabled] {
+  md-input-container .md-input[disabled], [disabled] md-input-container .md-input {
     background-position: 0 bottom;
     background-size: 3px 1px;
     background-repeat: repeat-x; }
@@ -5245,6 +5300,7 @@ md-sidenav {
   position: absolute;
   width: 304px;
   min-width: 304px;
+  max-width: 304px;
   bottom: 0;
   z-index: 60;
   background-color: white;
@@ -5272,7 +5328,8 @@ md-sidenav {
             transform: translate3d(0, 0, 0); }
   md-sidenav.md-locked-open {
     width: 304px;
-    min-width: 304px; }
+    min-width: 304px;
+    max-width: 304px; }
   md-sidenav.md-locked-open, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-left, md-sidenav.md-locked-open.md-closed, md-sidenav.md-locked-open.md-closed.md-sidenav-right, md-sidenav.md-locked-open-remove.md-closed {
     position: static;
     display: -webkit-flex;
@@ -5316,6 +5373,11 @@ md-sidenav {
   .md-sidenav-right.md-closed {
     -webkit-transform: translate3d(0%, 0, 0);
             transform: translate3d(0%, 0, 0); }
+
+@media (max-width: 360px) {
+  md-sidenav {
+    width: 85%; }
+ }
 
 @-webkit-keyframes sliderFocusThumb {
   0% {
@@ -5583,6 +5645,8 @@ md-slider {
       top: 0;
       right: -16px;
       content: ''; }
+    .md-subheader:not(.md-sticky-no-effect).md-sticky-clone {
+      z-index: 2; }
     .md-subheader:not(.md-sticky-no-effect)[sticky-state="active"] {
       margin-top: -2px; }
     .md-subheader:not(.md-sticky-no-effect):not(.md-sticky-clone)[sticky-prev-state="active"]:after {
@@ -5598,7 +5662,15 @@ md-switch {
   display: flex;
   -webkit-align-items: center;
       -ms-flex-align: center;
-          align-items: center; }
+          align-items: center;
+  margin: 15px;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none; }
   md-switch .md-container {
     cursor: -webkit-grab;
     cursor: grab;
@@ -5615,7 +5687,7 @@ md-switch {
     cursor: grabbing; }
   md-switch .md-label {
     border-color: transparent;
-    border-width: 1px; }
+    border-width: 0px; }
   md-switch .md-bar {
     left: 1px;
     width: 34px;
@@ -5806,11 +5878,13 @@ md-tab {
   cursor: pointer;
   padding: 20px 24px;
   box-sizing: border-box;
-  transition: background 0.35s cubic-bezier(0.35, 0, 0.25, 1), color 0.35s cubic-bezier(0.35, 0, 0.25, 1);
+  transition: none;
   -webkit-user-select: none;
      -moz-user-select: none;
       -ms-user-select: none;
           user-select: none; }
+  md-tab.md-tab-themed {
+    transition: background 0.35s cubic-bezier(0.35, 0, 0.25, 1), color 0.35s cubic-bezier(0.35, 0, 0.25, 1); }
   md-tab[disabled] {
     pointer-events: none;
     cursor: default; }
@@ -6007,7 +6081,8 @@ md-toolbar {
   z-index: 2;
   font-size: 1.3em;
   min-height: 64px;
-  width: 100%; }
+  width: 100%;
+  box-shadow: 0px 2px 5px 0 rgba(0, 0, 0, 0.26); }
   md-toolbar.md-tall {
     height: 128px;
     min-height: 128px;
@@ -6035,7 +6110,6 @@ md-toolbar {
           flex-direction: row;
   width: 100%;
   height: 64px;
-  min-height: 100%;
   max-height: 64px;
   font-size: inherit;
   font-weight: normal;

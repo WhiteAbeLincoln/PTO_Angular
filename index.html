@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="css/styles.css"/>
     <script src="bower_components/angular/angular.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 <body layout="row">
     <md-sidenav md-component-id="left"
@@ -25,13 +26,28 @@
             </h1>
         </md-toolbar>
 
-        <md-content flex>
+        <md-content flex layout="column">
             <ul class="menu">
                 <li ng-repeat="section in menu.sections" class="parent-list-item" ng-class="{'parentActive' : isSectionSelected(section)}">
                     <menu-link section="section" ng-if="section.type === 'link'"></menu-link>
                     <menu-toggle section="section" ng-if="section.type === 'toggle'"></menu-toggle>
                 </li>
             </ul>
+            <span flex></span> <!-- span to fill the gap -->
+            <div layout="row" layout-padding layout-align="space-around center" layout-fill >
+                <md-button class="md-fab" aria-label="Twitter" ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
+                    <md-icon md-svg-src="img/icons/twitter.svg"></md-icon>
+                    <md-tooltip>Follow on Twitter</md-tooltip>
+                </md-button>
+                <md-button class="md-fab" aria-label="Google+" ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
+                    <md-tooltip>Follow on Google+</md-tooltip>
+                    <md-icon md-svg-src="img/icons/google-plus.svg"></md-icon>
+                </md-button>
+                <md-button class="md-fab" aria-label="Facebook" ng-click="social('https://www.facebook.com/abelincoln.white')">
+                    <md-tooltip>Follow on Facebook</md-tooltip>
+                    <md-icon md-svg-src="img/icons/facebook.svg"></md-icon>
+                </md-button>
+            </div>
         </md-content>
     </md-sidenav>
 
@@ -39,7 +55,7 @@
         <md-toolbar class="md-whiteframe-z1" md-scroll-shrink  layout="column">
             <div class="md-toolbar-tools" flex>
                 <div layout="row" layout-align="start center" flex>
-                    <div ng-click="openMenu()" class="menu-icon" hide-gt-md aria-label="Toggle Menu">
+                    <div ng-click="openMenu()" class="menu-icon" hide-gt-md aria-label="Toggle Menu" role="button">
                         <img src="img/icons/ic_menu_24px.svg"/>
                     </div>
                     <span flex></span>
