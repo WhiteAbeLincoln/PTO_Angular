@@ -1,5 +1,5 @@
 <div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
-    <form ng-controller="ScholarshipCtrl" ng-submit="newScholar()"name="userForm" novalidate>
+    <form ng-controller="ScholarshipCtrl" ng-submit="newScholar()" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
             <md-tab label="Why">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin>
@@ -261,6 +261,9 @@
 						<label>Essay</label>
 						<textarea ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
 					</md-input-container>
+                </div>
+				<div layout-align="center">
+                    <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid">Submit</md-button>
                 </div>
             </md-tab>
        </md-tabs>

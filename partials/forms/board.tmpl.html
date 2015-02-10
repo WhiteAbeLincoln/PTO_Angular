@@ -87,39 +87,115 @@
                     </div>
                 </div>
             </md-tab>
-			<!--finish tomorrow-->
 			<md-tab label="Availability" ng-disabled="!data.accepted">
-                <div layout-margin layout="column">
-                    <div layout="row" layout-sm="column">
-                        <md-input-container flex>
-                            <label>Weekday Mornings</label>
-                            <input ng-model="user.daymorn">
-                        </md-input-container>
-                        <md-input-container flex>
-                            <label>10th Grade</label>
-                            <input ng-model="user.endmorn">
-                        </md-input-container>
+                <div layout-margin layout="row">
+                    <div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Weekday Mornings" ng-model="user.daymorn" class="md-primary">
+							<label>Weekday Mornings</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Weekend Mornings" ng-model="user.endmorn" class="md-primary">
+							<label>Weekend Mornings</label>
+						</md-checkbox>
                     </div>
-					<div layout="row" layout-sm="column">
-                        <md-input-container flex>
-                            <label>11th Grade</label>
-                            <input ng-model="user.daymorn">
-                        </md-input-container>
-						<md-input-container flex>
-                            <label>11th Grade</label>
-                            <input ng-model="user.endmorn">
-                        </md-input-container>
+					<div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Weekday Afternoons" ng-model="user.dayafter" class="md-primary">
+							<label>Weekday Afternoons</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Weekend Afternoons" ng-model="user.endafter" class="md-primary">
+							<label>Weekend Afternoons</label>
+						</md-checkbox>
                     </div>
-					<div layout="row" layout-sm="column">
-                        <md-input-container flex>
-                            <label>12th Grade</label>
-                            <input ng-model="user.daymorn">
-                        </md-input-container>
-						<md-input-container flex>
-                            <label>12th Grade</label>
-                            <input ng-model="user.endmorn">
-                        </md-input-container>
+					<div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Weekday Evenings" ng-model="user.dayeve" class="md-primary">
+							<label>Weekday Evenings</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Weekend Evenings" ng-model="user.endeve" class="md-primary">
+							<label>Weekend Evenings</label>
+						</md-checkbox>
                     </div>
+                </div>
+            </md-tab>
+			<md-tab label="Interests" ng-disabled="!data.accepted">
+                <div layout-margin layout="row">
+                    <div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Volunteer Coordinator" ng-model="user.volcoor" class="md-primary">
+							<label>Volunteer Coordinator</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Elk News & Website" ng-model="user.newsweb" class="md-primary">
+							<label>Elk News & Website</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="College and Career Fair" ng-model="user.fair" class="md-primary">
+							<label>College and Career Fair</label>
+						</md-checkbox>
+                    </div>
+					<div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Elk Tours" ng-model="user.tours" class="md-primary">
+							<label>Elk Tours</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Hospitality" ng-model="user.hos" class="md-primary">
+							<label>Hospitality</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Membership" ng-model="user.member" class="md-primary">
+							<label>Membership</label>
+						</md-checkbox>
+                    </div>
+					<div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Special Events" ng-model="user.event" class="md-primary">
+							<label>Special Events</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Scholarships" ng-model="user.scholar" class="md-primary">
+							<label>Scholarships</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Fundraising" ng-model="user.fund" class="md-primary">
+							<label>Fundraising</label>
+						</md-checkbox>
+                    </div>
+					<div layout="column" layout-sm="row">
+                        <md-checkbox md-no-ink aria-label="Orientation" ng-model="user.or" class="md-primary">
+							<label>Orientation</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Mailings" ng-model="user.mail" class="md-primary">
+							<label>Mailings</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="Elk Pride" ng-model="user.pride" class="md-primary">
+							<label>Elk Pride</label>
+						</md-checkbox>
+                    </div>
+                </div>
+            </md-tab>
+			<md-tab label="Skills" ng-disabled="!data.accepted">
+                <div layout-margin>
+					<p>Summarize special skills and qualifications you have acquired from employment, previous volunteer work, or through other activities, including hobbies or sports.</p>
+                    <md-input-container flex>
+						<label>Special Skills or Qualifications</label>
+						<textarea ng-model="user.skills" md-maxlength="3000" required></textarea>
+					</md-input-container>
+                </div>
+            </md-tab>
+			<md-tab label="Experience" ng-disabled="!data.accepted">
+                <div layout-margin>
+					<p>Summarize your previous volunteer experience.</p>
+                    <md-input-container flex>
+						<label>Previous Volunteer Experience</label>
+						<textarea ng-model="user.experience" md-maxlength="3000" required></textarea>
+					</md-input-container>
+                </div>
+            </md-tab>
+			<md-tab label="Why" ng-disabled="!data.accepted">
+                <div layout-margin>
+					<p>Why do you want to serve on the CHS PTO Board?</p>
+                    <md-input-container flex>
+						<label>Why?</label>
+						<textarea ng-model="user.why" md-maxlength="3000" required></textarea>
+					</md-input-container>
+					<p>Would you consider serving in an Executive Board position in the future?</p>
+					<md-radio-group ng-model="user.position">
+						<md-radio-button value="Yes">Yes</md-radio-button>
+						<md-radio-button value="No">No</md-radio-button>
+					</md-radio-group>
+                </div>
+				<div layout-align="center ">
+                    <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid">Submit</md-button>
                 </div>
             </md-tab>
        </md-tabs>

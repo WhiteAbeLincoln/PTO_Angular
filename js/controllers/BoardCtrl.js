@@ -27,7 +27,29 @@
                     "name": "",
 					"school": ""
                 }
-            ]
+            ],
+			"daymorn": false,
+			"endmorn": false,
+			"dayafter": false,
+			"endafter": false,
+			"dayeve": false,
+			"endeve": false,
+			"volcoor":"",
+			"newsweb":"",
+			"fair":"",
+			"tours":"",
+			"hos":"",
+			"member":"",
+			"event":"",
+			"scholar":"",
+			"fund":"",
+			"or":"",
+			"mail":"",
+			"pride":"",
+			"skills":"",
+			"experience":"",
+			"why":"",
+			"position":''
         };
 		$scope.changeChildren = function(num){
             var oldLength = this.user.Children.length;
@@ -43,7 +65,7 @@
                     this.user.Children.pop();
                 }
             }
-        };
+        };	
 		
         $scope.newBoard = function() {
             $scope.postData = {};
