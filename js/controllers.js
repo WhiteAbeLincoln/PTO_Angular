@@ -17,7 +17,7 @@
            return $resource('http://localhost:8080/api/board/:id');
     }])
 
-    .controller('AppCtrl', ['$scope', '$mdSidenav', '$log', '$location', 'menu', function($scope, $mdSidenav, $log, $location, menu) {
+    .controller('AppCtrl', ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', function($scope, $rootScope, $mdSidenav, $log, $location, menu) {
         /*$scope.toggleLeft = function() {
             $mdSidenav('left').toggle()
                 .then(function () {
@@ -33,6 +33,8 @@
         $scope.closeMenu = closeMenu;
         $scope.isSectionSelected = isSectionSelected;
 
+        //event that occurs when $location changes the page, calls openPage() to close the menu
+        $rootScope.$on('$locationChangeSuccess', openPage);
 
         // used by menuLink and menuToggle directives
         this.isOpen = isOpen;               //used in menuToggle directive toggle() function (app.js line 151)
@@ -60,6 +62,7 @@
             $location.path('/');
         }
 
+            //closes the menu when a page is opened (like android)
         function openPage(){
             $scope.closeMenu();
             mainContent.focus();

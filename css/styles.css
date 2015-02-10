@@ -92,7 +92,7 @@ select, option:disabled {
     padding:0;
 }
 .menu .md-button.active {
-    color: #607D8B; /* primary accent color */
+    color: #607D8B; /* primary accent color blue-grey*/
 }
 .menu li.parentActive,
 .menu li.parentActive .menu-toggle-list {
