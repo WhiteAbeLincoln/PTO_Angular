@@ -11,9 +11,14 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
             })
             .when('/forms/:tmpl', {
                 templateUrl: function(params){
-                  return  'partials/forms/' + params.tmpl + '.tmpl.html'
+					return 'partials/forms/' + params.tmpl + '.tmpl.html'
                 }
 
+            })
+			.when('/:tmpl', {
+                templateUrl: function(params){
+					return 'partials/' + params.tmpl + '.tmpl.html'
+				}
             });
 
         $mdThemingProvider.theme('default')
