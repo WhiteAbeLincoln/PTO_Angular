@@ -34,20 +34,21 @@
                 </li>
             </ul>
             <span flex></span> <!-- span to fill the gap -->
-            <div layout="row" layout-padding layout-align="space-around center" layout-fill >
+            <div layout="row" layout-padding layout-align="space-around center" layout-fill flex>
                 <md-button class="md-fab" aria-label="Twitter" ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
+                    <md-tooltip md-direction="bottom">Follow on Twitter</md-tooltip>
                     <md-icon md-svg-src="img/icons/twitter.svg"></md-icon>
-                    <md-tooltip>Follow on Twitter</md-tooltip>
                 </md-button>
                 <md-button class="md-fab" aria-label="Google+" ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
-                    <md-tooltip>Follow on Google+</md-tooltip>
+                    <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
                     <md-icon md-svg-src="img/icons/google-plus.svg"></md-icon>
                 </md-button>
                 <md-button class="md-fab" aria-label="Facebook" ng-click="social('https://www.facebook.com/abelincoln.white')">
-                    <md-tooltip>Follow on Facebook</md-tooltip>
+                    <md-tooltip md-direction="right">Follow on Facebook</md-tooltip>
                     <md-icon md-svg-src="img/icons/facebook.svg"></md-icon>
                 </md-button>
             </div>
+
         </md-content>
     </md-sidenav>
 
@@ -79,6 +80,7 @@
     <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-material/angular-material.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
     <!-- endbower -->
 
     <script type="text/javascript" src="js/app.js"></script>

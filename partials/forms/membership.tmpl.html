@@ -1,8 +1,8 @@
-<!--TODO: Consider splitting this up into a 'staged donation' page, using tabs -->
+<div ng-controller="MembershipCtrl">
 <div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
-    <form ng-controller="MembershipCtrl" ng-submit="newMember()" name="userForm" novalidate>
+    <form  ng-submit="newMember(userForm.$valid)" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
-            <md-tab label="Why">
+            <md-tab label="Join">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin>
                     <div>
                         <h2>Join the Centerville High School PTO!</h2>
@@ -29,31 +29,50 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>First Name</label>
-                            <input ng-model="user.first" required>
+                            <input name="firstName" ng-model="user.first" required>
+                            <div ng-messages="userForm.firstName.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Last Name</label>
-                            <input ng-model="user.last" required>
+                            <input name="lastName" ng-model="user.last" required>
+                            <div ng-messages="userForm.lastName.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
                         </md-input-container>
                     </div>
                     <div>
                         <md-input-container flex>
                             <label>Address</label>
-                            <input ng-model="user.address" required>
+                            <input name="address" ng-model="user.address" required>
+                            <div ng-messages="userForm.address.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
                         </md-input-container>
                     </div>
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>City</label>
-                            <input ng-model="user.city" required>
+                            <input name="city" ng-model="user.city" required>
+                            <div ng-messages="userForm.city.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>State</label>
-                            <input ng-model="user.state" required>
+                            <input name="state" ng-model="user.state" required>
+                            <div ng-messages="userForm.state.$error">
+                                <div ng-message="required">This is required</div>
+                            </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Zip Code</label>
-                            <input ng-model="user.postalCode" required>
+                            <input name="zip" ng-model="user.postalCode" ng-pattern="/(\d{5}[-]\d{4})|(^\d{5}$)/" required>
+                            <div ng-messages="userForm.zip.$error">
+                                <div ng-message="required">This is required</div>
+                                <div ng-message="pattern">Must be a valid zip code (12345 or 12345-6789)</div>
+                            </div>
                         </md-input-container>
                     </div>
                 </div>
@@ -67,37 +86,54 @@
                                   step="1" min="1" max="7"></md-slider>
                     </div>
                     <div ng-repeat="student in user.students">
-                        <h3 class="md-primary">Student {{$index+1}}</h3>
-                        <div layout layout-sm="column">
-                           <md-input-container flex>
-                               <label>First Name</label>
-                               <input ng-model="student.first" required>
-                           </md-input-container>
-                           <md-input-container flex>
-                               <label>Last Name</label>
-                               <input ng-model="student.last" required>
-                           </md-input-container>
-                        </div>
-                        <div layout layout-sm="column">
+                        <ng-form name="studentForm">
+                            <h3 class="md-primary">Student {{$index+1}}</h3>
+                            <div layout layout-sm="column">
+                               <md-input-container flex>
+                                   <label>First Name</label>
+                                   <input name="first" ng-model="student.first" required>
+                                   <div ng-messages="studentForm.first.$error">
+                                       <div ng-message="required">This is required</div>
+                                   </div>
+                               </md-input-container>
+                               <md-input-container flex>
+                                   <label>Last Name</label>
+                                   <input name="last" ng-model="student.last" required>
+                                   <div ng-messages="studentForm.last.$error">
+                                       <div ng-message="required">This is required</div>
+                                   </div>
+                               </md-input-container>
+                            </div>
+                            <div layout layout-sm="column">
 
-                            <md-input-container flex>
-                                <select class='md-input' ng-model="student.grade" required>
-                                    <option value="" disabled selected>Grade</option>
-                                    <option value="9">Freshmen</option>
-                                    <option value="10">Sophomore</option>
-                                    <option value="11">Junior</option>
-                                    <option value="12">Senior</option>
-                                </select>
-                            </md-input-container>
-                            <md-input-container flex>
-                                <select class='md-input' ng-model="student.unit" required>
-                                    <option value="" disabled selected>Unit</option>
-                                    <option value="E">East</option>
-                                    <option value="S">South</option>
-                                    <option value="W">West</option>
-                                </select>
-                            </md-input-container>
-                        </div>
+                                <md-input-container
+                                        ng-class="{'md-input-invalid':!studentForm.grade.$valid, 'md-input-has-value':studentForm.grade.valueOf() !== ''}"
+                                        flex>
+                                    <label ng-if="studentForm.grade.valueOf() == ''">Grade</label>
+                                    <select name="grade" class='md-input' ng-model="student.grade" required>
+                                        <option value="" disabled selected>Grade</option>
+                                        <option value="9">Freshmen</option>
+                                        <option value="10">Sophomore</option>
+                                        <option value="11">Junior</option>
+                                        <option value="12">Senior</option>
+                                    </select>
+                                    <div ng-messages="studentForm.grade.$error">
+                                        <div ng-message="required">This is required</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container ng-class="{'md-input-invalid':!studentForm.unit.$valid}" flex>
+                                    <select name="unit" class='md-input' ng-model="student.unit" required>
+                                        <option value="" disabled selected>Unit</option>
+                                        <option value="E">East</option>
+                                        <option value="S">South</option>
+                                        <option value="W">West</option>
+                                    </select>
+                                    <div ng-messages="studentForm.unit.$error">
+                                        <div ng-message="required">This is required</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </ng-form>
                     </div>
 
                 </div>
@@ -112,25 +148,41 @@
                         <div layout="row">
                             <md-input-container flex>
                                 <label>First</label>
-                                <input id="payment-first" ng-model="payment.first" required>
+                                <input name="paymentFirst" id="payment-first" ng-model="payment.first" ng-required="payment.amount > 0">
+                                <div ng-messages="userForm.paymentFirst.$error">
+                                    <div ng-message="required">This is required</div>
+                                </div>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>Last</label>
-                                <input id="payment-last" ng-model="payment.last" required>
+                                <input name="paymentLast" id="payment-last" ng-model="payment.last" ng-required="payment.amount > 0">
+                                <div ng-messages="userForm.paymentLast.$error">
+                                    <div ng-message="required">This is required</div>
+                                </div>
                             </md-input-container>
                         </div>
                         <div layout="row">
                             <md-input-container flex="66">
                                 <label>Number</label>
-                                <input id="payment-number" ng-model="payment.number" required>
+                                <input name="paymentNumber" id="payment-number" ng-model="payment.number" ng-required="payment.amount > 0">
+                                <div ng-messages="userForm.paymentNumber.$error">
+                                    <div ng-message="required">This is required</div>
+                                </div>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>MM/YY</label>
-                                <input id="payment-exp" ng-model="payment.exp_date" required>
+                                <input name="paymentYear" id="payment-exp" ng-model="payment.exp_date" ng-pattern="/^\d{2}\/\d{2}$/" ng-required="payment.amount > 0">
+                                <div ng-messages="userForm.paymentYear.$error">
+                                    <div ng-message="required">This is required</div>
+                                    <div ng-message="pattern">Must be a valid expiration date (MM/YY)</div>
+                                </div>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>CVC</label>
-                                <input id="payment-cvc" ng-model="payment.cvv2" required>
+                                <input name="paymentCVC" id="payment-cvc" ng-model="payment.cvv2" ng-required="payment.amount > 0">
+                                <div ng-messages="userForm.paymentCVC.$error">
+                                    <div ng-message="required">This is required</div>
+                                </div>
                             </md-input-container>
                         </div>
                     </div>
@@ -140,5 +192,69 @@
                 </div>
             </md-tab>
        </md-tabs>
+
     </form>
+</div>
+    <div>
+        <md-select name="grade" placeholder="Grade" ng-model="student.grade" required>
+            <md-option ng-value="9">Freshmen</md-option>
+            <md-option ng-value="10">Sophomore</md-option>
+            <md-option ng-value="11">Junior</md-option>
+            <md-option ng-value="12">Senior</md-option>
+        </md-select>
+        <div ng-messages="studentForm.grade.$error">
+            <div ng-message="required">This is required</div>
+        </div>
+    </div>
+    <div ng-hide="true">
+        <h2>DEBUG</h2>
+        <div ng-show="!userForm.firstName.$valid">
+            <p>userForm.firstName.$valid = {{userForm.firstName.$valid}}</p>
+            <p>userForm.firstName.$error = {{userForm.firstName.$error}}</p>
+        </div>
+        <div ng-show="!userForm.lastName.$valid">
+            <p>userForm.lastName.$valid = {{userForm.lastName.$valid}}</p>
+            <p>userForm.lastName.$error = {{userForm.lastName.$error}}</p>
+        </div>
+        <div ng-show="!userForm.address.$valid">
+            <p>userForm.address.$valid = {{userForm.address.$valid}}</p>
+            <p>userForm.address.$error = {{userForm.address.$error}}</p>
+        </div>
+        <div ng-show="!userForm.city.$valid">
+            <p>userForm.city.$valid = {{userForm.city.$valid}}</p>
+            <p>userForm.city.$error = {{userForm.city.$error}}</p>
+        </div>
+        <div ng-show="!userForm.state.$valid">
+            <p>userForm.state.$valid = {{userForm.state.$valid}}</p>
+            <p>userForm.state.$error = {{userForm.state.$error}}</p>
+        </div>
+        <div ng-show="!userForm.zip.$valid">
+            <p>userForm.zip.$valid = {{userForm.zip.$valid}}</p>
+            <p>userForm.zip.$error = {{userForm.zip.$error}}</p>
+        </div>
+        <div ng-show="!userForm.studentForm.$valid">
+            <p>userForm.studentForm.$valid = {{userForm.studentForm.$valid}}</p>
+            <p>userForm.studentForm.$error = {{!!userForm.studentForm.$error}}</p>
+        </div>
+        <div ng-show="!userForm.paymentFirst.$valid">
+            <p>userForm.paymentFirst.$valid = {{userForm.paymentFirst.$valid}}</p>
+            <p>userForm.paymentFirst.$error = {{userForm.paymentFirst.$error}}</p>
+        </div>
+        <div ng-show="!userForm.paymentLast.$valid">
+            <p>userForm.paymentLast.$valid = {{userForm.paymentLast.$valid}}</p>
+            <p>userForm.paymentLast.$error = {{userForm.paymentLast.$error}}</p>
+        </div>
+        <div ng-show="!userForm.paymentNumber.$valid">
+            <p>userForm.paymentNumber.$valid = {{userForm.paymentNumber.$valid}}</p>
+            <p>userForm.paymentNumber.$error = {{userForm.paymentNumber.$error}}</p>
+        </div>
+        <div ng-show="!userForm.paymentYear.$valid">
+            <p>userForm.paymentYear.$valid = {{userForm.paymentYear.$valid}}</p>
+            <p>userForm.paymentYear.$error = {{userForm.paymentYear.$error}}</p>
+        </div>
+        <div ng-show="!userForm.paymentCVC.$valid">
+            <p>userForm.paymentCVC.$valid = {{userForm.paymentCVC.$valid}}</p>
+            <p>userForm.paymentCVC.$error = {{userForm.paymentCVC.$error}}</p>
+        </div>
+    </div>
 </div>

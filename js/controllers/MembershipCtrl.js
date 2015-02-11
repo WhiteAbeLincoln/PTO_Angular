@@ -56,7 +56,11 @@
             }
         };
 
-        $scope.newMember = function() {
+        $scope.newMember = function(isValid) {
+            if (!isValid){
+                return;
+            }
+
             $scope.postData = {};
             $scope.postData.user = $scope.user;
             $scope.postData.payment = $scope.payment;

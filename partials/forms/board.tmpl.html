@@ -1,13 +1,13 @@
 <div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
     <form ng-controller="BoardCtrl" ng-submit="newBoard()" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
-            <md-tab label="Why">
+            <md-tab label="Apply">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin layout-padding>
                     <div>
                         <h2>CHS PTO Board Application</h2>
 						<p>Each year the CHS PTO elects new members to the board to replace outgoing members. We seek individuals and couples interested in serving on the PTO board. The term of commitment is a minimum of three years with an option for a fourth year if interested. The current board votes on a specified number of applicants based on the number of outgoing members. Board meetings are held on the first Wednesday of each month with committees meeting as needed.</p>
                     </div>
-                    <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Join</md-button>
+                    <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Apply</md-button>
                 </div>
             </md-tab>
            <md-tab label="You" ng-disabled="!data.accepted">
