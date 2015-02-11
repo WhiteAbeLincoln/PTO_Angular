@@ -1,5 +1,4 @@
-<div ng-controller="MembershipCtrl">
-<div style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
+<div ng-controller="MembershipCtrl" style="max-width: 864px; margin: auto;" class="md-whiteframe-z1">
     <form  ng-submit="newMember(userForm.$valid)" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
             <md-tab label="Join">
@@ -194,67 +193,4 @@
        </md-tabs>
 
     </form>
-</div>
-    <div>
-        <md-select name="grade" placeholder="Grade" ng-model="student.grade" required>
-            <md-option ng-value="9">Freshmen</md-option>
-            <md-option ng-value="10">Sophomore</md-option>
-            <md-option ng-value="11">Junior</md-option>
-            <md-option ng-value="12">Senior</md-option>
-        </md-select>
-        <div ng-messages="studentForm.grade.$error">
-            <div ng-message="required">This is required</div>
-        </div>
-    </div>
-    <div ng-hide="true">
-        <h2>DEBUG</h2>
-        <div ng-show="!userForm.firstName.$valid">
-            <p>userForm.firstName.$valid = {{userForm.firstName.$valid}}</p>
-            <p>userForm.firstName.$error = {{userForm.firstName.$error}}</p>
-        </div>
-        <div ng-show="!userForm.lastName.$valid">
-            <p>userForm.lastName.$valid = {{userForm.lastName.$valid}}</p>
-            <p>userForm.lastName.$error = {{userForm.lastName.$error}}</p>
-        </div>
-        <div ng-show="!userForm.address.$valid">
-            <p>userForm.address.$valid = {{userForm.address.$valid}}</p>
-            <p>userForm.address.$error = {{userForm.address.$error}}</p>
-        </div>
-        <div ng-show="!userForm.city.$valid">
-            <p>userForm.city.$valid = {{userForm.city.$valid}}</p>
-            <p>userForm.city.$error = {{userForm.city.$error}}</p>
-        </div>
-        <div ng-show="!userForm.state.$valid">
-            <p>userForm.state.$valid = {{userForm.state.$valid}}</p>
-            <p>userForm.state.$error = {{userForm.state.$error}}</p>
-        </div>
-        <div ng-show="!userForm.zip.$valid">
-            <p>userForm.zip.$valid = {{userForm.zip.$valid}}</p>
-            <p>userForm.zip.$error = {{userForm.zip.$error}}</p>
-        </div>
-        <div ng-show="!userForm.studentForm.$valid">
-            <p>userForm.studentForm.$valid = {{userForm.studentForm.$valid}}</p>
-            <p>userForm.studentForm.$error = {{!!userForm.studentForm.$error}}</p>
-        </div>
-        <div ng-show="!userForm.paymentFirst.$valid">
-            <p>userForm.paymentFirst.$valid = {{userForm.paymentFirst.$valid}}</p>
-            <p>userForm.paymentFirst.$error = {{userForm.paymentFirst.$error}}</p>
-        </div>
-        <div ng-show="!userForm.paymentLast.$valid">
-            <p>userForm.paymentLast.$valid = {{userForm.paymentLast.$valid}}</p>
-            <p>userForm.paymentLast.$error = {{userForm.paymentLast.$error}}</p>
-        </div>
-        <div ng-show="!userForm.paymentNumber.$valid">
-            <p>userForm.paymentNumber.$valid = {{userForm.paymentNumber.$valid}}</p>
-            <p>userForm.paymentNumber.$error = {{userForm.paymentNumber.$error}}</p>
-        </div>
-        <div ng-show="!userForm.paymentYear.$valid">
-            <p>userForm.paymentYear.$valid = {{userForm.paymentYear.$valid}}</p>
-            <p>userForm.paymentYear.$error = {{userForm.paymentYear.$error}}</p>
-        </div>
-        <div ng-show="!userForm.paymentCVC.$valid">
-            <p>userForm.paymentCVC.$valid = {{userForm.paymentCVC.$valid}}</p>
-            <p>userForm.paymentCVC.$error = {{userForm.paymentCVC.$error}}</p>
-        </div>
-    </div>
 </div>
