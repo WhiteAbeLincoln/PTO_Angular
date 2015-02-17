@@ -55,12 +55,35 @@
 			],
 			"sact": [
 				{
-					
+					"c1": false,
+					"c1m": false,
+					"c1t": false,
+					"c1w": false,
+					"c1th": false,
+					"c1f": false,
+					"c2": false,
+					"c3": false
 				}
 			],
 			"oact": [
 				{
-					
+					"c1": false,
+					"c1m": false,
+					"c1t": false,
+					"c1w": false,
+					"c1th": false,
+					"c1f": false,
+					"c2": false,
+					"c2m": false,
+					"c2t": false,
+					"c2w": false,
+					"c2th": false,
+					"c2f": false,
+					"c3": false,
+					"c4": false,
+					"c5": false,
+					"c6": false,
+					"c7": false
 				}
 			]	
         };

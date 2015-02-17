@@ -111,7 +111,6 @@
 					</div>
 				</div>
             </md-tab>
-            <!--finished here-->
 			<md-tab label="Winter Activities" ng-disabled="!data.accepted">
                 <div layout-margin layout="column">
                     <div layout="row" layout-sm="column">
@@ -175,12 +174,39 @@
 					</div>
 				</div>
             </md-tab>
-			<!--finished here-->
 			<md-tab label="Spring Activities" ng-disabled="!data.accepted">
                 <div layout-margin layout="column">
                     <div layout="row" layout-sm="column">
-                        <md-checkbox md-no-ink aria-label="" ng-model="sact." class="md-primary">
-							<label></label>
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c1" class="md-primary">
+							<label>Sell Prom/After- Prom tickets during lunch hour. (Early May)</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+						Check Days Available:
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1m" class="md-primary">
+							<label>Monday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1t" class="md-primary">
+							<label>Tuesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1w" class="md-primary">
+							<label>Wednesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1th" class="md-primary">
+							<label>Thursday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1f" class="md-primary">
+							<label>Friday</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c2" class="md-primary">
+							<label>Assist during Prom (Saturday 9pm-12am)</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c3" class="md-primary">
+							<label>Volunteer at After-Prom (Includes: chaperone, help with games/activities, etc. 12am-4am)</label>
 						</md-checkbox>
 					</div>
 				</div>
@@ -188,12 +214,84 @@
 			<!--finished here-->
 			<md-tab label="Other Activities" ng-disabled="!data.accepted">
                 <div layout-margin layout="column">
-                    <div layout="row" layout-sm="column">
-                        <md-checkbox md-no-ink aria-label="" ng-model="oact." class="md-primary">
-							<label></label>
+                    <strong>Weekly/Bi-weekly/Monthly Activities</strong>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c1" class="md-primary">
+							<label>Make student absentee calls (Approx. 10:30am-11:00am)</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+						Check Days Available:
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1m" class="md-primary">
+							<label>Monday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1t" class="md-primary">
+							<label>Tuesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1w" class="md-primary">
+							<label>Wednesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1th" class="md-primary">
+							<label>Thursday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c1f" class="md-primary">
+							<label>Friday</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c2" class="md-primary">
+							<label>Type & email student announcements for ELK NEWS (Training given)</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+						Check Days Available:
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c2m" class="md-primary">
+							<label>Monday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c2t" class="md-primary">
+							<label>Tuesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c2w" class="md-primary">
+							<label>Wednesday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c2th" class="md-primary">
+							<label>Thursday</label>
+						</md-checkbox>
+						<md-checkbox md-no-ink aria-label="" ng-model="sact.c2f" class="md-primary">
+							<label>Friday</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c3" class="md-primary">
+							<label>Assist PTO Communication committee with mailings (Elk Tales, special notices, etc.)</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c4" class="md-primary">
+							<label>Assist Elk Pride Committee solicit prizes/awards given to staff & students weekly for "good deeds" and "CHS Elkspirit"</label>
+						</md-checkbox>
+					</div>
+					<strong>Help Needed At Various Times Throughout The School Year</strong>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c5" class="md-primary">
+							<label>Assist PTO Hospitality committee with baked goods, food items for special events</label>
+						</md-checkbox>
+					</div>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c6" class="md-primary">
+							<label>Help with one-time events as the need arises</label>
+						</md-checkbox>
+					</div>
+					<strong>PTO Board</strong>
+					<div layout="row" layout-sm="column">
+                        <md-checkbox md-no-ink aria-label="" ng-model="sact.c7" class="md-primary">
+							<label>Find out about becoming a member of the PTO board</label>
 						</md-checkbox>
 					</div>
 				</div>
+				<div layout-align="center center">
+                    <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid">Submit</md-button>
+                </div>
             </md-tab>
        </md-tabs>
     </form>
