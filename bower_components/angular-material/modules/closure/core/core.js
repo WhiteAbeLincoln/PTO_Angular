@@ -2,9 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1307b94
+ * v0.8.0-rc1-master-012a134
  */
 goog.provide('ng.material.core');
+goog.require('ng.material.components.icon');
 
 (function() {
 'use strict';
@@ -13,12 +14,52 @@ goog.provide('ng.material.core');
  * Initialization function that validates environment
  * requirements.
  */
+var iconProvider;
+
 angular
-  .module('material.core', ['material.core.theming'])
-  .config(MdCoreConfigure);
+  .module('material.core', [ 'material.core.theming', 'material.components.icon' ])
+  .config( MdCoreConfigure )
+  .run( ["$templateCache", function( $templateCache ){
+
+    // These process is needed to pre-configure icons used internally
+    // with specific components. Note: these are SVGs and not font-icons.
+    //
+    // NOTE: any SVGs used below that are **also** available in `material-fonts` should
+    // be removed from this startup process.
 
 
-function MdCoreConfigure($provide, $mdThemingProvider) {
+    var svgRegistry = [
+      {
+        id : 'tabs-arrow',
+        url: 'tabs-arrow.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="tabs-arrow"><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
+      },
+      {
+        id : 'close',
+        url: 'close.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="close"><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
+      },
+      {
+        id:  'cancel',
+        url: 'cancel.svg',
+        svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="cancel"><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
+      }
+    ];
+
+    svgRegistry.forEach(function(asset){
+      iconProvider.icon(asset.id,  asset.url);
+      $templateCache.put(asset.url, asset.svg);
+    });
+
+    // Remove reference
+    iconProvider = null;
+
+  }]);
+
+
+function MdCoreConfigure($provide, $mdThemingProvider, $mdIconProvider ) {
+
+  iconProvider =  $mdIconProvider;
   $provide.decorator('$$rAF', ["$delegate", rAFDecorator]);
 
   $mdThemingProvider.theme('default')
@@ -27,7 +68,7 @@ function MdCoreConfigure($provide, $mdThemingProvider) {
     .warnPalette('red')
     .backgroundPalette('grey');
 }
-MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider"];
+MdCoreConfigure.$inject = ["$provide", "$mdThemingProvider", "$mdIconProvider"];
 
 function rAFDecorator( $delegate ) {
   /**
@@ -83,7 +124,8 @@ function MdConstantFactory($$rAF, $sniffer) {
       LEFT_ARROW : 37,
       UP_ARROW : 38,
       RIGHT_ARROW : 39,
-      DOWN_ARROW : 40
+      DOWN_ARROW : 40,
+      TAB : 9
     },
     CSS: {
       /* Constants */
@@ -1249,8 +1291,8 @@ angular.module('material.core')
     onCancel: angular.noop,
     options: {},
 
-    dispatchEvent: typeof jQuery !== 'undefined' && angular.element === jQuery ? 
-      jQueryDispatchEvent : 
+    dispatchEvent: typeof window.jQuery !== 'undefined' && angular.element === window.jQuery ?
+      jQueryDispatchEvent :
       nativeDispatchEvent,
 
     start: function(ev, pointer) {
@@ -1298,7 +1340,7 @@ angular.module('material.core')
       element.on('$destroy', onDestroy);
 
       return onDestroy;
-      
+
       function onDestroy() {
         delete element[0].$mdGesture[self.name];
         element.off('$destroy', onDestroy);
@@ -1330,7 +1372,7 @@ angular.module('material.core')
   }
 
   /*
-   * NOTE: nativeDispatchEvent is very performance sensitive. 
+   * NOTE: nativeDispatchEvent is very performance sensitive.
    */
   function nativeDispatchEvent(srcEvent, eventType, eventPointer) {
     eventPointer = eventPointer || pointer;

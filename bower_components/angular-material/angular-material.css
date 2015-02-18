@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1307b94
+ * v0.8.0-rc1-master-012a134
  */
 *, *:before, *:after {
   box-sizing: border-box; }
@@ -2855,6 +2855,8 @@ md-autocomplete {
     outline: none;
     z-index: 2;
     background: transparent; }
+    md-autocomplete input::-ms-clear {
+      display: none; }
   md-autocomplete button {
     position: absolute;
     top: 10px;
@@ -2868,7 +2870,33 @@ md-autocomplete {
     border: none;
     border-radius: 50%;
     padding: 0;
-    font-size: 12px; }
+    font-size: 12px;
+    background: transparent; }
+    md-autocomplete button:after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      bottom: -6px;
+      left: -6px;
+      border-radius: 50%;
+      -webkit-transform: scale(0);
+              transform: scale(0);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      z-index: -1; }
+    md-autocomplete button:focus:after {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      opacity: 1; }
+    md-autocomplete button md-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -webkit-transform: translate3d(-50%, -50%, 0) scale(0.9);
+              transform: translate3d(-50%, -50%, 0) scale(0.9); }
+      md-autocomplete button md-icon path {
+        stroke-width: 0; }
     md-autocomplete button.ng-enter {
       -webkit-transform: scale(0);
               transform: scale(0);
@@ -2893,7 +2921,8 @@ md-autocomplete {
     list-style: none;
     padding: 0;
     overflow: auto;
-    max-height: 225.5px; }
+    max-height: 225.5px;
+    z-index: 49; }
     md-autocomplete ul li {
       border-top: 1px solid #ddd;
       padding: 0 15px;
@@ -2904,10 +2933,12 @@ md-autocomplete {
       transition: background 0.15s linear;
       cursor: pointer;
       margin: 0; }
-      md-autocomplete ul li.ng-enter {
+      md-autocomplete ul li.ng-enter, md-autocomplete ul li.ng-hide-remove {
+        transition: none;
         -webkit-animation: md-autocomplete-list-in 0.2s;
                 animation: md-autocomplete-list-in 0.2s; }
-      md-autocomplete ul li.ng-leave {
+      md-autocomplete ul li.ng-leave, md-autocomplete ul li.ng-hide-add {
+        transition: none;
         -webkit-animation: md-autocomplete-list-out 0.2s;
                 animation: md-autocomplete-list-out 0.2s; }
 
@@ -3195,13 +3226,10 @@ md-bottom-sheet {
       left: 20px;
       position: absolute; }
     .md-button.md-fab md-icon {
-      line-height: 56px;
       margin-top: 0; }
     .md-button.md-fab.md-mini {
       width: 40px;
       height: 40px; }
-      .md-button.md-fab.md-mini md-icon {
-        line-height: 40px; }
   .md-button:not([disabled]).md-raised:focus, .md-button:not([disabled]).md-raised:hover, .md-button:not([disabled]).md-fab:focus, .md-button:not([disabled]).md-fab:hover {
     -webkit-transform: translate3d(0, -1px, 0);
             transform: translate3d(0, -1px, 0); }
@@ -3437,60 +3465,58 @@ md-divider {
   md-divider[md-inset] {
     margin-left: 80px; }
 
-md-grid-list, md-grid-tile {
-  display: block; }
-
 md-grid-list {
+  display: block;
   position: relative; }
-
-md-grid-tile {
-  position: absolute; }
-  md-grid-tile figure {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    -webkit-justify-content: center;
-        -ms-flex-pack: center;
-            justify-content: center;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    padding: 0;
-    margin: 0; }
-  md-grid-tile md-grid-tile-header, md-grid-tile md-grid-tile-footer {
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-flex-direction: row;
-        -ms-flex-direction: row;
-            flex-direction: row;
-    -webkit-align-items: center;
-        -ms-flex-align: center;
-            align-items: center;
-    height: 48px;
-    color: #fff;
-    background: rgba(0, 0, 0, 0.18);
-    overflow: hidden;
-    position: absolute;
-    left: 0;
-    right: 0; }
-    md-grid-tile md-grid-tile-header h3, md-grid-tile md-grid-tile-header h4, md-grid-tile md-grid-tile-footer h3, md-grid-tile md-grid-tile-footer h4 {
-      font-weight: 400;
-      margin: 0 0 0 16px; }
-    md-grid-tile md-grid-tile-header h3, md-grid-tile md-grid-tile-footer h3 {
-      font-size: 14px; }
-    md-grid-tile md-grid-tile-header h4, md-grid-tile md-grid-tile-footer h4 {
-      font-size: 12px; }
-  md-grid-tile md-grid-tile-header {
-    top: 0; }
-  md-grid-tile md-grid-tile-footer {
-    bottom: 0; }
+  md-grid-list md-grid-tile {
+    display: block;
+    position: absolute; }
+    md-grid-list md-grid-tile figure {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      -webkit-justify-content: center;
+          -ms-flex-pack: center;
+              justify-content: center;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      padding: 0;
+      margin: 0; }
+    md-grid-list md-grid-tile md-grid-tile-header, md-grid-list md-grid-tile md-grid-tile-footer {
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-flex-direction: row;
+          -ms-flex-direction: row;
+              flex-direction: row;
+      -webkit-align-items: center;
+          -ms-flex-align: center;
+              align-items: center;
+      height: 48px;
+      color: #fff;
+      background: rgba(0, 0, 0, 0.18);
+      overflow: hidden;
+      position: absolute;
+      left: 0;
+      right: 0; }
+      md-grid-list md-grid-tile md-grid-tile-header h3, md-grid-list md-grid-tile md-grid-tile-header h4, md-grid-list md-grid-tile md-grid-tile-footer h3, md-grid-list md-grid-tile md-grid-tile-footer h4 {
+        font-weight: 400;
+        margin: 0 0 0 16px; }
+      md-grid-list md-grid-tile md-grid-tile-header h3, md-grid-list md-grid-tile md-grid-tile-footer h3 {
+        font-size: 14px; }
+      md-grid-list md-grid-tile md-grid-tile-header h4, md-grid-list md-grid-tile md-grid-tile-footer h4 {
+        font-size: 12px; }
+    md-grid-list md-grid-tile md-grid-tile-header {
+      top: 0; }
+    md-grid-list md-grid-tile md-grid-tile-footer {
+      bottom: 0; }
 
 md-icon {
   margin: auto;
@@ -3509,6 +3535,7 @@ md-input-container {
   -webkit-flex-direction: column;
       -ms-flex-direction: column;
           flex-direction: column;
+  overflow-x: hidden;
   padding: 2px;
   padding-bottom: 26px;
   /*
@@ -3550,6 +3577,8 @@ md-input-container {
   md-input-container.md-input-has-value .md-placeholder {
     transition: none;
     opacity: 0; }
+  md-input-container:not(.md-input-has-value) input:not(:focus) {
+    color: transparent; }
   md-input-container .md-input {
     -webkit-flex: 1;
         -ms-flex: 1;
@@ -5943,17 +5972,14 @@ md-tabs {
   background-color: transparent;
   background-repeat: no-repeat;
   background-position: center center;
-  position: absolute;
-  /* TODO Once we have a better way to inline svg images, change this
-   to use svgs correctly */ }
+  position: absolute; }
   .md-paginator.md-prev {
     left: 0; }
   .md-paginator.md-next {
     right: 0; }
-  .md-paginator.md-prev {
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMjA4IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTUuNCw3LjQgMTQsNiA4LDEyIDE0LDE4IDE1LjQsMTYuNiAxMC44LDEyIAkJIiBzdHlsZT0iZmlsbDp3aGl0ZTsiLz4gPHJlY3QgZmlsbD0ibm9uZSIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ii8+IDwvZz4gPC9nPiA8ZyBpZD0iR3JpZCIgZGlzcGxheT0ibm9uZSI+IDxnIGRpc3BsYXk9ImlubGluZSI+IDwvZz4gPC9nPiA8L3N2Zz4NCg=='); }
-  .md-paginator.md-next {
-    background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE3LjEuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPiA8IURPQ1RZUEUgc3ZnIFBVQkxJQyAiLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4iICJodHRwOi8vd3d3LnczLm9yZy9HcmFwaGljcy9TVkcvMS4xL0RURC9zdmcxMS5kdGQiPiA8c3ZnIHZlcnNpb249IjEuMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgeD0iMHB4IiB5PSIwcHgiIHdpZHRoPSIyNHB4IiBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgMjQgMjQiIHhtbDpzcGFjZT0icHJlc2VydmUiPiA8ZyBpZD0iSGVhZGVyIj4gPGc+IDxyZWN0IHg9Ii02MTgiIHk9Ii0xMzM2IiBmaWxsPSJub25lIiB3aWR0aD0iMTQwMCIgaGVpZ2h0PSIzNjAwIi8+IDwvZz4gPC9nPiA8ZyBpZD0iTGFiZWwiPiA8L2c+IDxnIGlkPSJJY29uIj4gPGc+IDxwb2x5Z29uIHBvaW50cz0iMTAsNiA4LjYsNy40IDEzLjIsMTIgOC42LDE2LjYgMTAsMTggMTYsMTIgCQkiIHN0eWxlPSJmaWxsOndoaXRlOyIvPiA8cmVjdCBmaWxsPSJub25lIiB3aWR0aD0iMjQiIGhlaWdodD0iMjQiLz4gPC9nPiA8L2c+IDxnIGlkPSJHcmlkIiBkaXNwbGF5PSJub25lIj4gPGcgZGlzcGxheT0iaW5saW5lIj4gPC9nPiA8L2c+IDwvc3ZnPg0K'); }
+    .md-paginator.md-next md-icon {
+      -webkit-transform: rotate(180deg);
+              transform: rotate(180deg); }
 
 /* If `center` justified, change to left-justify if paginating */
 md-tabs[center] .md-header:not(.md-paginating) .md-header-items {

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.7.1-master-1307b94
+ * v0.8.0-rc1-master-012a134
  */
 goog.provide('ng.material.components.gridList');
 goog.require('ng.material.core');
@@ -121,8 +121,9 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
     // Provide the controller with a way to trigger layouts.
     ctrl.layoutDelegate = layoutDelegate
 
-    var invalidateLayout = angular.bind(ctrl, ctrl.invalidateLayout);
-    scope.$on('$destroy', watchMedia());
+    var invalidateLayout = angular.bind(ctrl, ctrl.invalidateLayout),
+        unwatchAttrs = watchMedia();
+    scope.$on('$destroy', unwatchMedia);
 
     /**
      * Watches for changes in media, invalidating layout as necessary.
@@ -171,15 +172,20 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
           gutter = getGutter(),
           performance =
               $mdGridLayout(colCount, getTileSpans(), getTileElements())
-                  .map(function(ps, rowCount, i) {
-                    var element = angular.element(tiles[i]);
-                    element.scope().$mdGridPosition = ps; // for debugging
-
+                  .map(function(tilePositions, rowCount) {
                     return {
-                      element: element,
-                      styles: getStyles(ps.position, ps.spans,
-                          colCount, rowCount,
-                          gutter, rowMode, rowHeight)
+                      grid: {
+                        element: element,
+                        style: getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight)
+                      },
+                      tiles: tilePositions.map(function(ps, i) {
+                        return {
+                          element: angular.element(tiles[i]),
+                          style: getTileStyle(ps.position, ps.spans,
+                              colCount, rowCount,
+                              gutter, rowMode, rowHeight)
+                        }
+                      })
                     }
                   })
                   .reflow()
@@ -191,17 +197,14 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
           performance: performance
         }
       });
-    };
+    }
 
-    var UNIT = $interpolate(
-        "{{ share }}% - ({{ gutter }} * {{ gutterShare }})");
-    var POSITION = $interpolate(
-        "calc(({{ unit }}) * {{ offset }} + {{ offset }} * {{ gutter }})");
-    var DIMENSION = $interpolate(
-        "calc(({{ unit }}) * {{ span }} + ({{ span }} - 1) * {{ gutter }})");
+    var UNIT      = $interpolate( "{{ share }}% - ({{ gutter }} * {{ gutterShare }})" );
+    var POSITION  = $interpolate( "calc(({{ unit }}) * {{ offset }} + {{ offset }} * {{ gutter }})" );
+    var DIMENSION = $interpolate( "calc(({{ unit }}) * {{ span }} + ({{ span }} - 1) * {{ gutter }})" );
 
     // TODO(shyndman): Replace args with a ctx object.
-    function getStyles(position, spans, colCount, rowCount, gutter, rowMode, rowHeight) {
+    function getTileStyle(position, spans, colCount, rowCount, gutter, rowMode, rowHeight) {
       // TODO(shyndman): There are style caching opportunities here.
       var hShare = (1 / colCount) * 100,
           hGutterShare = colCount === 1 ? 0 : (colCount - 1) / colCount,
@@ -220,7 +223,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
       switch (rowMode) {
         case 'fixed':
           style.top = POSITION({ unit: rowHeight, offset: position.row, gutter: gutter });
-          style.height = DIMENSION({ unit: rowHeight, span: spans.row, gutter: '0px' });
+          style.height = DIMENSION({ unit: rowHeight, span: spans.row, gutter: gutter });
           break;
 
         case 'ratio':
@@ -239,6 +242,35 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
 
           style.top = POSITION({ unit: vUnit, offset: position.row, gutter: gutter });
           style.height = DIMENSION({ unit: vUnit, span: spans.row, gutter: gutter });
+          break;
+      }
+
+      return style;
+    }
+
+    function getGridStyle(colCount, rowCount, gutter, rowMode, rowHeight) {
+      var style = {
+        height: '',
+        paddingBottom: ''
+      };
+
+      switch(rowMode) {
+        case 'fixed':
+          style.height = DIMENSION({ unit: rowHeight, span: rowCount, gutter: gutter });
+          break;
+
+        case 'ratio':
+          // rowHeight is width / height
+          var hGutterShare = colCount === 1 ? 0 : (colCount - 1) / colCount,
+              hShare = (1 / colCount) * 100,
+              vShare = hShare * (1 / rowHeight),
+              vUnit = UNIT({ share: vShare, gutterShare: hGutterShare, gutter: gutter });
+
+          style.paddingBottom = DIMENSION({ unit: vUnit, span: rowCount, gutter: gutter});
+          break;
+
+        case 'fit':
+          // noop, as the height is user set
           break;
       }
 
@@ -266,7 +298,11 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
     }
 
     function getColumnCount() {
-      return parseInt($mdMedia.getResponsiveAttribute(attrs, 'md-cols'), 10);
+      var colCount = parseInt($mdMedia.getResponsiveAttribute(attrs, 'md-cols'), 10);
+      if (isNaN(colCount)) {
+        throw 'md-grid-list: md-cols attribute was not found, or contained a non-numeric value';
+      }
+      return colCount;
     }
 
     function getGutter() {
@@ -304,6 +340,7 @@ function GridListDirective($interpolate, $mdConstant, $mdGridLayout, $mdMedia, $
 }
 GridListDirective.$inject = ["$interpolate", "$mdConstant", "$mdGridLayout", "$mdMedia", "$mdUtil"];
 
+  /* @ngInject */
 function GridListController($timeout) {
   this.invalidated = false;
   this.$timeout_ = $timeout;
@@ -331,7 +368,7 @@ GridListController.prototype = {
     this.invalidateLayout();
   },
 
-  invalidateLayout: function(tile) {
+  invalidateLayout: function() {
     if (this.invalidated) {
       return;
     }
@@ -346,69 +383,99 @@ GridListController.prototype = {
       this.invalidated = false;
     }
   }
-};
+}
 
+
+/* @ngInject */
 function GridLayoutFactory($mdUtil) {
-  return function(colCount, tileSpans) {
-    var self, layoutInfo, tiles, layoutTime, mapTime, reflowTime, layoutInfo;
-    layoutTime = $mdUtil.time(function() {
-      layoutInfo = calculateGridFor(colCount, tileSpans);
-    });
+  var defaultAnimator = GridTileAnimator;
 
-    return self = {
-      /**
-       * An array of objects describing each tile's position in the grid.
-       */
-      layoutInfo: function() {
-        return layoutInfo;
-      },
-
-      /**
-       * Maps grid positioning to an element and a set of styles using the
-       * provided updateFn.
-       */
-      map: function(updateFn) {
-        mapTime = $mdUtil.time(function() {
-          tiles = layoutInfo.positioning.map(function(ps, i) {
-            return updateFn(ps, self.layoutInfo().rowCount, i);
-          });
-        });
-        return self;
-      },
-
-      /**
-       * Default animator simply sets the element.css( <styles> ).
-       * Use the $mdGridLayoutProvider to decorate the animator callback if
-       * alternate animation scenarios are desired.
-       */
-      reflow: function(customAnimatorFn) {
-        reflowTime = $mdUtil.time(function() {
-          var animator = customAnimatorFn || defaultAnimator;
-          tiles.forEach(function(it) {
-            animator(it.element, it.styles);
-          });
-        });
-        return self;
-      },
-
-      /**
-       * Timing for the most recent layout run.
-       */
-      performance: function() {
-        return {
-          tileCount: tileSpans.length,
-          layoutTime: layoutTime,
-          mapTime: mapTime,
-          reflowTime: reflowTime,
-          totalTime: layoutTime + mapTime + reflowTime
-        };
-      }
-    };
+  /**
+   * Set the reflow animator callback
+   */
+  GridLayout.animateWith =function(customAnimator) {
+    defaultAnimator = !angular.isFunction(customAnimator) ? GridTileAnimator : customAnimator;
   };
 
-  function defaultAnimator(element, styles) {
-    element.css(styles);
-  };
+  return GridLayout;
+
+  /**
+   * Publish layout function
+   */
+  function GridLayout(colCount, tileSpans) {
+      var self, layoutInfo, gridStyles, layoutTime, mapTime, reflowTime, layoutInfo;
+
+      layoutTime = $mdUtil.time(function() {
+        layoutInfo = calculateGridFor(colCount, tileSpans);
+      });
+
+      return self = {
+
+        /**
+         * An array of objects describing each tile's position in the grid.
+         */
+        layoutInfo: function() {
+          return layoutInfo;
+        },
+
+        /**
+         * Maps grid positioning to an element and a set of styles using the
+         * provided updateFn.
+         */
+        map: function(updateFn) {
+          mapTime = $mdUtil.time(function() {
+            var info = self.layoutInfo();
+            gridStyles = updateFn(info.positioning, info.rowCount);
+          });
+          return self;
+        },
+
+        /**
+         * Default animator simply sets the element.css( <styles> ). An alternate
+         * animator can be provided as an argument. The function has the following
+         * signature:
+         *
+         *    function({grid: {element: JQLite, style: Object}, tiles: Array<{element: JQLite, style: Object}>)
+         */
+        reflow: function(animatorFn) {
+          reflowTime = $mdUtil.time(function() {
+            var animator = animatorFn || defaultAnimator;
+            animator(gridStyles.grid, gridStyles.tiles);
+          });
+          return self;
+        },
+
+        /**
+         * Timing for the most recent layout run.
+         */
+        performance: function() {
+          return {
+            tileCount: tileSpans.length,
+            layoutTime: layoutTime,
+            mapTime: mapTime,
+            reflowTime: reflowTime,
+            totalTime: layoutTime + mapTime + reflowTime
+          };
+        }
+      };
+    }
+
+  /**
+   * Default Gridlist animator simple sets the css for each element;
+   * NOTE: any transitions effects must be manually set in the CSS.
+   * e.g.
+   *
+   *  md-grid-tile {
+   *    transition: all 700ms ease-out 50ms;
+   *  }
+   *
+   */
+  function GridTileAnimator(grid, tiles) {
+    grid.element.css(grid.style);
+    tiles.forEach(function(t) {
+      t.element.css(t.style);
+    })
+  }
 
   /**
    * Calculates the positions of tiles.
@@ -439,7 +506,7 @@ function GridLayoutFactory($mdUtil) {
         };
       }),
       rowCount: curRow + Math.max.apply(Math, spaceTracker)
-    };
+    }
 
     function reserveSpace(spans, i) {
       if (spans.col > colCount) {

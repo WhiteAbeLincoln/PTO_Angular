@@ -1,7 +1,9 @@
 md-autocomplete {
   background: '{{background-50}}'; }
-  md-autocomplete button {
-    background: '{{background-200}}'; }
+  md-autocomplete button md-icon path {
+    fill: '{{background-600}}'; }
+  md-autocomplete button:after {
+    background: '{{background-600-0.3}}'; }
   md-autocomplete ul {
     background: '{{background-50}}'; }
     md-autocomplete ul li {
@@ -118,6 +120,15 @@ md-dialog.md-THEME_NAME-theme {
 
 md-divider.md-THEME_NAME-theme {
   border-top-color: '{{foreground-4}}'; }
+
+md-icon.md-THEME_NAME-theme.md-primary {
+  color: '{{primary-color}}'; }
+md-icon.md-THEME_NAME-theme.md-accent {
+  color: '{{accent-color}}'; }
+md-icon.md-THEME_NAME-theme.md-warn {
+  color: '{{warn-color}}'; }
+md-icon.md-THEME_NAME-theme.md-danger {
+  color: '{{danger-color}}'; }
 
 md-input-container.md-THEME_NAME-theme .md-input {
   color: '{{foreground-1}}';
@@ -328,6 +339,8 @@ md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {
 
 md-tabs.md-THEME_NAME-theme .md-header {
   background-color: transparent; }
+md-tabs.md-THEME_NAME-theme .md-paginator md-icon {
+  color: '{{primary-color}}'; }
 md-tabs.md-THEME_NAME-theme.md-accent .md-header {
   background-color: '{{accent-color}}'; }
 md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {
