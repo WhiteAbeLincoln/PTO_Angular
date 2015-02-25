@@ -1,0 +1,139 @@
+/* thanks to yarl on github https://gist.github.com/yarl/b3d4b4114d82c8bb041d */
+/* mdSelect is slated for 0.8.0, replace when that is ready */
+md-input-container select.md-input {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAD1BMVEUAAAB6enp6enp5eXn///+i9s37AAAAA3RSTlMAgIgilleHAAAAIklEQVR4AWOgG2BihgImmAgjhM+IUMOI4CNEGNHMYaKlKwEp5wBLyMAwGAAAAABJRU5ErkJggg==) 99% center no-repeat;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1px;
+}
+
+md-input-container select.md-input:focus {
+    border-bottom: 2px solid #FFC107 !important;
+    margin-bottom: 0;
+}
+
+md-input-container select.md-input:focus::-ms-value {
+    background: transparent;
+    color: inherit;
+}
+
+md-input-container select.md-input::-ms-expand {
+    display: none;
+}
+
+.md-button:not(.md-fab) {
+    min-width: 10em;
+}
+/* END mdSelect */
+
+a {
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}
+
+/* fixes for select placeholder */
+select, option:disabled {
+    color: rgba(0,0,0,0.26);
+}
+
+/* thanks to the material angularjs docs, and html5 boilerplate */
+/* hides text from visual users, but is visible to screenreaders and accesibility devices */
+.visuallyhidden {
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    text-transform: none;
+    width: 1px;
+}
+
+/* BEGIN menu navigation */
+.menu,
+.menu ul {
+    list-style:none;
+    padding:0;
+}
+.menu li {
+    margin: 0;
+}
+.menu > li {    /* matches all li that are immediate children of .menu class */
+    border-top: 1px solid rgba(0,0,0, 0.12);
+}
+
+.menu .md-button {
+    border-radius: 0;
+    color: inherit;
+    cursor: pointer;
+    font-weight: 400;
+    line-height: 40px;
+    margin:0;
+    max-height: 40px;
+    overflow: hidden;
+    padding: 0 16px;
+    text-align: left;
+    text-decoration: none;
+    white-space: normal;
+    width: 100%;
+}
+
+.menu a.md-button {
+    display: block;
+}
+.menu button.md-button::-moz-focus-inner {
+    padding:0;
+}
+.menu .md-button.active {
+    color: #607D8B; /* primary accent color blue-grey*/
+}
+.menu li.parentActive,
+.menu li.parentActive .menu-toggle-list {
+    background-color: #f6f6f6;
+}
+.menu-toggle-list {
+    background: #fff;
+    max-height: 999px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    -webkit-transition-property: max-height;
+    -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    -moz-transition-property: max-height;
+    transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
+    transition-property: max-height;
+}
+.menu-toggle-list.ng-hide {
+    max-height: 0;
+}
+.menu .menu-toggle-list a.md-button {
+    display: block;
+    padding: 0 16px 0 32px;
+    text-transform: none;
+}
+.md-button-toggle .md-toggle-icon {
+    background: transparent url(../img/icons/list_control_down.png) no-repeat center center;
+    background-size: 100% auto;
+    display: inline-block;
+    height: 24px;
+    margin: auto 0 auto auto;
+    speak: none;
+    width: 24px;
+    transition: transform 0.3s ease-in-out;
+    -webkit-transition: -webkit-transform 0.3s ease-in-out;
+}
+.md-button-toggle .md-toggle-icon.toggled {
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+}
+/* End Docs Menu */
+
+.menu-icon

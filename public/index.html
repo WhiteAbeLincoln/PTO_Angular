@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html ng-app="myApp" ng-controller="AppCtrl" ng-strict-di lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <title></title>
+    <!-- bower:css -->
+    <link rel="stylesheet" href="bower_components/angular-material/angular-material.css" />
+    <!-- endbower -->
+    <link rel="stylesheet" href="css/styles.css"/>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body layout="row">
+    <md-sidenav md-component-id="left"
+                layout="column"
+                class="md-sidenav-left md-whiteframe-z2"
+                md-is-locked-open="$media('gt-md')">
+        <md-toolbar class="md-theme-primary" layout="column">
+            <h1 class="md-toolbar-tools" flex layout="column">
+                <a href="" ng-click="goHome()" layout="row" flex>
+                    <img src="//www.chea-elks.org/wp-content/gallery/elk-images/elk-head-silhouette-2.png" height="45px">
+                    <div flex style="line-height: 40px; text-indent: 15px;">Centerville PTO</div>
+                </a>
+            </h1>
+        </md-toolbar>
+
+        <md-content flex layout="column">
+            <ul class="menu">
+                <li ng-repeat="section in menu.sections" class="parent-list-item" ng-class="{'parentActive' : isSectionSelected(section)}">
+                    <menu-link section="section" ng-if="section.type === 'link'"></menu-link>
+                    <menu-toggle section="section" ng-if="section.type === 'toggle'"></menu-toggle>
+                </li>
+            </ul>
+            <span flex></span> <!-- span to fill the gap -->
+            <div layout="row" layout-padding layout-align="space-around center" layout-fill flex>
+                <md-button class="md-fab" aria-label="Twitter" ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
+                    <md-tooltip md-direction="bottom">Follow on Twitter</md-tooltip>
+                    <md-icon md-svg-src="img/icons/twitter.svg"></md-icon>
+                </md-button>
+                <md-button class="md-fab" aria-label="Google+" ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
+                    <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
+                    <md-icon md-svg-src="img/icons/google-plus.svg"></md-icon>
+                </md-button>
+                <md-button class="md-fab" aria-label="Facebook" ng-click="social('https://www.facebook.com/abelincoln.white')">
+                    <md-tooltip md-direction="right">Follow on Facebook</md-tooltip>
+                    <md-icon md-svg-src="img/icons/facebook.svg"></md-icon>
+                </md-button>
+            </div>
+
+        </md-content>
+    </md-sidenav>
+
+    <div layout="column" layout-fill tabindex="-1" role="main">
+        <md-toolbar class="md-whiteframe-z1" md-scroll-shrink  layout="column">
+            <div class="md-toolbar-tools" flex>
+                <div layout="row" layout-align="start center" flex>
+                    <div ng-click="openMenu()" class="menu-icon" hide-gt-md aria-label="Toggle Menu" role="button">
+                        <img src="img/icons/ic_menu_24px.svg"/>
+                    </div>
+                    <span flex></span>
+                    <div layout="row">
+                        <md-input-container>
+                            <label>search</label>
+                            <input type="text" ng-model="queryTerm" ng-change="search()">
+                        </md-input-container>
+                    </div>
+
+                </div>
+            </div>
+        </md-toolbar>
+
+        <!-- Using the $route service, this is where page content appears -->
+        <md-content ng-view md-scroll-y flex class="md-padding"></md-content>
+    </div>
+
+    <!-- bower:js -->
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
+    <script src="bower_components/angular-material/angular-material.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-messages/angular-messages.js"></script>
+    <!-- endbower -->
+
+    <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/controllers.js"></script>
+    <script type="text/javascript" src="js/controllers/MembershipCtrl.js"></script>
+    <script type="text/javascript" src="js/controllers/ScholarshipCtrl.js"></script>
+    <script type="text/javascript" src="js/controllers/ServiceCtrl.js"></script>
+	<script type="text/javascript" src="js/controllers/BoardCtrl.js"></script>
+</body>
+</html>
