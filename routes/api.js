@@ -69,7 +69,7 @@ function insertIntoStudents(students, memberId) {
 
 	students.forEach(function(student){
 
-		connectToDatabase.query("INSERT INTO Students(parentId, firstName, lastName, grade, unit) VALUES (?,?,?,?,?)",
+		connectToDatabase.query("INSERT INTO M_Students(parentId, firstName, lastName, grade, unit) VALUES (?,?,?,?,?)",
         [memberId, student.first, student.last, student.grade, student.unit], function(err, result){
 			if (err) throw err;
 			
@@ -84,7 +84,7 @@ function insertIntoPaymentInfo(payment, memberId) {
 
 
 if (payment.first !== null && payment.last !== null && payment.number !== null) {
-		connectToDatabase.query("INSERT INTO PaymentInfo(membershipId, firstName, lastName, cardNumber, expDate, securityCode, paymentDate, paymentAmount) VALUES (?,?,?,?,?,?,?,?)",
+		connectToDatabase.query("INSERT INTO M_PaymentInfo(membershipId, firstName, lastName, cardNumber, expDate, securityCode, paymentDate, paymentAmount) VALUES (?,?,?,?,?,?,?,?)",
         [memberId, payment.first, payment.last, payment.number, payment.exp_date, payment.cvv2, Date.now(), payment.amount], function(err, result){
 			if (err) throw err;
 			
