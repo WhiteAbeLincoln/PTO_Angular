@@ -136,4 +136,9 @@ select, option:disabled {
 }
 /* End Docs Menu */
 
-.menu-icon
+
+/* form styling */
+.small-form {
+    max-width: 864px; 
+    margin: auto;
+}
