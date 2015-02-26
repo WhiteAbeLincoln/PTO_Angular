@@ -39,10 +39,6 @@
                             <input ng-model="user.city">
                         </md-input-container>
                         <md-input-container flex>
-                            <label>State</label>
-                            <input ng-model="user.state">
-                        </md-input-container>
-                        <md-input-container flex>
                             <label>Zip Code</label>
                             <input ng-model="user.postalCode">
                         </md-input-container>
@@ -76,97 +72,95 @@
                                   ng-change="changeActivity(num)"
                                   step="1" min="1" max="10"></md-slider>
                     </div>
-                    <div ng-repeat="activities in user.Activity">
+                    <div ng-repeat="activity in user.activities">
                         <h3 class="md-primary">Community Service/Activity {{$index+1}}</h3>
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Activity Name</label>
-                               <input ng-model="Activity.name">
+                               <input ng-model="activity.name">
                            </md-input-container>
                         </div>
 						<div layout-margin>
 							<md-input-container flex>
 								<label>Description of Community based activity</label>
-								<textarea ng-model="Activity.description" md-maxlength="1000" required></textarea>
+								<textarea ng-model="activity.description" md-maxlength="1000" required></textarea>
 							</md-input-container>
 						</div>
 						<div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Location of Service</label>
-                               <input ng-model="Activity.location">
+                               <input ng-model="activity.location">
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Position</label>
-                               <input ng-model="Activity.position">
+                               <input ng-model="activity.position">
                            </md-input-container>
                         </div>
 						<label>Hours of Service Performed per year:</label>
 						<div layout="row" layout-sm="column">
 							<md-input-container flex>
 								<label>9th Grade</label>
-								<input ng-model="Activity.nine">
+								<input type='number' ng-model="activity.nine">
 							</md-input-container>
 							<md-input-container flex>
 								<label>10th Grade</label>
-								<input ng-model="Activity.ten">
+								<input type='number' ng-model="activity.ten">
 							</md-input-container>
 							<md-input-container flex>
 								<label>11th Grade</label>
-								<input ng-model="Activity.eleven">
+								<input type='number' ng-model="activity.eleven">
 							</md-input-container>
 							<md-input-container flex>
 								<label>12th Grade</label>
-								<input ng-model="Activity.twelve">
-							</md-input-container>
-							<md-input-container flex>
-								<label>Total Hours</label>
-								<input ng-model="Activity.total">
+								<input type='number' ng-model="activity.twelve">
 							</md-input-container>
 						</div>
 						<div layout-margin>
 							<md-input-container flex>
 								<label>Description in detail your commitment and responsibilities to this community activity</label>
-								<textarea ng-model="Activity.commitment" md-maxlength="5500" required></textarea>
+								<textarea ng-model="activity.commitment" md-maxlength="5500" required></textarea>
 							</md-input-container>
 						</div>
+                        <h4>Adult Verification</h4>
 						<div layout layout-sm="column">
+                           
                            <md-input-container flex>
                                <label>Name of Adult Verifying Service</label>
-                               <input ng-model="Activity.adult">
+                               <input ng-model="activity.adult">
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Relation to Service Project</label>
-                               <input ng-model="Activity.relation">
+                               <input ng-model="activity.relation">
                            </md-input-container>
                         </div>
 						<div>
 							<md-input-container flex>
 								<label>Address</label>
-								<input ng-model="Activity.adultaddress">
+								<input ng-model="activity.adultAddress">
 							</md-input-container>
 						</div>
 						<div layout="row" layout-sm="column">
 							<md-input-container flex>
 								<label>City</label>
-								<input ng-model="Activity.adultcity">
+								<input ng-model="activity.adultCity">
 							</md-input-container>
 							<md-input-container flex>
 								<label>State</label>
-								<input ng-model="Activity.adultstate">
+								<input ng-model="activity.adultState">
 							</md-input-container>
 							<md-input-container flex>
 								<label>Zip Code</label>
-								<input ng-model="Activity.adultpostalCode">
+								<input ng-model="activity.adultPostalCode">
 							</md-input-container>
 						</div>
 						<div layout="row" layout-sm="column">
 							<md-input-container flex>
 								<label>Phone Number</label>
-								<input ng-model="Activity.adultphone">
+								<input ng-model="activity.adultPhone">
 							</md-input-container>
 							<md-input-container flex>
 								<label>Email</label>
-								<input ng-model="Activity.adultemail">
+								<input type='email' ng-model="activity.adultEmail">
 							</md-input-container>
 						</div>
                     </div>

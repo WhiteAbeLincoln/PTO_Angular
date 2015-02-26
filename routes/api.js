@@ -9,8 +9,8 @@ var changedRows;
 var connectToDatabase = mysql.createConnection({
 	host	 : 'localhost',
 	port	 : '3306',
-	user	 : 'root',
-	password : 'F22raptoraf!',
+	user	 : 'chudi',
+	password : 'm!sQlp4$$w0rd',
 	database : 'pto_dev'
 });
 
@@ -42,6 +42,8 @@ router.post('/members', function(req, res) {
 	res.json({rowsChanged: changedRows});
 });
 
+
+/* Inserts members into the Member table */
 function insertIntoMembers(jsonpack) {
 	var memberId = 0;
 
@@ -60,6 +62,9 @@ function insertIntoMembers(jsonpack) {
 	    });
 }
 
+
+
+/* Inserts students into the Students table with a foreign key memberId*/
 function insertIntoStudents(students, memberId) {
 
 	students.forEach(function(student){
@@ -74,7 +79,7 @@ function insertIntoStudents(students, memberId) {
 	});
 }
 
-
+/* Inserts member Payment info into PaymentInfo table */
 function insertIntoPaymentInfo(payment, memberId) {
 
 

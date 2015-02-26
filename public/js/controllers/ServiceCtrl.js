@@ -21,62 +21,66 @@
             "phone":"",
             "email":"",
 			"essay":"",
-			"Activity": [
+			"activities": [
                 {
-                    "name": "",
-					"description":"",
-					"location":"",
-					"position":"",
-					"nine":"",
-					"ten":"",
-					"eleven":"",
-					"twelve":"",
-					"total":"",
-					"commitment":"",
-					"adult":"",
-					"relation":"",
-					"adultaddress":"",
-					"adultcity":"",
-					"adultstate":"",
-					"adultpostalCode":"",
-					"adultphone":"",
-					"adultemail":""
-                }
+                        name: "",
+						description:"",
+						location:"",
+						position:"",
+						nine:"",
+						ten:"",
+						eleven:"",
+						twelve:"",
+						commitment:"",
+						adult:"",
+						relation:"",
+						adultAddress:"",
+						adultCity:"",
+						adultState:"",
+						adultPostalCode:"",
+						adultPhone:"",
+						adultEmail:""
+                    }
             ]
         };
 		$scope.changeActivity = function(num){
-            var oldLength = this.user.Activity.length;
+            var oldLength = this.user.activities.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.Activity.push({
-                        "name": "",
-						"description":"",
-						"location":"",
-						"position":"",
-						"nine":"",
-						"ten":"",
-						"eleven":"",
-						"twelve":"",
-						"total":"",
-						"commitment":"",
-						"adult":"",
-						"relation":"",
-						"adultaddress":"",
-						"adultcity":"",
-						"adultstate":"",
-						"adultpostalCode":"",
-						"adultphone":"",
-						"adultemail":""
+                    this.user.activities.push({
+                        name: "",
+						description:"",
+						location:"",
+						position:"",
+						nine:"",
+						ten:"",
+						eleven:"",
+						twelve:"",
+						total:"",
+						commitment:"",
+						adult:"",
+						relation:"",
+						adultAddress:"",
+						adultCity:"",
+						adultState:"",
+						adultPostalCode:"",
+						adultPhone:"",
+						adultEmail:""
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.Activity.pop();
+                    this.user.activities.pop();
                 }
             }
         };
 		
         $scope.newServer = function() {
+            for(var i = 0; i < $scope.user.activities.length; i++){
+                var a = $scope.user.activities[i];
+                $scope.user.activities[i].total = a.nine + a.ten + a.eleven + a.twelve;
+            }
+
             $scope.postData = {};
             $scope.postData.user = $scope.user;
             $scope.server = new Service($scope.postData);

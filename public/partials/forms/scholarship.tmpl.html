@@ -39,10 +39,6 @@
                             <input ng-model="user.city">
                         </md-input-container>
                         <md-input-container flex>
-                            <label>State</label>
-                            <input ng-model="user.state">
-                        </md-input-container>
-                        <md-input-container flex>
                             <label>Zip Code</label>
                             <input ng-model="user.postalCode">
                         </md-input-container>
@@ -50,11 +46,11 @@
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>Phone Number</label>
-                            <input ng-model="user.phone">
+                            <input type='tel' ng-model="user.phone">
                         </md-input-container>
                         <md-input-container flex>
                             <label>Email</label>
-                            <input ng-model="user.email">
+                            <input type='email' ng-model="user.email">
                         </md-input-container>
                     </div>
                 </div>
@@ -68,7 +64,8 @@
                         </md-input-container>
 					</div>
                     <div>
-                        <label>Honors Classes:</label>
+                        <h3>Honors Classes:</h3>
+                        <small>separate multiple with commas (,)</small>
                     </div>
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
@@ -113,7 +110,7 @@
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Hours per Month</label>
-                               <input ng-model="SchoolActivities.hours">
+                               <input type='number' ng-model="SchoolActivities.hours">
                            </md-input-container>
                         </div>
                         <div layout layout-sm="column">
