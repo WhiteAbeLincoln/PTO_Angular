@@ -9,7 +9,7 @@ var changedRows;
 var connectToDatabase = mysql.createConnection({
 	host	 : 'localhost',
 	port	 : '3306',
-	user	 : 'chudi',
+	user	 : 'abe',
 	password : 'm!sQlp4$$w0rd',
 	database : 'pto_dev'
 });
