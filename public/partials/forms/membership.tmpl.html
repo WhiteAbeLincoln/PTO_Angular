@@ -29,14 +29,14 @@
                         <md-input-container flex>
                             <label>First Name</label>
                             <input name="firstName" ng-model="user.first" required>
-                            <div ng-messages="userForm.firstName.$error && userForm.firstName.$touched">
+                            <div ng-messages="userForm.firstName.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Last Name</label>
                             <input name="lastName" ng-model="user.last" required>
-                            <div ng-messages="userForm.lastName.$error && userForm.lastName.$touched">
+                            <div ng-messages="userForm.lastName.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </md-input-container>
@@ -45,7 +45,7 @@
                         <md-input-container flex>
                             <label>Address</label>
                             <input name="address" ng-model="user.address" required>
-                            <div ng-messages="userForm.address.$error && userForm.address.$touched">
+                            <div ng-messages="userForm.address.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </md-input-container>
@@ -54,21 +54,21 @@
                         <md-input-container flex>
                             <label>City</label>
                             <input name="city" ng-model="user.city" required>
-                            <div ng-messages="userForm.city.$error && userForm.city.$touched">
+                            <div ng-messages="userForm.city.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>State</label>
                             <input name="state" ng-model="user.state" required>
-                            <div ng-messages="userForm.state.$error && userForm.state.$touched">
+                            <div ng-messages="userForm.state.$error">
                                 <div ng-message="required">This is required</div>
                             </div>
                         </md-input-container>
                         <md-input-container flex>
                             <label>Zip Code</label>
                             <input name="zip" ng-model="user.postalCode" ng-pattern="/(\d{5}[-]\d{4})|(^\d{5}$)/" required>
-                            <div ng-messages="userForm.zip.$error && userForm.zip.$touched">
+                            <div ng-messages="userForm.zip.$error">
                                 <div ng-message="required">This is required</div>
                                 <div ng-message="pattern">Must be a valid zip code (12345 or 12345-6789)</div>
                             </div>
@@ -91,14 +91,14 @@
                                <md-input-container flex>
                                    <label>First Name</label>
                                    <input name="first" ng-model="student.first" required>
-                                   <div ng-messages="studentForm.first.$error && studentForm.first.$touched">
+                                   <div ng-messages="studentForm.first.$error">
                                        <div ng-message="required">This is required</div>
                                    </div>
                                </md-input-container>
                                <md-input-container flex>
                                    <label>Last Name</label>
                                    <input name="last" ng-model="student.last" required>
-                                   <div ng-messages="studentForm.last.$error && studentForm.last.$touched">
+                                   <div ng-messages="studentForm.last.$error">
                                        <div ng-message="required">This is required</div>
                                    </div>
                                </md-input-container>
@@ -116,7 +116,7 @@
                                         <option value="11">Junior</option>
                                         <option value="12">Senior</option>
                                     </select>
-                                    <div ng-messages="studentForm.grade.$error && studentForm.grade.$touched">
+                                    <div ng-messages="studentForm.grade.$error">
                                         <div ng-message="required">This is required</div>
                                     </div>
                                 </md-input-container>
@@ -127,7 +127,7 @@
                                         <option value="S">South</option>
                                         <option value="W">West</option>
                                     </select>
-                                    <div ng-messages="studentForm.unit.$error && studentForm.unit.$touched">
+                                    <div ng-messages="studentForm.unit.$error">
                                         <div ng-message="required">This is required</div>
                                     </div>
                                 </md-input-container>
@@ -148,14 +148,14 @@
                             <md-input-container flex>
                                 <label>First</label>
                                 <input name="paymentFirst" id="payment-first" ng-model="payment.first" ng-required="payment.amount > 0">
-                                <div ng-messages="userForm.paymentFirst.$error && userForm.paymentFirst.$touched">
+                                <div ng-messages="userForm.paymentFirst.$error">
                                     <div ng-message="required">This is required</div>
                                 </div>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>Last</label>
                                 <input name="paymentLast" id="payment-last" ng-model="payment.last" ng-required="payment.amount > 0">
-                                <div ng-messages="userForm.paymentLast.$error && userForm.paymentLast.$touched">
+                                <div ng-messages="userForm.paymentLast.$error">
                                     <div ng-message="required">This is required</div>
                                 </div>
                             </md-input-container>
@@ -164,14 +164,14 @@
                             <md-input-container flex="66">
                                 <label>Number</label>
                                 <input name="paymentNumber" id="payment-number" ng-model="payment.number" ng-required="payment.amount > 0">
-                                <div ng-messages="userForm.paymentNumber.$error && userForm.paymentNumber.$touched">
+                                <div ng-messages="userForm.paymentNumber.$error">
                                     <div ng-message="required">This is required</div>
                                 </div>
                             </md-input-container>
                             <md-input-container flex>
                                 <label>MM/YY</label>
                                 <input name="paymentYear" id="payment-exp" ng-model="payment.exp_date" ng-pattern="/^\d{2}\/\d{2}$/" ng-required="payment.amount > 0">
-                                <div ng-messages="userForm.paymentYear.$error && userForm.paymentYear.$touched">
+                                <div ng-messages="userForm.paymentYear.$error">
                                     <div ng-message="required">This is required</div>
                                     <div ng-message="pattern">Must be a valid expiration date (MM/YY)</div>
                                 </div>
@@ -179,7 +179,7 @@
                             <md-input-container flex>
                                 <label>CVC</label>
                                 <input name="paymentCVC" id="payment-cvc" ng-model="payment.cvv2" ng-pattern="/^\d{3}$/" ng-required="payment.amount > 0">
-                                <div ng-messages="userForm.paymentCVC.$error && userForm.paymentCVC.$touched">
+                                <div ng-messages="userForm.paymentCVC.$error">
                                     <div ng-message="required">This is required</div>
                                 </div>
                             </md-input-container>
