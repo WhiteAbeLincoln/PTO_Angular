@@ -37,69 +37,10 @@ router.post('/members', function(req, res) {
 
 	memberReq = (req.body);
 
-	insertIntoMembers(memberReq);
+	var memberId = insertIntoMembers(memberReq);
 	
 	res.json({rowsChanged: changedRows});
-	
 });
-/*Post to Scholarship */
-router.post('/scholars', function(req, res) {
-    console.log('post to api/scholars');
-    
-    scholarReq = req.body;
-    
-    var ScholarId = insertIntoScholars(scholarReq.user);
-    
-});
-
-function insertIntoScholars(jsonpack){
-       var scholarId = 0;
-       
-    
-    
-    jsonpack.user.phone = jsonpack.user.phone.replace(/+() -]/g, "");
-
-    connectToDatabase.query("INSERT INTO Scholarships(lastName, firstName, middleName, homeAddress, city, zipCode, phoneNumber, emailAddress, essay, gpa) VALUES (?,?,?,?,?,?,?,?,?,?)", [jsonpack.user.last, jsonpack.first, jsonpack.middle, jsonpack.address, jsonpack.city, jsonpack.postalCode, jsonpack.phone, jsonpack.emailAddress,   jsonpack.essay, jsonpack.gpa], 
-    
-    function(err, result){
-    if(err) throw err;
-        scholarId = result.insertId;
-        
-        console.log("Added scholar with id " + result.insertId)
-        
-        insertIntoSClasses(jsonpack, scholarId);
-        insertIntoSActivites(jsonpack.schoolActivities, scholarId);
-        insertIntoSEmployment(jsonpack, ScolarshipId);
-        insertIntoSHonors(jsonpack, scholarshipId);
-        
-    });
-}
-/*Inserting into S_Classes*/
-function insertIntoSClasses(jsonpack, scholarId){
-    connectToDatabase.query("INSERT INTO S_Classes(applicationId, nine, ten, eleven, twelve) VALUES (?,?,?,?,?)", [scholarId, jsonpack.nine, jsonpack.ten, jsonpack.eleven, jsonpack.twelve], 
-        function(err, result){
-           if(err) throw err;
-           
-           console.log("Added class with id " + result.insertId + " and scholarId " + scholarId);    
-    });
-}
-/*Insert into S_Activities*/
-function insertIntoSActivities(jsonpack, scholarId){
-    jsonpack.forEach(function(jsonpack){
-        connectToDatabase.query("INSERT INTO S_Activites(activityName, hours, nine, ten, eleven, twelve, type) VALUES (?, ?, ?, ?, ?, ?)",
-         [jsonpack.name, jsonpack.hours, jsonpack.cb9, jsonpack.cb10, jsonpack.cb11, jsonpack.cb12, jsonpack.om], function(err, result){
-            if(err) throw err;   
-            
-            console.log("Added activites with id:" + result.insertId + "and activityId:" + activityId);
-         } );   
-        
-}
-
-
-
-
-
-
 
 
 /* Inserts members into the Member table */
@@ -107,10 +48,10 @@ function insertIntoMembers(jsonpack) {
 	var memberId = 0;
 
 	connectToDatabase.query("INSERT INTO Members(firstName,lastName,address,city,state,zipCode) VALUES (?,?,?,?,?,?)",
-	[jsonpack.user.first,jsonpack.user.last,jsonpack.user.address,jsonpack.user.city,jsonpack.user.state,jsonpack.user.postalCode]
+	[jsonpack.user.first,jsonpack.user.last,jsonpack.user.address,jsonpack.user.city,jsonpack.user.state,jsonpack.user.postalCode],
     function(err, result){
 		    if (err) throw err;
-		    
+		
 		    console.log("Added member with id " + result.insertId);
 		    memberId = result.insertId;
 		
@@ -120,9 +61,9 @@ function insertIntoMembers(jsonpack) {
             insertIntoPaymentInfo(jsonpack.payment, memberId);
 	    });
 }
-    
-    
-    
+
+
+
 /* Inserts students into the Students table with a foreign key memberId*/
 function insertIntoStudents(students, memberId) {
 

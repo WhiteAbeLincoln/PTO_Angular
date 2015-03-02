@@ -28,7 +28,7 @@
 			"ten":"",
 			"eleven":"",
 			"twelve":"",
-			"schoolActivities": [
+			"SchoolActivities": [
                 {
                     "name": "",
                     "om": "",
@@ -39,7 +39,7 @@
 					"cb12": false
                 }
             ],
-			"communityActivities": [
+			"CommunityActivities": [
                 {
                     "name": "",
                     "om": "",
@@ -50,7 +50,7 @@
 					"cb12": false
                 }
             ],
-			"honors": [
+			"Honors": [
                 {
                     "name": "",
                     "cb9": false,
@@ -59,7 +59,7 @@
 					"cb12": false
                 }
             ],
-			"jobs": [
+			"Jobs": [
                 {
                     "name": "",
 					"hours": "",
@@ -153,9 +153,6 @@
 		
 		$scope.newScholar = function() {
             $scope.postData = {};
-            
-            $scope.user.phone = $scope.user.phone.replace(/[+()- ]/g, "");
-            
             $scope.postData.user = $scope.user;
             $scope.scholar = new Scholar($scope.postData);
 

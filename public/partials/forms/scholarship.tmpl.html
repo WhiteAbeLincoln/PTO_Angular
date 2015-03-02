@@ -1,5 +1,5 @@
 <div ng-controller="ScholarshipCtrl" class="md-whiteframe-z1 small-form">
-    <form ng-submit="newScholar(userForm.$valid)" name="userForm" novalidate>
+    <form ng-submit="newScholar()" name="userForm" novalidate>
         <md-tabs md-selected="data.index">
             <md-tab label="Apply">
                 <div layout="row" layout-sm="column" layout-align="center center" layout-margin>
@@ -8,7 +8,7 @@
 						<p>Sign up for the Centerville PTO Scholarship Today!</p>
 						<p>This scholarship is available for any Centerville High School Senior</p>
                     </div>
-                    <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Apply</md-button>
+                    <md-button class="md-raised md-primary" ng-click="data.accept()">Apply</md-button>
                 </div>
             </md-tab>
             <md-tab label="You" ng-disabled="!data.accepted">
@@ -16,68 +16,41 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>First Name</label>
-                            <input name="firstName" ng-model="user.first" required>
-                            <div ng-messages="userForm.firstName.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.first">
                         </md-input-container>
 						<md-input-container flex>
                             <label>Middle Name</label>
-                            <input name="middleName" ng-model="user.middle" required>
-                            <div ng-messages="userForm.middleName.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.middle">
                         </md-input-container>
                         <md-input-container flex>
                             <label>Last Name</label>
-                            <input name="lastName" ng-model="user.last" required>
-                            <div ng-messages="userForm.lastName.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.last">
                         </md-input-container>
                     </div>
                     <div>
                         <md-input-container flex>
                             <label>Address</label>
-                            <input name="address" ng-model="user.address" required>
-                            <div ng-messages="userForm.address.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.address">
                         </md-input-container>
                     </div>
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>City</label>
-                            <input name="city" ng-model="user.city" required>
-                            <div ng-messages="userForm.city.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.city">
                         </md-input-container>
                         <md-input-container flex>
                             <label>Zip Code</label>
-                            <input name="zip" ng-model="user.postalCode" ng-pattern="/(\d{5}[-]\d{4})|(^\d{5}$)/" required>
-                            <div ng-messages="userForm.zip.$error">
-                                <div ng-message="required">This is required</div>
-                                <div ng-message="pattern">Must be a valid zip code (12345 or 12345-6789)</div>
-                            </div>
+                            <input ng-model="user.postalCode">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>Phone Number</label>
-                            <input name="phone" type='tel' ng-model="user.phone" ng-pattern="(\+{0,1}\d{0,1}[- .]{0,1}[(]{0,1}\d{3}[)]{0,1}[- .]{0,1}\d{3}[- .]{0,1}\d{4})|(\d{10,11})" required>
-                            <div ng-messages="userForm.phone.$error">
-                                <div ng-message="required">This is required</div>
-                                <div ng-message="pattern">Must be a phone number (+1 (123) 456-7890 or (123)456-789)</div>
-                            </div>
+                            <input type='tel' ng-model="user.phone">
                         </md-input-container>
                         <md-input-container flex>
                             <label>Email</label>
-                            <input name="email" type='email' ng-model="user.email" ng-pattern="[\w\d!#$%&'*+/=?^_`{|}~-]+(?:\.[\w\d!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w\d](?:[\w\d-]*[\w\d])?\.)+[\w\d](?:[\w\d-]*[\w\d])?" required>
-                            <div ng-messages="userForm.email.$error">
-                                <div ng-message="required">This is required</div>
-                                <div ng-message="pattern">Must be an email (example@example.com)</div>
-                            </div>
+                            <input type='email' ng-model="user.email">
                         </md-input-container>
                     </div>
                 </div>
@@ -87,10 +60,7 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>GPA</label>
-                            <input name="gpa" type="number" step=".01" value="2.00" ng-model="user.gpa" required>
-                            <div ng-messages="userForm.gpa.$error">
-                                <div ng-message="required">This is required</div>
-                            </div>
+                            <input ng-model="user.gpa">
                         </md-input-container>
 					</div>
                     <div>
@@ -100,29 +70,25 @@
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>9th Grade</label>
-                            <input name="nine" ng-model="user.nine">
-                            <div ng-messages="userForm.nine.$error"></div>
+                            <input ng-model="user.nine">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>10th Grade</label>
-                            <input name="ten" ng-model="user.ten">
-                            <div ng-messages="userForm.ten.$error"></div>
+                            <input ng-model="user.ten">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>11th Grade</label>
-                            <input name="eleven" ng-model="user.eleven">
-                            <div ng-messages="userForm.eleven.$error"></div>
+                            <input ng-model="user.eleven">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>12th Grade</label>
-                            <input name="twelve" ng-model="user.twelve">
-                            <div ng-messages="userForm.twelve.$error"></div>
+                            <input ng-model="user.twelve">
                         </md-input-container>
                     </div>
                 </div>
@@ -140,13 +106,11 @@
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Activity Name</label>
-                               <input name="SAname" ng-model="SchoolActivities.name">
-                               <div ng-messages="userForm.SAname.$error"></div>
+                               <input ng-model="SchoolActivities.name">
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Hours per Month</label>
-                               <input name="SAhours" type='number' ng-model="SchoolActivities.hours" np-pattern="\d{0,3}">
-                               <div ng-messages="userForm.SAhours.$error"></div>
+                               <input type='number' ng-model="SchoolActivities.hours">
                            </md-input-container>
                         </div>
                         <div layout layout-sm="column">
@@ -183,13 +147,11 @@
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Activity Name</label>
-                               <input name="CAname" ng-model="CommunityActivities.name">
-                               <div ng-messages="userForm.CAname.$error"></div>
+                               <input ng-model="CommunityActivities.name">
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Hours per Month</label>
-                               <input name="CAhours" ng-model="CommunityActivities.hours">
-                               <div ng-messages="userForm.CAhours.$error"></div>
+                               <input ng-model="CommunityActivities.hours">
                            </md-input-container>
                         </div>
                         <div layout layout-sm="column">
@@ -229,8 +191,7 @@
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Name</label>
-                               <input name="honorsName" ng-model="Honors.name">
-                               <div ng-messages="userForm.honorsName.$error"></div>
+                               <input ng-model="Honors.name">
                            </md-input-container>
 							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Honors.cb9" class="md-primary">
 								<label>9th</label>
@@ -261,20 +222,17 @@
                         <div layout layout-sm="column">
                            <md-input-container flex>
                                <label>Name</label>
-                               <input name="jobName" ng-model="Jobs.name">
-                               <div ng-messages="userForm.jobName.$error"></div>
+                               <input ng-model="Jobs.name">
                            </md-input-container>
 						   <md-input-container flex>
                                <label>Hours per Month</label>
-                               <input name="jobHours" ng-model="Jobs.hours">
-                               <div ng-messages="userForm.jobHours.$error"></div>
+                               <input ng-model="Jobs.hours">
                            </md-input-container>
 						</div>
 						<div layout layout-sm="column">
 							<md-input-container flex>
                                <label>Months per Year</label>
-                               <input name="jobMonths" ng-model="Jobs.months">
-                               <div ng-messages="userForm.jobMonths.$error"></div>
+                               <input ng-model="Jobs.months">
                             </md-input-container>
 							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Jobs.cb9" class="md-primary">
 								<label>9th</label>
@@ -298,8 +256,7 @@
 						<p>What has been your most important extracurricular activity, your most important contribution to it, and what has your participation in it meant to you as an individual?</p>
                     <md-input-container flex>
 						<label>Essay</label>
-						<textarea name="essay" ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
-                        <div ng-messages="userForm.essay.$error"></div>
+						<textarea ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
 					</md-input-container>
                 </div>
 				<div layout-align="center center" flex layout-fill>
