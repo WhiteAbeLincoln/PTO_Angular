@@ -19,10 +19,10 @@ connectToDatabase.connect(function(error){
 	if(error){
 		console.log("Could not connect to the SQL database");
 		return;
-		
+
 	}else{
 		console.log("Connected to Database");
-		
+
 	}
 });
 
@@ -38,9 +38,15 @@ router.post('/members', function(req, res) {
 	memberReq = (req.body);
 
 	var memberId = insertIntoMembers(memberReq);
-	
+
 	res.json({rowsChanged: changedRows});
 });
+
+router.post('/scholars', function(req, res){
+	console.log('post to api/scholars');
+
+	insertIntoScholarship(req.body);
+})
 
 
 /* Inserts members into the Member table */
@@ -51,12 +57,12 @@ function insertIntoMembers(jsonpack) {
 	[jsonpack.user.first,jsonpack.user.last,jsonpack.user.address,jsonpack.user.city,jsonpack.user.state,jsonpack.user.postalCode],
     function(err, result){
 		    if (err) throw err;
-		
+
 		    console.log("Added member with id " + result.insertId);
 		    memberId = result.insertId;
-		
+
 		    changedRows += result.affectedRows;
-            
+
             insertIntoStudents(jsonpack.user.students, memberId);
             insertIntoPaymentInfo(jsonpack.payment, memberId);
 	    });
@@ -72,7 +78,7 @@ function insertIntoStudents(students, memberId) {
 		connectToDatabase.query("INSERT INTO M_Students(parentId, firstName, lastName, grade, unit) VALUES (?,?,?,?,?)",
         [memberId, student.first, student.last, student.grade, student.unit], function(err, result){
 			if (err) throw err;
-			
+
 			console.log("Added student with id " + result.insertId + " and parentId " + memberId);
 		    changedRows += result.affectedRows;
 		});
@@ -87,11 +93,17 @@ if (payment.first !== null && payment.last !== null && payment.number !== null) 
 		connectToDatabase.query("INSERT INTO M_PaymentInfo(membershipId, firstName, lastName, cardNumber, expDate, securityCode, paymentDate, paymentAmount) VALUES (?,?,?,?,?,?,?,?)",
         [memberId, payment.first, payment.last, payment.number, payment.exp_date, payment.cvv2, Date.now(), payment.amount], function(err, result){
 			if (err) throw err;
-			
+
 			console.log("Added payment with id " + result.insertId + " and membershipId " + memberId);
 		    changedRows += result.affectedRows;
 		});
 }
+}
+
+function insertIntoScholarship(jsonpack){
+	connectToDatabase.query(
+		"INSERT INTO Scholarship()"
+	)
 }
 
 module.exports = router;
