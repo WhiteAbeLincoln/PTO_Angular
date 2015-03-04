@@ -1,5 +1,5 @@
 (function(){
-    var appControllers = angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
+angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
 
     .factory('Member', ['$resource', function($resource){
            return $resource('/api/members/:id');
