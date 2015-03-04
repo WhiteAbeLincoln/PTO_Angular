@@ -6,153 +6,158 @@
         .controller('ScholarshipCtrl', ['$scope', '$log', '$http', 'Scholar', function($scope, $log, $http, Scholar){
         $scope.numStudents = 0;
         $scope.data = {
-            'accepted': false,
-            'index': 0,
-            'accept': function(){
+            accepted: false,
+            index: 0,
+            accept: function(){
                 this.accepted = true;
                 this.index = 1;
             }
         };
         $scope.user = {
-            "first":"",
-            "middle":"",
-            "last":"",
-            "address":"",
-            "city":"",
-            "state":"",
-            "postalCode":"",
-            "phone":"",
-            "email":"",
-			"gpa":"",
-			"nine":"",
-			"ten":"",
-			"eleven":"",
-			"twelve":"",
-			"SchoolActivities": [
+            first:"",
+            middle:"",
+            last:"",
+            address:"",
+            city:"",
+            state:"",
+            postalCode:"",
+            phone:"",
+            email:"",
+			gpa:"",
+			classes: {
+                nine:"",
+                ten:"",
+                eleven:"",
+                twelve:""
+            },
+			schoolActivities: [
                 {
-                    "name": "",
-                    "om": "",
-                    "hours": "",
-					"cb9": false,
-					"cb10": false,
-					"cb11": false,
-					"cb12": false
+                    name  :   "",
+                    om    :   "",
+                    hours :   "",
+					cb9   :   false,
+					cb10  :   false,
+					cb11  :   false,
+					cb12  :   false
                 }
             ],
-			"CommunityActivities": [
+			communityActivities: [
                 {
-                    "name": "",
-                    "om": "",
-                    "hours": "",
-                    "cb9": false,
-					"cb10": false,
-					"cb11": false,
-					"cb12": false
+                    name: "",
+                    om: "",
+                    hours: "",
+                    cb9: false,
+					cb10: false,
+					cb11: false,
+					cb12: false
                 }
             ],
-			"Honors": [
+			honors: [
                 {
-                    "name": "",
-                    "cb9": false,
-					"cb10": false,
-					"cb11": false,
-					"cb12": false
+                    name: "",
+                    cb9: false,
+					cb10: false,
+					cb11: false,
+					cb12: false
                 }
             ],
-			"Jobs": [
+			jobs: [
                 {
-                    "name": "",
-					"hours": "",
-					"months": "",
-					"cb9": false,
-					"cb10": false,
-					"cb11": false,
-					"cb12": false
+                    name: "",
+					hours: "",
+					months: "",
+					cb9: false,
+					cb10: false,
+					cb11: false,
+					cb12: false
                 }
             ],
-			"essay":""
+			essay:""
         };
         $scope.changeSchoolActivity = function(num){
-            var oldLength = this.user.SchoolActivities.length;
+            var oldLength = this.user.schoolActivities.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.SchoolActivities.push({
-                        "name": "",
-						"om": "",
-						"hours": "",
-						"cb9": false,
-						"cb10": false,
-						"cb11": false,
-						"cb12": false
+                    this.user.schoolActivities.push({
+                        name: "",
+						om: "",
+						hours: "",
+						cb9: false,
+						cb10: false,
+						cb11: false,
+						cb12: false
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.SchoolActivities.pop();
+                    this.user.schoolActivities.pop();
                 }
             }
         };
 		$scope.changeCommunityActivity = function(num){
-            var oldLength = this.user.CommunityActivities.length;
+            var oldLength = this.user.communityActivities.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.CommunityActivities.push({
-                        "name": "",
-						"om": "",
-						"hours": "",
-						"cb9": false,
-						"cb10": false,
-						"cb11": false,
-						"cb12": false
+                    this.user.communityActivities.push({
+                        name: "",
+						om: "",
+						hours: "",
+						cb9: false,
+						cb10: false,
+						cb11: false,
+						cb12: false
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.CommunityActivities.pop();
+                    this.user.communityActivities.pop();
                 }
             }
         };
 		$scope.changeHonors = function(num){
-            var oldLength = this.user.Honors.length;
+            var oldLength = this.user.honors.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.Honors.push({
-                        "name": "",
-						"cb9": false,
-						"cb10": false,
-						"cb11": false,
-						"cb12": false
+                    this.user.honors.push({
+                        name: "",
+						cb9: false,
+						cb10: false,
+						cb11: false,
+						cb12: false
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.Honors.pop();
+                    this.user.honors.pop();
                 }
             }
         };
 		$scope.changeJob = function(num){
-            var oldLength = this.user.Jobs.length;
+            var oldLength = this.user.jobs.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.Jobs.push({
-                        "name": "",
-						"hours": "",
-						"months": "",
-						"cb9": false,
-						"cb10": false,
-						"cb11": false,
-						"cb12": false
+                    this.user.jobs.push({
+                        name: "",
+						hours: "",
+						months: "",
+						cb9: false,
+						cb10: false,
+						cb11: false,
+						cb12: false
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.Jobs.pop();
+                    this.user.jobs.pop();
                 }
             }
         };
 		
 		$scope.newScholar = function() {
             $scope.postData = {};
+
+            $scope.user.phone = $scope.user.phone.replace(/[() +-]/g, "");
+            
             $scope.postData.user = $scope.user;
             $scope.scholar = new Scholar($scope.postData);
 
