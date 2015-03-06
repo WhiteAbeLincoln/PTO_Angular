@@ -40,4 +40,4 @@ need a twitter plugin, facebook share g+ etc
 ## Attribution
 
 + Google [material design icons](https://github.com/google/material-design-icons/)
-+ + [license](https://github.com/google/material-design-icons/blob/master/LICENSE)
+    - [license](https://github.com/google/material-design-icons/blob/master/LICENSE) (CC BY 4.0)
