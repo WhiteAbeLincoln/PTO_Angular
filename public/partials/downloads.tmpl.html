@@ -1,1 +1,26 @@
 <h1>Downloads</h1>
+<section ng-repeat="dltype in dltypes">
+    <md-subheader class="md-primary">{{dltype.name}}</md-subheader>
+
+    <md-list>
+        <md-item ng-repeat="download in dltype.downloads">
+            <md-item-content>
+                <div class="md-tile-left">
+                    <img ng-src="{{download.fileIcon}}" class="fileicon" alt="{{download.fileType}}"><!-- TODO: change to mdIcon -->
+                </div>
+                <div class="md-tile-content" layout="row" layout-align="space-between center">
+                    <div layout="column">
+                        <h3>{{download.name}}</h3>
+
+                        <p>{{download.shortDesc}}</p>
+                    </div>
+                    <div layout="row">
+                        <h4>{{download.modDate}}</h4>
+                        <md-button>Download</md-button>
+                    </div>
+                </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+</section>

@@ -32,6 +32,20 @@ router.get('/',
     }
 );
 
+router.route('/download/:id')
+    .get(function(req,res,next){
+        console.log('getting a download');
+    })
+    .put(function(req,res,next){
+        console.log('updating a download');
+    });
+
+router.post('/download',
+    function(req, res) {
+        console.log('creating a download');
+    }
+);
+
 /* POST membership form */
 router.post('/members',
     function(req, res) {

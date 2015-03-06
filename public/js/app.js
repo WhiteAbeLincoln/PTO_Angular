@@ -15,11 +15,11 @@ var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers
                 }
 
             })
-			.when('/:tmpl', {
-                templateUrl: function(params){
-					return 'partials/' + params.tmpl + '.tmpl.html'
-				}
-            });
+			.when('/downloads', {
+                templateUrl: 'partials/downloads.tmpl.html',
+                controller: 'DownloadCtrl'
+            })
+            .otherwise('/');
 
         $mdThemingProvider.theme('default')
             .primaryPalette('amber')

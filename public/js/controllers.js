@@ -17,6 +17,10 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
            return $resource('/api/board/:id');
     }])
 
+    .factory('Download', ['$resource', function($resource){
+        return $resource('/api/download/:id');
+    }])
+
     .controller('AppCtrl', ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', function($scope, $rootScope, $mdSidenav, $log, $location, menu) {
         /*$scope.toggleLeft = function() {
             $mdSidenav('left').toggle()

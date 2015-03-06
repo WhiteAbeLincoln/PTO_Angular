@@ -142,3 +142,7 @@ select, option:disabled {
     max-width: 864px; 
     margin: auto;
 }
+
+img.fileicon {
+    height:48px;
+}
