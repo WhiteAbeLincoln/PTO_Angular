@@ -146,3 +146,18 @@ select, option:disabled {
 img.fileicon {
     height:48px;
 }
+
+.date-pad {
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+.required-message {
+    font-size: 12px;
+    line-height: 24px;
+}
+
+button.form-next {
+    float:right;
+    margin:15px;
+}

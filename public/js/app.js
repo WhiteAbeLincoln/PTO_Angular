@@ -27,12 +27,14 @@
                     .accentPalette('blue-grey');
 
                 $mdIconProvider
+                    .iconSet('file', 'img/icons/file-icons.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')
                     .icon('file:image', 'img/icons/file-image-box.svg')
                     .icon('file:pdf', 'img/icons/file-pdf-box.svg')
                     .icon('file:powerpoint', 'img/icons/file-powerpoint-box.svg')
                     .icon('file:word', 'img/icons/file-word-box.svg')
-                    .defaultIconSize('48px,48px');
+                    .icon('file:file', 'img/icons/file.svg')
+                    .defaultIconSize('48,48');
             }]);
 })();

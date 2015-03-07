@@ -1,5 +1,4 @@
-<div>
-    <h1>Downloads</h1>
+<h1>Downloads</h1>
     <section ng-repeat="dltype in dltypes">
         <md-subheader class="md-primary">{{dltype.name}}</md-subheader>
 
@@ -7,8 +6,8 @@
             <md-item ng-repeat="download in dltype.downloads">
                 <md-item-content>
                     <div class="md-tile-left">
-                        <md-icon md-svg-icon="file:{{download.fileType}}"
-                                 ng-style="iconStyles[download.fileType]"></md-icon>
+                        <md-icon md-svg-icon="file:{{iconStyles[download.fileType] ? download.fileType : 'file'}}"
+                                 ng-style="iconStyles[download.fileType] || iconStyles['file']"></md-icon>
                         <!-- TODO: change to mdIcon -->
                     </div>
                     <div class="md-tile-content" layout="row" layout-align="space-between center">
@@ -18,8 +17,8 @@
                             <p>{{download.shortDesc}}</p>
                         </div>
                         <div layout="row">
-                            <h4>{{download.modDate}}</h4>
-                            <md-button>Download</md-button>
+                            <h4 class="date-pad">{{download.modDate}}</h4>
+                            <md-button class="md-accent"><md-icon md-svg-icon="file:file_download" style="width:24px; height: 24px;"></md-icon></md-button>
                         </div>
                     </div>
                 </md-item-content>
@@ -27,4 +26,3 @@
             </md-item>
         </md-list>
     </section>
-</div>

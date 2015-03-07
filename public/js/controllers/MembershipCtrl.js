@@ -3,61 +3,64 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('MembershipCtrl', ['$scope', '$log', '$http', 'Member', function($scope, $log, $http, Member){
+        .controller('MembershipCtrl', ['$scope', '$window', '$log', '$http', 'Member', function($scope, $window, $log, $http, Member){
         $scope.numStudents = 0;
         $scope.data = {
-            'accepted': false,
-            'index': 0,
-            'accept': function(){
+            accepted: false,
+            index: 0,
+            accept: function(){
                 this.accepted = true;
                 this.index = 1;
+            },
+            next: function(){
+                this.index++;
             }
         };
         $scope.user = {
-            "first":"",
-            "last":"",
-            "address":"",
-            "city":"",
-            "state":"",
-            "postalCode":"",
-            "students": [
+            first:null,
+            last:null,
+            address:null,
+            city:null,
+            state:null,
+            postalCode: null,
+            students: [
                 {
-                    "first": "",
-                    "last": "",
-                    "grade": "",
-                    "unit": ""
+                    first: null,
+                    last: null,
+                    grade: null,
+                    unit: null
                 }
             ]
         };
         $scope.payment = {
-            "number":"",
-            "exp_date":"",
-            "cvv2":"",
-            "first":"",
-            "last":"",
-            "amount": ""
+            number:null,
+            exp_date:null,
+            cvv2:null,
+            first:null,
+            last:null,
+            amount: null
         };
 
         $scope.changeStudents = function(num){
-            var oldLength = this.user.students.length;
+            var oldLength = $scope.user.students.length;
             if (num > oldLength){
                 for (var i = 0; i < (num - oldLength); i++){
-                    this.user.students.push({
-                        "first": "",
-                        "last": "",
-                        "grade": "",
-                        "unit": ""
+                    $scope.user.students.push({
+                        first: null,
+                        last: null,
+                        grade: null,
+                        unit: null
                     });
                 }
             } else {
                 for (var i = 0; i < (oldLength - num); i++){
-                    this.user.students.pop();
+                    $scope.user.students.pop();
                 }
             }
         };
 
         $scope.newMember = function(isValid) {
-            if (!isValid){
+            if (!isValid || $scope.data.index != 3){
                 return;
             }
 
@@ -66,10 +69,14 @@
             $scope.postData.payment = $scope.payment;
             $scope.member = new Member($scope.postData);
 
-            $log.debug($scope.postData);
+            //$log.debug($scope.postData);
 
             //sends the post data to the server.
-            $scope.member.$save();
+            $scope.member.$save(function(data, headers){
+                console.log(data);
+                console.log(headers("Location"));
+                //$window.location.href = '/';
+            });
         }
     }]);
 })();

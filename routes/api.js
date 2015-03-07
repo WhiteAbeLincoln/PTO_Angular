@@ -8,7 +8,7 @@ var changedRows;
 
 //connecting to the database
 var connectToDatabase = mysql.createConnection({
-	host	 : 'localhost',
+	host	 : '192.168.0.140',
 	port	 : '3306',
 	user	 : 'chudi',
 	password : 'm!sQlp4$$w0rd',
@@ -28,7 +28,7 @@ connectToDatabase.connect(function(error){
 /* GET users listing. */
 router.get('/',
     function(req, res) {
-        res.json({message: 'hooray! welcome to the api!'});
+        res.status(404).end();
     }
 );
 
@@ -51,9 +51,28 @@ router.post('/members',
     function(req, res) {
         console.log('post to api/members');
 
-	    insertIntoMembers(req.body.user);
+        console.log(req.body);
 
-	    res.json({rowsChanged: changedRows});
+        insertIntoMembers(req.body, function(id, rows){
+            res.status(201).location('members/'+id);
+            res.json({changed: rows});
+        });
+    }
+);
+
+//TODO: fix this
+router.get('/members/:id',
+    function(req, res) {
+        connectToDatabase.query("SELECT firstName, lastName, address, city, state, zipCode, membershipId FROM Members WHERE membershipId=?",[req.params.id], function(err, data){
+            var member = data;
+            console.log(data);
+            connectToDatabase.query("SELECT firstName, lastName, grade, unit "
+            + "FROM M_Students "
+            + "WHERE parentId=?", [req.params.id], function(err, data){
+                    member[0].students = data;
+                    console.log(member);
+            });
+        });
     }
 );
 
@@ -67,8 +86,10 @@ router.post('/scholars',
 
 
 /* Inserts members into the Member table */
-function insertIntoMembers(jsonpack) {
+function insertIntoMembers(jsonpack, callback) {
 	var foreignId = 0;
+
+    var user = jsonpack.user;
 
 	connectToDatabase.query(
             "INSERT INTO Members "
@@ -76,8 +97,8 @@ function insertIntoMembers(jsonpack) {
         +   "VALUES "
         +   "(?,?,?,?,?,?)",
         [
-            jsonpack.first,     jsonpack.last,      jsonpack.address,
-            jsonpack.city,      jsonpack.state,     jsonpack.postalCode
+            user.first,     user.last,      user.address,
+            user.city,      user.state,     user.postalCode
         ],
         function(err, result) {
             if (err) throw err;
@@ -89,6 +110,7 @@ function insertIntoMembers(jsonpack) {
 
             insertIntoStudents(jsonpack.user.students, foreignId);
             insertIntoPaymentInfo(jsonpack.payment, foreignId);
+            callback(result.insertId, result.affectedRows);
 	    }
     );
 }
@@ -122,7 +144,7 @@ function insertIntoStudents(students, foreignId) {
 /* Inserts member Payment info into PaymentInfo table */
 function insertIntoPaymentInfo(payment, foreignId) {
 
-    if (payment.first !== null && payment.last !== null && payment.number !== null) {
+    if (payment.amount) {
 		    connectToDatabase.query(
                     "INSERT INTO M_PaymentInfo "
                 +   "(membershipId, firstName, lastName, cardNumber, expDate, securityCode, paymentDate, paymentAmount) "

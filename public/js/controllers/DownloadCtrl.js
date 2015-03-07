@@ -34,6 +34,11 @@
                     color: '#2A3281',
                     height: '48px',
                     width: '48px'
+                },
+                file: {
+                    color: '#333',
+                    height: '48px',
+                    width: '48px'
                 }
             };
 
@@ -80,6 +85,14 @@
                             description:"long description",
                             modDate:"2012-11-01 15:30:33",
                             id:"17"
+                        },
+                        {
+                            fileType:"openoffice",
+                            name:"Meeting notes 11/14",
+                            shortDesc:"Created a new download page and threw a party",
+                            description:"long description",
+                            modDate:"2012-11-01 15:30:33",
+                            id:"17"
                         }
 
                     ]
@@ -109,59 +122,6 @@
                             description:"long description",
                             modDate:"2012-12-01 15:30:33",
                             id:"13"
-                        },
-                        {
-                            fileType:"image",
-                            name:"New Dog",
-                            shortDesc:"I got a dog!",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"15"
-                        },{
-                            fileType:"image",
-                            name:"Birthday Cake",
-                            shortDesc:"Created a new download page and threw a party",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"13"
-                        },
-                        {
-                            fileType:"image",
-                            name:"New Dog",
-                            shortDesc:"I got a dog!",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"15"
-                        },{
-                            fileType:"image",
-                            name:"Birthday Cake",
-                            shortDesc:"Created a new download page and threw a party",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"13"
-                        },
-                        {
-                            fileType:"image",
-                            name:"New Dog",
-                            shortDesc:"I got a dog!",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"15"
-                        },{
-                            fileType:"image",
-                            name:"Birthday Cake",
-                            shortDesc:"Created a new download page and threw a party",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"13"
-                        },
-                        {
-                            fileType:"image",
-                            name:"New Dog",
-                            shortDesc:"I got a dog!",
-                            description:"long description",
-                            modDate:"2012-12-01 15:30:33",
-                            id:"15"
                         }
                     ]
                 }

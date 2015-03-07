@@ -16,7 +16,7 @@
 <md-sidenav md-component-id="left"
             layout="column"
             class="md-sidenav-left md-whiteframe-z2"
-            md-is-locked-open="$media('gt-md')">
+            md-is-locked-open="$mdMedia('gt-md')">
     <md-toolbar class="md-theme-primary" layout="column">
         <h1 class="md-toolbar-tools" flex layout="column">
             <a href="" ng-click="goHome()" layout="row" flex>
@@ -39,7 +39,7 @@
         <div layout="row" layout-padding layout-align="space-around center" layout-fill flex>
             <md-button class="md-fab" aria-label="Twitter"
                        ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
-                <md-tooltip md-direction="bottom">Follow on Twitter</md-tooltip>
+                <md-tooltip md-direction="top">Follow on Twitter</md-tooltip>
                 <md-icon md-svg-src="img/icons/twitter.svg"></md-icon>
             </md-button>
             <md-button class="md-fab" aria-label="Google+"
@@ -49,7 +49,7 @@
             </md-button>
             <md-button class="md-fab" aria-label="Facebook"
                        ng-click="social('https://www.facebook.com/abelincoln.white')">
-                <md-tooltip md-direction="right">Follow on Facebook</md-tooltip>
+                <md-tooltip md-direction="top">Follow on Facebook</md-tooltip>
                 <md-icon md-svg-src="img/icons/facebook.svg"></md-icon>
             </md-button>
         </div>
@@ -58,7 +58,7 @@
 </md-sidenav>
 
 <div layout="column" layout-fill tabindex="-1" role="main">
-    <md-toolbar class="md-whiteframe-z1" md-scroll-shrink layout="column">
+    <md-toolbar class="md-whiteframe-z1" layout="column">
         <div class="md-toolbar-tools" flex>
             <div layout="row" layout-align="start center" flex>
                 <div ng-click="openMenu()" class="menu-icon" hide-gt-md aria-label="Toggle Menu" role="button">
