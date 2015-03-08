@@ -14,7 +14,14 @@
                         templateUrl: function (params) {
                             return 'partials/forms/' + params.tmpl + '.tmpl.html'
                         }
-
+                    })
+                    .when('/admin', {
+                        templateUrl: 'partials/admin/index.tmpl.html'
+                    })
+                    .when('/admin/:tmpl',{
+                        templateUrl: function(params){
+                            return 'partials/admin/' + params.tmpl + '.tmpl.html';
+                        }
                     })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',

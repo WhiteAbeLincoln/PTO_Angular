@@ -1,28 +1,33 @@
 <h1>Downloads</h1>
-    <section ng-repeat="dltype in dltypes">
-        <md-subheader class="md-primary">{{dltype.name}}</md-subheader>
+<md-input-container>
+    <label>Search</label>
+    <input type="search" ng-model="search.$">
+</md-input-container>
+<section ng-repeat="dltype in dltypes">
+    <md-subheader class="md-primary">{{dltype.name}}</md-subheader>
 
-        <md-list>
-            <md-item ng-repeat="download in dltype.downloads">
-                <md-item-content>
-                    <div class="md-tile-left">
-                        <md-icon md-svg-icon="file:{{iconStyles[download.fileType] ? download.fileType : 'file'}}"
-                                 ng-style="iconStyles[download.fileType] || iconStyles['file']"></md-icon>
-                        <!-- TODO: change to mdIcon -->
-                    </div>
-                    <div class="md-tile-content" layout="row" layout-align="space-between center">
-                        <div layout="column">
-                            <h3>{{download.name}}</h3>
+    <md-list>
+        <md-item ng-repeat="download in dltype.downloads | filter:search | orderBy:'-modDate'">
+            <md-item-content>
+                <div class="md-tile-left">
+                    <md-icon md-svg-icon="file:{{iconStyles[download.fileType] ? download.fileType : 'file'}}"
+                             ng-style="iconStyles[download.fileType] || iconStyles['file']"></md-icon>
+                </div>
+                <div class="md-tile-content" layout="row" layout-align="space-between center">
+                    <div layout="column">
+                        <h3>{{download.name}}</h3>
 
-                            <p>{{download.shortDesc}}</p>
-                        </div>
-                        <div layout="row">
-                            <h4 class="date-pad">{{download.modDate}}</h4>
-                            <md-button class="md-accent"><md-icon md-svg-icon="file:file_download" style="width:24px; height: 24px;"></md-icon></md-button>
-                        </div>
+                        <p>{{download.shortDesc}}</p>
                     </div>
-                </md-item-content>
-                <md-divider ng-if="!$last"></md-divider>
-            </md-item>
-        </md-list>
-    </section>
+                    <div layout="row">
+                        <h4 class="date-pad">{{download.modDate}}</h4>
+                        <md-button class="md-accent">
+                            <md-icon md-svg-icon="file:file_download" style="width:24px; height: 24px;"></md-icon>
+                        </md-button>
+                    </div>
+                </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+</section>
