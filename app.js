@@ -8,6 +8,9 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
+
 var app = express();
 
 // view engine setup
@@ -24,6 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/api', api);
+app.use('/api/admin/auth', expressJwt({secret: 'secrets'}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
