@@ -1,10 +1,11 @@
 var express = require('express');
 var moment = require('moment');
-var mysql = require('mysql');
+var Q = require('q');
 var router = express.Router();
-var stripe = require('stripe')("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
+var Server = require('./server.js');
 
-var changedRows;
+
+var db = new Server();
 
 /* GET users listing. */
 router.get('/',
@@ -30,29 +31,43 @@ router.post('/download',
 /* POST membership form */
 router.post('/members',
     function (req, res) {
-        console.log('post to api/members');
-
-        insertMembers(req.body, function (id, rows) {
-            res.status(201).location('members/' + id);
-            res.json({changed: rows});
+        var user = req.body.user;
+        console.log(req.body);
+        db.members.insert(
+            [user.first, user.last, user.address,
+            user.city, user.state, user.postalCode]
+        ).then(function(data){
+                console.log('students');
+            return Q.all(user.students.map(function(student){
+                return db.members.students.insert([data[0].insertId, student.first, student.last, student.grade, student.unit]);
+            })).then(function(val){
+                console.log('payments');
+                var payment = req.body.payment;
+                var date = moment(payment.exp_date, 'MM/YY').toDate();
+                return db.members.payments.createCharge(payment,date);
+            }).then(function(card){
+                console.log('payments database');
+                var payment = req.body.payment;
+                return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
+            }).then(function(){
+                res.status(201).location('members/' + data[0].insertId);
+                res.send();
+            })
+        }).catch(function(err){
+            console.log('ERRORED correctly');
+            res.status(400).send(err.message);
+            console.log(err);
         });
-
     }
 );
 
 //TODO: fix this
 router.get('/members/:id',
     function (req, res) {
-        connectToDatabase.query("SELECT firstName, lastName, address, city, state, zipCode, membershipId FROM Members WHERE membershipId=?",
-            [req.params.id], function (err, data) {
-            var member = data;
-            console.log(data);
-            connectToDatabase.query("SELECT firstName, lastName, grade, unit "
-            + "FROM M_Students "
-            + "WHERE parentId=?", [req.params.id], function (err, data) {
-                member[0].students = data;
-                console.log(member);
-            });
+        db.members.query(req.params.id).then(function(data){
+            res.json(data[0][0]);
+        }).catch(function(err){
+            if (err) throw err;
         });
     }
 );
@@ -60,98 +75,17 @@ router.get('/members/:id',
 router.post('/scholars',
     function (req, res) {
         console.log('post to api/scholars');
-
-        insertScholarship(req.body.user);
     }
 );
 
 
-/* Inserts members into the Member table */
-function insertMembers(jsonpack, callback) {
-
-            insertM_Payments(jsonpack.payment, function (err, charge) {
-
-                if (err) {
-                    switch (err.type) {
-                        case 'StripeCardError':
-                            // A declined card error
-                            console.log(err.message); // => e.g. "Your card's expiration year is invalid."
-                            break;
-                        case 'StripeInvalidRequestError':
-                            // Invalid parameters were supplied to Stripe's API
-                            break;
-                        case 'StripeAPIError':
-                            // An error occurred internally with Stripe's API
-                            break;
-                        case 'StripeConnectionError':
-                            // Some kind of error occurred during the HTTPS communication
-                            break;
-                        case 'StripeAuthenticationError':
-                            // You probably used an incorrect API key
-                            break;
-                    }
-                } else {
-
-                }
-
-            });
-}
-
-
-/* Inserts students into the Students table with a foreign key memberId*/
-function insertM_Students(students, foreignId) {
-
-
-}
-
-/* Inserts member Payment info into PaymentInfo table */
-function insertM_Payments(payment, callback) {
-
-}
-
-function insertScholarship(jsonpack, callback) {
-            var foreignId = result.insertId;
-
-            console.log("Added scholarship application with id " + result.insertId);
-
-            insertS_Activities(combineActivities(jsonpack), foreignId);
-            insertS_Classes(jsonpack.classes, foreignId);
-            insertS_Employment(jsonpack.jobs, foreignId);
-            insertS_Honors(jsonpack.honors, foreignId);
-
-}
-
-function insertS_Activities(activities, foreignId) {
-
-
-}
-
-function insertS_Classes(classes, foreignId) {
-
-}
-
-function insertS_Employment(jobs, foreignId) {
-
-}
-
-function insertS_Honors(honors, foreignId) {
-
-}
-
 function combineActivities(jsonpack) {
-    var activities;
-
-    jsonpack.communityActivities.forEach(function (activity) {
+    return jsonpack.communityActivities.map(function (activity) {
         activity.type = "C";
-        activities.push(activity);
-    });
-
-    jsonpack.schoolActivities.forEach(function (activity) {
+    }) +
+    jsonpack.schoolActivities.map(function (activity) {
         activity.type = "S";
-        activities.push(activity);
     });
-
-    return activities;
 }
 
 module.exports = router;
