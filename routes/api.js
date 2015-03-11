@@ -1,5 +1,6 @@
 var express = require('express');
 var moment = require('moment');
+var jwt = require('jsonwebtoken');
 var Q = require('q');
 var router = express.Router();
 var Server = require('./server.js');
@@ -55,8 +56,10 @@ router.post('/members',
             })
         }).catch(function(err){
             console.log('ERRORED correctly');
-            res.status(400).send(err.message);
-            console.log(err);
+            if (err.message){
+                res.status(400).send(err.message);
+                console.log(err);
+            }
         });
     }
 );
@@ -71,6 +74,33 @@ router.get('/members/:id',
         });
     }
 );
+
+router.post('/admin/auth', function(req, res){
+    //TODO: Change to db query
+    console.log(req.body);
+
+    if (!(req.body.username === 'abe' && req.body.password === 'pass')){
+        res.status(401).send('Incorrect username or password');
+    }
+
+    var profile = {
+        firstName: 'Abe',
+        lastName: 'White',
+        email: 'abelincoln.white@gmail.com',
+        id:1
+    };
+
+    var token = jwt.sign(profile, 'secrets', {expiresInMinutes: 2})
+
+    res.json({token:token, user: profile});
+});
+
+router.get('/admin/restricted', function(req, res){
+    console.log('user ' + req.user.email + ' is calling /api/restricted');
+    res.json({
+        name: 'foo'
+    });
+});
 
 router.post('/scholars',
     function (req, res) {
