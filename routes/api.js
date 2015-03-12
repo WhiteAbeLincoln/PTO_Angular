@@ -64,17 +64,6 @@ router.post('/members',
     }
 );
 
-//TODO: fix this
-router.get('/members/:id',
-    function (req, res) {
-        db.members.query(req.params.id).then(function(data){
-            res.json(data[0][0]);
-        }).catch(function(err){
-            if (err) throw err;
-        });
-    }
-);
-
 router.post('/admin/login', function(req, res){
     //TODO: Change to db query
     console.log(req.body);
@@ -97,6 +86,11 @@ router.post('/admin/login', function(req, res){
 
 router.get('/admin/me', function(req, res){
     res.send(req.user);
+});
+
+router.get('/admin/members/:id',
+function (req, res) {
+    res.json({'accessed':'restricted member ' + req.params.id});
 });
 
 router.post('/scholars',

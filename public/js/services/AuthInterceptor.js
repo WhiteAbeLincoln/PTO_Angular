@@ -18,5 +18,17 @@
                 return config;
             }
 
-        }]);
+        }])
+        .factory('ErrorInterceptor', ['$q','$window', function($q, $window){
+            return {
+                responseError: function(rejection){
+                    if (rejection.status){
+                        $window.location = rejection.config.url;
+                    }
+
+                    $q.reject(rejection);
+                }
+            }
+
+        }])
 })();

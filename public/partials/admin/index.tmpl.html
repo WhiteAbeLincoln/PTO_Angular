@@ -10,11 +10,13 @@
         <input type="password" ng-model="credentials.password" required>
     </md-input-container>
     <md-button class="md-raised md-accent" ng-click="login(credentials)">Login</md-button>
+        <md-button ng-click="test()">Test Restricted</md-button>
     </div>
 </form>
 <div ng-if="currentUser" layout-margin layout-padding>
     <h1>Admin Tools</h1>
-    <p>{{debug | json:'\t'}}</p>
+    <pre>{{debug | json}}</pre>
     <md-button ng-click="logout()">Logout</md-button>
+    <md-button ng-click="test()">Test Restricted</md-button>
 </div>
 </div>

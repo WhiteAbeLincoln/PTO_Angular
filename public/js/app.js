@@ -5,7 +5,9 @@
     var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider) {
+                $httpProvider.interceptors.push('ErrorInterceptor');
                 $httpProvider.interceptors.push('AuthInterceptor');
+
                 $routeProvider
                     .when('/', {
                         templateUrl: 'partials/home.tmpl.html'
