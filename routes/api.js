@@ -95,11 +95,8 @@ router.post('/admin/login', function(req, res){
     res.json({token:token, user: profile});
 });
 
-router.get('/admin/restricted', function(req, res){
-    console.log('user ' + req.user.email + ' is calling /api/restricted');
-    res.json({
-        name: 'foo'
-    });
+router.get('/admin/me', function(req, res){
+    res.send(req.user);
 });
 
 router.post('/scholars',

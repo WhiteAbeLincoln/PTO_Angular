@@ -9,19 +9,21 @@
 
             $scope.login = login;
             $scope.logout = logout;
+            $scope.debug = {user: $scope.currentUser};
 
 
-            function login(username, password){
-                AuthService.login(username, password).then(function(user){
+            function login(creds){
+                AuthService.login(creds.username, creds.password).then(function(user){
                     $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     $scope.setCurrentUser(user);
+                    $scope.debug.user = $scope.currentUser;
                 }, function(){
                     $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
                 });
             }
 
             function logout(){
-                UserFactory.logout();
+                AuthService.logout();
             }
 
         }]);

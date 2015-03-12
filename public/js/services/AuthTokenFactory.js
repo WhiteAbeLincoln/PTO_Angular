@@ -12,7 +12,7 @@
                 setToken: setToken
             };
 
-            function getToken(token){
+            function getToken(){
                 console.log('got token');
                 return store.getItem(key);
             }

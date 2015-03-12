@@ -1,5 +1,5 @@
-<div  class="md-whiteframe-z1 small-form">
-<form  layout-margin layout-padding novalidate>
+<div class="md-whiteframe-z1 small-form" ng-controller="LoginController">
+<form layout-margin layout-padding novalidate ng-if="!currentUser">
     <div layout='column' layout-align="center center">
     <md-input-container>
         <label>Username</label>
@@ -9,7 +9,12 @@
         <label>Password</label>
         <input type="password" ng-model="credentials.password" required>
     </md-input-container>
-    <md-button class="md-raised md-accent">Login</md-button>
+    <md-button class="md-raised md-accent" ng-click="login(credentials)">Login</md-button>
     </div>
 </form>
+<div ng-if="currentUser" layout-margin layout-padding>
+    <h1>Admin Tools</h1>
+    <p>{{debug | json:'\t'}}</p>
+    <md-button ng-click="logout()">Logout</md-button>
+</div>
 </div>

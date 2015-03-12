@@ -2,8 +2,8 @@
  * Created by abe on 3/11/15.
  */
 (function () {
-    angular.module('myApp')
-        .factory('AuthService', ['$q', '$http', 'Session', function($q, $http, Session){
+    angular.module('myApp')     //Not sure why I need Session anymore
+        .factory('AuthService', ['$q', '$http', 'Session', 'AuthTokenFactory','$window', function($q, $http, Session, AuthTokenFactory, $window){
             var authService = {};
 
             authService.login = function(username, password){
@@ -16,8 +16,18 @@
                 });
             };
 
+            authService.getUser = function(){
+                if (AuthTokenFactory.getToken()){
+                    return $http.get('/api/admin/me');
+                } else {
+                    return $q.reject({data: 'client has no auth token'});
+                }
+            };
+
             authService.logout = function(){
-                Session.destroy();
+                console.log('GoGoRangers');
+                AuthTokenFactory.setToken();
+                $window.location.reload();
             };
 
             authService.isAuthenticated = function(){

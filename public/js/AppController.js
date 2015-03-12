@@ -44,6 +44,15 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
                 $scope.currentUser = user;
             };
 
+            $scope.getCurrentUser = function(){
+                return $scope.currentUser;
+            };
+
+            //user initialization
+            AuthService.getUser().then(function success(res){
+                $scope.setCurrentUser(res.data);
+            });
+
             //event that occurs when $location changes the page, calls openPage() to close the menu
             $rootScope.$on('$locationChangeSuccess', function(){
                 if ($scope.path().substring(1, 6) === 'admin'){

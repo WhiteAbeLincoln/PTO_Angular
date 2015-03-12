@@ -11,9 +11,7 @@
 
             function addToken(config){
                 var token = AuthTokenFactory.getToken();
-                console.log(token);
                 if (token){
-                    console.log(config.headers);
                     config.headers = config.headers || {};
                     config.headers.Authorization = 'Bearer ' + token;
                 }
