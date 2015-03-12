@@ -22,10 +22,13 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
     }])
 
     .controller('AppCtrl',
-    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS',
-        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS) {
+    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'USER_ROLES', 'AuthService',
+        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, USER_ROLES, AuthService) {
 
             $scope.menu = menu;
+            $scope.currentUser = null;
+            $scope.userRoles = USER_ROLES;
+            $scope.isAuthorized = AuthService.isAuthorized;
 
             $scope.path = path;
             $scope.goHome = goHome;
@@ -35,6 +38,10 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
 
             $scope.social = function (url){
                 window.location.href = url;
+            };
+
+            $scope.setCurrentUser = function(user){
+                $scope.currentUser = user;
             };
 
             //event that occurs when $location changes the page, calls openPage() to close the menu

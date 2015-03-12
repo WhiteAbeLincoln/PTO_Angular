@@ -75,7 +75,7 @@ router.get('/members/:id',
     }
 );
 
-router.post('/admin/auth', function(req, res){
+router.post('/admin/login', function(req, res){
     //TODO: Change to db query
     console.log(req.body);
 
@@ -90,7 +90,7 @@ router.post('/admin/auth', function(req, res){
         id:1
     };
 
-    var token = jwt.sign(profile, 'secrets', {expiresInMinutes: 2})
+    var token = jwt.sign(profile, 'secrets');
 
     res.json({token:token, user: profile});
 });

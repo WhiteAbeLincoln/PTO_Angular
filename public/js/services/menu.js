@@ -2,10 +2,6 @@
     angular.module('myApp')
         .factory('menu', ['$location', '$rootScope', '$log', function ($location, $rootScope, $log) {
 
-
-            //TODO: Hacky, find a way to have a central list of sections.
-
-
             var sections = [];
 
             //sample dropdown with sub pages -- could move this to a constant in future. see content-data.js in material docs

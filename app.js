@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/api/admin/restricted/*', expressJwt({secret: 'secrets'}));
+app.use('/api/admin/*', expressJwt({secret: 'secrets'}).unless({path:['/api/admin/login']}));
 app.use('/api', api);
 
 
