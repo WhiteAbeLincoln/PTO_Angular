@@ -49,13 +49,40 @@ angular.module('myApp')
                 type: 'link'
             }],
 
-        admin: [{       //sample link
-            name: 'Add Download',
-            url: 'admin/download',
-            type: 'link'
-        }, {       //sample link
-            name: 'Members',
+        admin: [
+        {
+            name:'Create',
+            type:'toggle',
+            pages:[
+            {       //sample link
+                name: 'Download',
+                url: 'admin/download',
+                type: 'link'
+            },
+            {
+                name:'News',
+                url: 'admin/news',
+                type: 'link'
+            }]
+        },
+        {       //sample link
+            name: 'PTO Members',
             url: '/admin/members',
+            type: 'link'
+        },
+        {
+            name: 'Board Applications',
+            url: '/admin/board',
+            type: 'link'
+        },
+        {
+            name: 'Volunteers',
+            url: '/admin/volunteer',
+            type:'link'
+        },
+        {
+            name: 'Scholarships',
+            url: '/admin/scholarship',
             type: 'link'
         }]
 

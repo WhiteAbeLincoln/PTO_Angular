@@ -1,0 +1,36 @@
+<div ng-controller="CreateDownloadCtrl" class="md-whiteframe-z1 small-form">
+    <form name='dlForm' layout-margin layout-padding novalidate>
+        <div layout='row'>
+            <div layout='column' flex>
+                <div layout-align="center center">
+                    <md-select placeholder='Download Type' ng-model="download.type" required> <!-- Maybe good spot for md-autocomplete -->
+                        <md-option value="9">Meeting Notes</md-option>
+                        <md-option value="10">Pictures</md-option>
+                    </md-select>
+                </div>
+                <md-input-container>
+                    <label>Name</label>
+                    <input type='text' name='dlname' ng-model='download.name' required>
+                    <div ng-messages="dlForm.dlname.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Short Description</label>
+                    <input type='text' name='shortDesc' ng-model='download.shortDesc'>
+                </md-input-container>
+                <md-input-container>
+                    <label>Description</label>
+                    <textarea name='desc' ng-model='download.desc' required></textarea>
+                    <div ng-messages="dlForm.desc.$error">
+                        <div ng-message="required">This is required</div>
+                    </div>
+                </md-input-container>
+            </div>
+            <div layout='column' layout-align='center center'>
+                <md-button>Upload File</md-button>
+            </div>
+        </div>
+        <md-button class='md-raised md-primary' ng-disabled="!download.file || dlForm.$invalid" type='submit'>Save</md-button>
+    </form>
+</div>
