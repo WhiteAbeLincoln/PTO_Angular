@@ -29,6 +29,15 @@
                         templateUrl: 'partials/downloads.tmpl.html',
                         controller: 'DownloadCtrl'
                     })
+                    .when('/about-board', {
+                        templateUrl: 'partials/about-board.tmpl.html'
+                    })
+                    .when('/volunteer', {
+                        templateUrl: 'partials/volunteer.tmpl.html'
+                    })
+                    .when('/news', {
+                        templateUrl: 'partials/news.tmpl.html'
+                    })
                     .otherwise('/');
 
                 $mdThemingProvider.theme('default')

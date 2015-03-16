@@ -60,6 +60,11 @@ angular.module('myApp')
                 type: 'link'
             },
             {
+                name: 'Administrator',
+                url: 'admin/create-admin',
+                type: 'link'
+            },
+            {
                 name:'News',
                 url: 'admin/news',
                 type: 'link'

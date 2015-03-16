@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c9aae9b
+ * v0.8.3-master-dc2d204
  */
 goog.provide('ng.material.components.select');
 goog.require('ng.material.components.backdrop');
@@ -127,6 +127,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
 
     return function postLink(scope, element, attr, ctrls) {
       var isOpen;
+      var isDisabled;
 
       var mdSelectCtrl = ctrls[0];
       var ngModel = ctrls[1];
@@ -167,6 +168,11 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
         if (typeof disabled == "string") {
           disabled = true;
         }
+        // Prevent click event being registered twice
+        if (isDisabled !== undefined && isDisabled === disabled) {
+          return;
+        }
+        isDisabled = disabled;
         if (disabled) {
           element.attr('tabindex', -1);
           element.off('click', openSelect);

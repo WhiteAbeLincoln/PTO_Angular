@@ -17,7 +17,13 @@ router.get('/',
 
 router.route('/download/:id')
     .get(function (req, res, next) {
-        console.log('getting a download');
+        res.download('C:/Users/31160/Documents/angular.js', 'angular'+req.params.id+'.js', function(err){
+            if (err){
+                console.log(err);
+            } else {
+                console.log('downloaded file with id '+ req.params.id);
+            }
+        })
     })
     .put(function (req, res, next) {
         console.log('updating a download');
@@ -68,16 +74,17 @@ router.post('/admin/login', function(req, res){
     //TODO: Change to db query
     console.log(req.body);
 
-    if (!(req.body.username === 'abe' && req.body.password === 'pass')){
-        res.status(401).send('Incorrect username or password');
-    }
-
     var profile = {
         firstName: 'Abe',
         lastName: 'White',
         email: 'abelincoln.white@gmail.com',
+        type: 'admin',
         id:1
     };
+
+    if (!(req.body.username === profile.email && req.body.password === 'pass')){
+        res.status(401).send('Incorrect username or password');
+    }
 
     var token = jwt.sign(profile, 'secrets');
 

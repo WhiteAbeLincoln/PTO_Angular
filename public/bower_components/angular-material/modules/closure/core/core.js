@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-c9aae9b
+ * v0.8.3-master-dc2d204
  */
 goog.provide('ng.material.core');
 
@@ -735,7 +735,21 @@ angular.module('material.core')
         }
       } while (el = el.parentNode);
       return null;
+    },
+
+    /**
+     * Functional equivalent for $element.filter(‘md-bottom-sheet’)
+     * useful with interimElements where the element and its container are important...
+     */
+    extractElementByName : function (element, nodeName) {
+      for (var i = 0, len = element.length; i < len; i++) {
+        if (element[i].nodeName.toLowerCase() === nodeName){
+          return angular.element(element[i]);
+        }
+      }
+      return element;
     }
+
   };
 
 }]);
@@ -1008,7 +1022,7 @@ if (shouldHijackClicks) {
   document.addEventListener('click', function(ev) {
     // Space/enter on a button, and submit events, can send clicks
     var isKeyClick = ev.clientX === 0 && ev.clientY === 0;
-    if (window.jQuery || isKeyClick || ev.$material) return;
+    if (isKeyClick || ev.$material) return;
 
     // Prevent clicks unless they're sent by material
     ev.preventDefault();
