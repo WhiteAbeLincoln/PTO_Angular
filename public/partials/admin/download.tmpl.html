@@ -4,8 +4,8 @@
             <div layout='column' flex>
                 <div layout-align="center center">
                     <md-select placeholder='Download Type' ng-model="download.type" required> <!-- Maybe good spot for md-autocomplete -->
-                        <md-option value="9">Meeting Notes</md-option>
-                        <md-option value="10">Pictures</md-option>
+                        <md-option value="meeting_notes">Meeting Notes</md-option>
+                        <md-option value="pictures">Pictures</md-option>
                     </md-select>
                 </div>
                 <md-input-container>
@@ -28,9 +28,11 @@
                 </md-input-container>
             </div>
             <div layout='column' layout-align='center center'>
-                <md-button>Upload File</md-button>
+                <input type="file" id="fileInput" name="file" style='display:none' ng-model="download.file" ng-change="fileChange()">
+                <md-button type='button' ng-click="fileUpload()">Upload File</md-button>
             </div>
         </div>
         <md-button class='md-raised md-primary' ng-disabled="!download.file || dlForm.$invalid" type='submit'>Save</md-button>
+        <pre ng-bind="download | json"></pre>
     </form>
 </div>

@@ -23,7 +23,7 @@
             return {
                 responseError: function(rejection){
                     if (rejection.status){
-                        $window.location = rejection.config.url;
+                        //$window.location = rejection.config.url;
                     }
 
                     $q.reject(rejection);

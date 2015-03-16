@@ -5,7 +5,7 @@ var stripe = require('stripe')("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
 
 function Server() {
         var db = mysql.createConnection({
-            host: process.env.PTOMYSQL || '192.168.0.140',
+            host: process.env.PTOMYSQL || '192.168.0.12',
             port: '3306',
             user: 'chudi',
             password: 'm!sQlp4$$w0rd',
