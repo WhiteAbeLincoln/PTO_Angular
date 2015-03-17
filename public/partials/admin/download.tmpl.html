@@ -28,8 +28,9 @@
                 </md-input-container>
             </div>
             <div layout='column' layout-align='center center'>
-                <input type="file" id="fileInput" name="file" style='display:none' ng-model="download.file" ng-change="fileChange()">
+                <input multiple type="file" id="fileInput" name="file" style='display:none' ng-model="download.file" onchange="angular.element(this).scope().fileChange()">
                 <md-button type='button' ng-click="fileUpload()">Upload File</md-button>
+                <p ng-bind="download.file.name"></p>
             </div>
         </div>
         <md-button class='md-raised md-primary' ng-disabled="!download.file || dlForm.$invalid" type='submit'>Save</md-button>

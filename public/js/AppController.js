@@ -21,9 +21,17 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
         return $resource('/api/download/:id');
     }])
 
+    .factory('Volunteer', ['$resource', function($resource){
+        return $resource('/api/volunteer/:id');
+    }])
+
     .controller('AppCtrl',
     ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'USER_ROLES', 'AuthService',
         function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, USER_ROLES, AuthService) {
+            $scope.updateTitle = function(title) {
+                $scope.pageTitle = title;
+            };
+
 
             $scope.menu = menu;
             $scope.currentUser = null;
@@ -60,6 +68,11 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
                 } else {
                     $scope.menu.setSections(SECTIONS.default);
                 }
+
+                if ($scope.path() == '/'){
+                    $scope.updateTitle("Home -- Centerville PTO");
+                }
+
                 openPage();
             });
 
