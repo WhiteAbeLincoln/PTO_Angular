@@ -1,4 +1,7 @@
-<h1>Downloads</h1>
+<div class="md-whiteframe-z1" layout-margin layout-padding>
+<div layout="column" layout-align="space-around center" flex>
+    <h1>Downloads</h1>
+</div>
 <md-input-container>
     <label>Search</label>
     <input type="search" ng-model="search.$">
@@ -20,10 +23,16 @@
                         <p>{{download.shortDesc}}</p>
                     </div>
                     <div layout="row">
-                        <h4 class="date-pad">{{download.modDate}}</h4>
-                        <md-button class="md-accent md-button-small" aria-label="download" ng-href="api/download/{{download.id}}">
-                            <md-icon md-svg-icon="file:file_download" style="width:24px; height: 24px;"></md-icon>
-                        </md-button>
+                        <table>
+                            <tr>
+                                <td><h4 class="date-pad">{{download.modDate}}</h4></td>
+                                <td><md-button class="md-accent md-button-small" aria-label="download" ng-href="api/download/{{download.id}}">
+                                    <md-icon md-svg-icon="file:file_download" style="width:24px; height: 24px;"></md-icon>
+                                </md-button></td>
+                            </tr>
+                        </table>
+
+
                     </div>
                 </div>
             </md-item-content>
@@ -31,3 +40,4 @@
         </md-item>
     </md-list>
 </section>
+</div>

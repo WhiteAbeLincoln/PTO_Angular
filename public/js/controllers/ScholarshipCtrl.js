@@ -4,7 +4,7 @@
 (function() {
     angular.module('myApp.controllers')
         .controller('ScholarshipCtrl', ['$scope', '$log', '$http', 'Scholar', function($scope, $log, $http, Scholar){
-            $scope.updateTitle("Scholarship -- Centerville PTO");
+            $scope.updateTitle("Scholarship Application");
 
             $scope.numStudents = 0;
             $scope.data = {

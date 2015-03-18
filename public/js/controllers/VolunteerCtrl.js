@@ -1,7 +1,7 @@
 (function() {
     angular.module('myApp.controllers')
         .controller('VolunteerCtrl', ['$scope', '$log', '$http', 'Volunteer', function($scope, $log, $http, Volunteer){
-			$scope.updateTitle("Volunteer -- Centerville PTO");
+			$scope.updateTitle("Volunteer Application");
 
 			$scope.numStudents = 0;
 			$scope.data = {

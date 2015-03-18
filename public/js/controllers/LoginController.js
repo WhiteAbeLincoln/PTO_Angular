@@ -2,6 +2,7 @@
     angular.module('myApp.controllers')
         .controller('LoginController',
         ['$scope', '$rootScope', 'AuthService', 'AUTH_EVENTS','$http', function ($scope, $rootScope, AuthService, AUTH_EVENTS, $http) {
+            $scope.updateTitle("Admin Login");
             $scope.credentials = {
                 username: '',
                 password:''

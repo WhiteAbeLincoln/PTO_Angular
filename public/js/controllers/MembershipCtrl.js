@@ -4,7 +4,7 @@
 (function(){
     angular.module('myApp.controllers')
         .controller('MembershipCtrl', ['$scope', '$window', '$log', '$http', 'Member', function($scope, $window, $log, $http, Member){
-            $scope.updateTitle("Membership -- Centerville PTO");
+            $scope.updateTitle("Membership Application");
             $scope.numStudents = 0;
             $scope.data = {
                 accepted: false,

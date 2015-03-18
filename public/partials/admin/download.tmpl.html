@@ -1,12 +1,16 @@
-<div ng-controller="CreateDownloadCtrl" class="md-whiteframe-z1 small-form">
+<div ng-controller="CreateDownloadCtrl" class="md-whiteframe-z1">
+    <div layout="column" layout-align="space-around center" flex>
+        <h1>Create Download</h1>
+    </div>
     <form name='dlForm' layout-margin layout-padding novalidate>
         <div layout='row'>
             <div layout='column' flex>
-                <div layout-align="center center">
+                <div layout="row">
                     <md-select placeholder='Download Type' ng-model="download.type" required> <!-- Maybe good spot for md-autocomplete -->
                         <md-option value="meeting_notes">Meeting Notes</md-option>
                         <md-option value="pictures">Pictures</md-option>
                     </md-select>
+                    <h6>new type</h6>
                 </div>
                 <md-input-container>
                     <label>Name</label>
@@ -30,10 +34,17 @@
             <div layout='column' layout-align='center center'>
                 <input multiple type="file" id="fileInput" name="file" style='display:none' ng-model="download.file" onchange="angular.element(this).scope().fileChange()">
                 <md-button type='button' ng-click="fileUpload()">Upload File</md-button>
-                <p ng-bind="download.file.name"></p>
+                <table>
+                    <tr ng-repeat="file in download.files">
+                        <td><span>{{file.name}}</span></td>
+                        <td><md-progress-circular ng-hide="pgress[$index] == 100" md-mode="indeterminate" value="{{pgress[$index]}}"></md-progress-circular>
+                            <md-button ng-show="pgress[$index] == 100" class="md-warn md-button-small" ng-click="removeFile($index)">X</md-button></td>
+                    </tr>
+                </table>
             </div>
         </div>
-        <md-button class='md-raised md-primary' ng-disabled="!download.file || dlForm.$invalid" type='submit'>Save</md-button>
-        <pre ng-bind="download | json"></pre>
+        <md-button class='md-raised md-primary' ng-disabled="!download.files.length > 0 || dlForm.$invalid" type='submit'>Save</md-button>
+        <pre ng-bind="download | json" style="overflow: auto;"></pre>
+        <pre ng-bind="pgress | json"></pre>
     </form>
 </div>

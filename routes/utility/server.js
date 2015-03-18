@@ -70,6 +70,22 @@ function Server() {
         }
     };
 
+    this.admin = {
+        create: Q.nbind(db.query, db,
+                "INSERT INTO Admins "
+                + "(firstName, lastName, email, type, username, password, salt) "
+                + "VALUES "
+                + "(?,?,?,?,?,?,?)"),
+        verify: Q.nbind(db.query, db,
+                "SELECT username, password, salt "
+                + "FROM Admins "
+                + "WHERE username = ?"),
+        getUser: Q.nbind(db.query, db,
+                "SELECT * "
+                + "FROM Admins "
+                + "WHERE username = ?")
+    };
+
     this.scholarship = {
         insert: Q.nbind(db.query, db,
                 "INSERT INTO Scholarships "

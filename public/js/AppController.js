@@ -29,7 +29,7 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
     ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'USER_ROLES', 'AuthService',
         function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, USER_ROLES, AuthService) {
             $scope.updateTitle = function(title) {
-                $scope.pageTitle = title;
+                $scope.pageTitle = title + " - Centerville PTO";
             };
 
 
@@ -70,7 +70,7 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
                 }
 
                 if ($scope.path() == '/'){
-                    $scope.updateTitle("Home -- Centerville PTO");
+                    $scope.updateTitle("Home");
                 }
 
                 openPage();

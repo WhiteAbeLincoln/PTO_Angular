@@ -4,7 +4,7 @@
 (function () {
     angular.module('myApp.controllers')
         .controller('DownloadCtrl', ['$scope', 'Download', function ($scope, Download) {
-            $scope.updateTitle("Download -- Centerville PTO");
+            $scope.updateTitle("Downloads");
 
             $scope.iconStyles = {
                 pdf: {

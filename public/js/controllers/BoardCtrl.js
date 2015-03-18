@@ -1,7 +1,7 @@
 (function(){
     angular.module('myApp.controllers')
         .controller('BoardCtrl', ['$scope', '$log', '$http', 'Board', function($scope, $log, $http, Board){
-            $scope.updateTitle("Board Membership -- Centerville PTO");
+            $scope.updateTitle("Board Membership Application");
 
             $scope.num = 0;
             $scope.data = {
