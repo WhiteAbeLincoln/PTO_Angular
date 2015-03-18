@@ -1,19 +1,26 @@
-<div class="md-whiteframe-z1 small-form" ng-controller="LoginController">
-<form layout-margin layout-padding novalidate ng-if="!currentUser">
+<div class="md-whiteframe-z1 small-form" ng-controller="LoginController" layout-margin layout-padding>
+<form name="loginForm" novalidate ng-if="!currentUser" ng-submit="login(credentials)" autocomplete="on">
     <div layout='column' layout-align="center center">
-    <md-input-container>
-        <label>Username</label>
-        <input type="text" ng-model="credentials.username" required>
-    </md-input-container>
-    <md-input-container>
-        <label>Password</label>
-        <input type="password" ng-model="credentials.password" required>
-    </md-input-container>
-    <md-button class="md-raised md-accent" ng-click="login(credentials)">Login</md-button>
-        <md-button ng-click="test()">Test Restricted</md-button>
+        <md-input-container>
+            <label for="username">Username</label>
+            <input id="username" name="username" type="text" ng-model="credentials.username" required>
+            <div ng-messages="loginForm.username.$error">
+                <div ng-message="required">This is required</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label for="password">Password</label>
+            <input id="password" name="password" type="password" ng-model="credentials.password" required>
+            <div ng-messages="loginForm.password.$error">
+                <div ng-message="required">This is required</div>
+            </div>
+        </md-input-container>
+        <md-button class="md-raised md-accent" type="submit" ng-disabled="loginForm.$invalid">Login</md-button>
+        <pre class="md-warn" ng-show="error">{{error.status}}: {{error.data}}</pre>
     </div>
 </form>
-<div ng-if="currentUser" layout-margin layout-padding>
+<md-button ng-click="test()">Test Restricted</md-button>
+<div ng-if="currentUser">
     <h1>Admin Tools</h1>
     <pre>{{debug | json}}</pre>
     <div>
@@ -21,6 +28,5 @@
         
     </div>
     <md-button ng-click="logout()">Logout</md-button>
-    <md-button ng-click="test()">Test Restricted</md-button>
 </div>
 </div>

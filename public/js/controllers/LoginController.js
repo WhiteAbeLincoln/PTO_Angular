@@ -16,19 +16,18 @@
 
             function login(creds){
                 AuthService.login(creds.username, creds.password).then(function(user){
-                    $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
                     $scope.setCurrentUser(user);
                     $scope.debug.user = $scope.currentUser;
-                }, function(){
-                    $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
+                }).catch(function(data, status, headers, config){
+                    $scope.error = data;
                 });
             }
 
             function test(){
-                $http.get('/api/admin/members/'+1).then(function success(res){
-                    $scope.debug.test = res.data;
-                }, function(err){
-                    alert(JSON.stringify(err));
+                $http.get('/api/admin/members/'+1).success(function success(res){
+                    $scope.debug.test = res;
+                }).error(function(data, status, headers, config){
+                    alert(JSON.stringify(data)+status);
                 })
             }
 

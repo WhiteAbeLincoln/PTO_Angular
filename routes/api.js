@@ -102,6 +102,7 @@ router.post('/admin/login', function(req, res){
     }).catch(function(err){
         console.log('ERROR');
         console.log(err);
+        res.status(500).send(err);
     });
 });
 

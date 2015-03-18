@@ -24,9 +24,12 @@
                 responseError: function(rejection){
                     if (rejection.status){
                         //$window.location = rejection.config.url;
+                        if (rejection.config.method !== "POST"){
+                            $window.location = rejection.config.url;
+                        }
                     }
 
-                    $q.reject(rejection);
+                    return $q.reject(rejection);
                 }
             }
 

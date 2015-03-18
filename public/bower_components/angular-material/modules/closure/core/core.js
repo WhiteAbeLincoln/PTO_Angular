@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-dc2d204
+ * v0.8.3-master-a15347c
  */
 goog.provide('ng.material.core');
 
@@ -800,7 +800,11 @@ function AriaService($$rAF, $log, $window) {
   function expect(element, attrName, defaultValue) {
     var node = element[0];
 
-    if (!node.hasAttribute(attrName) && !childHasAttribute(node, attrName)) {
+    // if node exists and neither it nor its children have the attribute
+    if (node &&
+       ((!node.hasAttribute(attrName) ||
+        node.getAttribute(attrName).length === 0) &&
+        !childHasAttribute(node, attrName))) {
 
       defaultValue = angular.isString(defaultValue) ? defaultValue.trim() : '';
       if (defaultValue.length) {
