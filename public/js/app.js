@@ -10,33 +10,47 @@
 
                 $routeProvider
                     .when('/', {
-                        templateUrl: 'partials/home.tmpl.html'
+                        templateUrl: 'partials/home.tmpl.html',
+                        restricted: false
                     })
                     .when('/forms/:tmpl', {
                         templateUrl: function (params) {
                             return 'partials/forms/' + params.tmpl + '.tmpl.html'
-                        }
+                        },
+                        restricted: false
                     })
                     .when('/admin', {
-                        templateUrl: 'partials/admin/index.tmpl.html'
+                        templateUrl: 'partials/admin/index.tmpl.html',
+                        controller: 'AdminCtrl',
+                        restricted: true
+                    })
+                    .when('/admin/login', {
+                        templateUrl: 'partials/admin/login.tmpl.html',
+                        controller: 'LoginCtrl',
+                        restricted: false
                     })
                     .when('/admin/:tmpl',{
                         templateUrl: function(params){
                             return 'partials/admin/' + params.tmpl + '.tmpl.html';
-                        }
+                        },
+                        restricted: true
                     })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',
-                        controller: 'DownloadCtrl'
+                        controller: 'DownloadCtrl',
+                        restricted: false
                     })
                     .when('/about-board', {
-                        templateUrl: 'partials/about-board.tmpl.html'
+                        templateUrl: 'partials/about-board.tmpl.html',
+                        restricted: false
                     })
                     .when('/volunteer', {
-                        templateUrl: 'partials/volunteer.tmpl.html'
+                        templateUrl: 'partials/volunteer.tmpl.html',
+                        restricted: false
                     })
                     .when('/news', {
-                        templateUrl: 'partials/news.tmpl.html'
+                        templateUrl: 'partials/news.tmpl.html',
+                        restricted: false
                     })
                     .otherwise('/');
 
@@ -54,5 +68,18 @@
                     .icon('file:word', 'img/icons/file-word-box.svg')
                     .icon('file:file', 'img/icons/file.svg')
                     .defaultIconSize('48,48');
-            }]);
+            }])
+        .run(['$rootScope', '$location', '$route', 'Session', function($rootScope, $location, $route, Session){
+            $rootScope.$on('$locationChangeStart', function(event, next, current) {
+                if (!Session.user()) {
+
+                    console.log(current);
+                    var nextRoute = $route.routes[$location.path()];
+                    var currentPath = current.split('#')[1];
+                    if (nextRoute.restricted && nextRoute.restricted !== currentPath){
+                        $location.path('/admin/login');
+                    }
+                }
+            })
+        }])
 })();

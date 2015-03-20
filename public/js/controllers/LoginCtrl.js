@@ -1,7 +1,7 @@
 (function () {
     angular.module('myApp.controllers')
-        .controller('LoginController',
-        ['$scope', '$rootScope', 'AuthService', 'AUTH_EVENTS','$http', function ($scope, $rootScope, AuthService, AUTH_EVENTS, $http) {
+        .controller('LoginCtrl',
+        ['$scope', '$rootScope', 'AuthService', 'AUTH_EVENTS','$http', '$location', function ($scope, $rootScope, AuthService, AUTH_EVENTS, $http, $location) {
             $scope.updateTitle("Admin Login");
             $scope.credentials = {
                 username: '',
@@ -18,7 +18,8 @@
                 AuthService.login(creds.username, creds.password).then(function(user){
                     $scope.setCurrentUser(user);
                     $scope.debug.user = $scope.currentUser;
-                }).catch(function(data, status, headers, config){
+                    $location.path('/admin');
+                }).catch(function(data){
                     $scope.error = data;
                 });
             }
@@ -27,8 +28,8 @@
                 $http.get('/api/admin/members/'+1).success(function success(res){
                     $scope.debug.test = res;
                 }).error(function(data, status, headers, config){
-                    alert(JSON.stringify(data)+status);
-                })
+                    //alert(JSON.stringify(data)+status);
+                });
             }
 
             function logout(){

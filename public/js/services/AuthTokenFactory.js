@@ -9,16 +9,29 @@
 
             return{
                 getToken: getToken,
-                setToken: setToken
+                setToken: setToken,
+                dropToken: dropToken
             };
 
-            function getToken(){
-                return store.getItem(key);
+            function getToken(ky){
+                if (ky){
+                    return store.getItem(ky);
+                } else {
+                    return store.getItem(key);
+                }
             }
 
-            function setToken(token){
-                if (token){
+            function setToken(token, ky){
+                if (token && ky){
+                    store.setItem(ky, token);
+                } else if (token) {
                     store.setItem(key, token);
+                }
+            }
+
+            function dropToken(ky){
+                if (ky){
+                    store.removeItem(ky);
                 } else {
                     store.removeItem(key);
                 }

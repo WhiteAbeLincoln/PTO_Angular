@@ -26,8 +26,8 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
     }])
 
     .controller('AppCtrl',
-    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'USER_ROLES', 'AuthService',
-        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, USER_ROLES, AuthService) {
+    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'AuthService', 'Session',
+        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, AuthService, Session) {
             $scope.updateTitle = function(title) {
                 $scope.pageTitle = title + " - Centerville PTO";
             };
@@ -35,8 +35,6 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
 
             $scope.menu = menu;
             $scope.currentUser = null;
-            $scope.userRoles = USER_ROLES;
-            $scope.isAuthorized = AuthService.isAuthorized;
 
             $scope.path = path;
             $scope.goHome = goHome;
@@ -63,7 +61,7 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
 
             //event that occurs when $location changes the page, calls openPage() to close the menu
             $rootScope.$on('$locationChangeSuccess', function(){
-                if ($scope.path().substring(1, 6) === 'admin'){
+                if ($scope.path().substring(1, 6) === 'admin' && Session.user()){
                     $scope.menu.setSections(SECTIONS.admin);
                 } else {
                     $scope.menu.setSections(SECTIONS.default);

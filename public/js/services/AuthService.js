@@ -26,7 +26,7 @@
 
             authService.logout = function(){
                 console.log('GoGoRangers');
-                AuthTokenFactory.setToken();
+                Session.destroy();
                 $window.location.reload();
             };
 
@@ -38,7 +38,7 @@
                 if (!angular.isArray(roles)) {
                     roles = [roles];
                 }
-                return $http.get('/api/admin/auth/'+ Session.user.id)
+                return $http.get('/api/admin/user/'+ Session.user.id)
                     .then(function(res){
                         return roles.indexOf(res.role) !== -1;
                     }).error(function(data, status, headers, config){

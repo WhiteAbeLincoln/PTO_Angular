@@ -6,13 +6,15 @@
         .service('Session', ['AuthTokenFactory', function(AuthTokenFactory){
             this.create = function (token, user) {
                 AuthTokenFactory.setToken(token);
-                this.user = user;
+                AuthTokenFactory.setToken(JSON.stringify(user), 'user');
                 this.userRole = user.role;
             };
             this.destroy = function () {
-                AuthTokenFactory.setToken();
-                this.userId = null;
-                this.userRole = null;
+                AuthTokenFactory.dropToken();
+                AuthTokenFactory.dropToken('user');
             };
+            this.user = function() {
+                return AuthTokenFactory.getToken('user');
+            }
         }])
 })();

@@ -63,8 +63,7 @@
                 <md-button ng-click="openMenu()" class="md-button-small" hide-gt-md aria-label="Toggle Menu" role="button">
                     <md-icon md-svg-src="img/icons/ic_menu_24px.svg"></md-icon>
                 </md-button>
-                <span style="padding:5px;"></span>
-                <h5 ng-show="currentUser || $mdMedia('gt-md')" hide-md hide-sm>User: {{currentUser.firstName}}</h5>
+                <a href="#/admin" ng-show="currentUser || $mdMedia('gt-md')" hide-md hide-sm style="padding:5px">User: {{currentUser.firstName}}</a>
 
                 <span flex></span>
 
@@ -105,7 +104,8 @@
 <script src="js/directives/menuLink.js"></script>
 <script src="js/AppController.js"></script>
 <script src="js/controllers/CreateDownloadCtrl.js"></script>
-<script src='js/controllers/LoginController.js'></script>
+<script src="js/controllers/AdminCtrl.js"></script>
+<script src='js/controllers/LoginCtrl.js'></script>
 <script src="js/controllers/MembershipCtrl.js"></script>
 <script src="js/controllers/ScholarshipCtrl.js"></script>
 <script src="js/controllers/ServiceCtrl.js"></script>

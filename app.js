@@ -4,12 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
-var routes = require('./routes/index');
-var api = require('./routes/api');
-
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
+
+var routes = require('./routes/index');
+var api = require('./routes/api').router;
+var mySecret = require('./routes/api').secret;
 
 var app = express();
 
@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
-app.use('/api/admin/*', expressJwt({secret: 'secrets'}).unless({path:['/api/admin/login', '/api/admin/admin']}));
+app.use('/api/admin/*', expressJwt({secret: mySecret}).unless({path:['/api/admin/login', '/api/admin/admin']}));
 app.use('/api', api);
 
 
