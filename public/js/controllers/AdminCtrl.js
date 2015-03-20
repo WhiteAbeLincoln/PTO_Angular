@@ -4,6 +4,8 @@
 (function () {
     angular.module('myApp.controllers')
         .controller('AdminCtrl', ['$scope', 'AuthService', function($scope, AuthService){
+            $scope.updateTitle("Admin Tools");
+
             $scope.logout = function() {
                 AuthService.logout();
             };

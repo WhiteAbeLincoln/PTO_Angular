@@ -73,8 +73,8 @@
             $rootScope.$on('$locationChangeStart', function(event, next, current) {
                 if (!Session.user()) {
 
-                    console.log(current);
-                    var nextRoute = $route.routes[$location.path()];
+                    var altPath = '/' + $location.path().split("/")[1] + '/:tmpl';
+                    var nextRoute = $route.routes[$location.path()] || $route.routes[altPath];
                     var currentPath = current.split('#')[1];
                     if (nextRoute.restricted && nextRoute.restricted !== currentPath){
                         $location.path('/admin/login');
