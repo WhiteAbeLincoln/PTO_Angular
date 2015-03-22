@@ -12,6 +12,7 @@
 
             return self = {
                 sections: sections,
+
                 selectSection: function (section) {
                     self.openedSection = section;
                 },
@@ -21,6 +22,7 @@
                 isSectionSelected: function (section) {
                     return self.openedSection === section;
                 },
+
                 selectPage: function (section, page) {
                     page && page.url && $location.path(page.url);
                     self.currentSection = section;
@@ -52,15 +54,25 @@
                 };
 
                 sections.forEach(function (section) {
-                    //if (section.children) -- not needed, since we don't have any headers
-                    if (section.pages) { //matches top-level toggles, like Forms
+                    if (section.children){
+
+                        section.children.forEach(function(childSection){
+                            if (childSection.pages){
+                                childSection.pages.forEach(function(page){
+                                    matchPage(childSection, page);
+                                });
+                            }
+                        });
+                    }
+                    else if (section.pages) { //matches top-level toggles, like Forms
                         section.pages.forEach(function (page) {
                             matchPage(section, page);
                         });
                     } else if (section.type === 'link') {
+                        //matches top-level links, like News
                         matchPage(section, section);
                     }
                 });
             }
         }]);
-})()
+})();

@@ -3,46 +3,13 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('DownloadCtrl', ['$scope', 'Download', function ($scope, Download) {
+        .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdDialog', function ($scope, Download, ICON_STYLES, $mdDialog) {
             $scope.updateTitle("Downloads");
 
-            $scope.iconStyles = {
-                pdf: {
-                    color: '#DB4437',
-                    height: '48px',
-                    width: '48px'
-                },
-                document: {
-                    color: '#4285f4',
-                    height: '48px',
-                    width: '48px'
-                },
-                excel: {
-                    color: '#007133',
-                    height: '48px',
-                    width: '48px'
-                },
-                image: {
-                    color: 'SkyBlue',
-                    height: '48px',
-                    width: '48px'
-                },
-                powerpoint: {
-                    color: '#DB5A26',
-                    height: '48px',
-                    width: '48px'
-                },
-                word: {
-                    color: '#2A3281',
-                    height: '48px',
-                    width: '48px'
-                },
-                file: {
-                    color: '#333',
-                    height: '48px',
-                    width: '48px'
-                }
-            };
+            $scope.user = $scope.currentUser;
+            console.log($scope.currentUser);
+
+            $scope.iconStyles = ICON_STYLES;
 
             $scope.dltypes = [
                 {
@@ -128,5 +95,17 @@
                     ]
                 }
             ];
+
+            $scope.createDownload = function (ev){
+                $mdDialog.show({
+                    controller: 'CreateDownloadCtrl',
+                    templateUrl: 'partials/admin/download.tmpl.html',
+                    targetEvent: ev
+                }).then(function(answer){
+                    alert(JSON.stringify(answer));
+                }, function(){
+                    alert('cancelled');
+                })
+            }
         }]);
 })();

@@ -67,6 +67,17 @@ select, option:disabled {
 .menu .md-button.active {
     color: #607D8B; /* primary accent color blue-grey*/
 }
+.menu-heading {
+    color: #888;
+    display: block;
+    font-size: inherit;
+    font-weight: 500;
+    line-height: 40px;
+    margin: 0;
+    padding: 0px 16px;
+    text-align: left;
+    width: 100%;
+}
 .menu li.parentActive,
 .menu li.parentActive .menu-toggle-list {
     background-color: #f6f6f6;

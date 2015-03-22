@@ -30,26 +30,35 @@
         <ul class="menu">
             <li ng-repeat="section in menu.sections" class="parent-list-item"
                 ng-class="{'parentActive' : isSectionSelected(section)}">
+                <h2 class="menu-heading" ng-if="section.type === 'heading'" id="heading_{{section.name | nospace}}">
+                    {{section.name}}
+                </h2>
                 <menu-link section="section" ng-if="section.type === 'link'"></menu-link>
                 <menu-toggle section="section" ng-if="section.type === 'toggle'"></menu-toggle>
+                <ul ng-if="section.children" class="menu-nested-list">
+                    <li ng-repeat="child in section.children" ng-class="{'childActive' : isSectionSelected(child)}">
+                        <menu-link section="child" ng-if="child.type === 'link'"></menu-link>
+                        <menu-toggle section="child" ng-if="child.type === 'toggle'"></menu-toggle>
+                    </li>
+                </ul>
             </li>
         </ul>
         <span flex></span> <!-- span to fill the gap -->
         <div layout="row" layout-padding layout-align="space-around center" layout-fill flex>
-            <md-button class="md-fab" aria-label="Twitter"
+            <md-button class="md-button-small" aria-label="Twitter"
                        ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
                 <md-tooltip md-direction="top">Follow on Twitter</md-tooltip>
-                <md-icon md-svg-src="img/icons/twitter.svg"></md-icon>
+                <md-icon md-svg-icon="social:twitter" style="width: 48px; height: 48px;"></md-icon>
             </md-button>
-            <md-button class="md-fab" aria-label="Google+"
+            <md-button class="md-button-small" aria-label="Google+"
                        ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
                 <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
-                <md-icon md-svg-src="img/icons/google-plus.svg"></md-icon>
+                <md-icon md-svg-icon="social:google_plus" style="width: 48px; height: 48px;"></md-icon>
             </md-button>
-            <md-button class="md-fab" aria-label="Facebook"
+            <md-button class="md-button-small" aria-label="Facebook"
                        ng-click="social('https://www.facebook.com/abelincoln.white')">
                 <md-tooltip md-direction="top">Follow on Facebook</md-tooltip>
-                <md-icon md-svg-src="img/icons/facebook.svg"></md-icon>
+                <md-icon md-svg-icon="social:facebook" style="width: 48px; height: 48px;"></md-icon>
             </md-button>
         </div>
 
@@ -93,6 +102,7 @@
 <script src="js/app.js"></script>
 <script src="js/constants/sections.js"></script>
 <script src="js/constants/AuthEvents.js"></script>
+<script src="js/constants/IconStyles.js"></script>
 <script src="js/services/FileReader.js"></script>
 <script src="js/services/menu.js"></script>
 <script src="js/services/AuthService.js"></script>

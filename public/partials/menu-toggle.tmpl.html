@@ -1,6 +1,7 @@
 <!-- shamelessly grabbed from the material.angularjs docs -->
 <md-button class="md-button-toggle"
            ng-click="toggle()"
+           aria-controls="nav-menu-{{section.name | nospace}}"
            flex layout="row"
            aria-expanded="{{isOpen()}}">
     {{section.name}}
@@ -11,7 +12,7 @@
   </span>
 </md-button>
 
-<ul ng-show="isOpen()" class="menu-toggle-list">
+<ul ng-show="isOpen()" class="menu-toggle-list" id="nav-menu-{{section.name | nospace}}">
     <li ng-repeat="page in section.pages">
         <menu-link section="page"></menu-link>
     </li>

@@ -60,6 +60,7 @@
 
                 $mdIconProvider
                     .iconSet('file', 'img/icons/file-icons.svg')
+                    .iconSet('content', 'img/icons/content-icons.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')
                     .icon('file:image', 'img/icons/file-image-box.svg')
@@ -67,7 +68,9 @@
                     .icon('file:powerpoint', 'img/icons/file-powerpoint-box.svg')
                     .icon('file:word', 'img/icons/file-word-box.svg')
                     .icon('file:file', 'img/icons/file.svg')
-                    .defaultIconSize('48,48');
+                    .icon('social:facebook', 'img/icons/social-facebook.svg')
+                    .icon('social:google_plus', 'img/icons/social-google_plus.svg')
+                    .icon('social:twitter', 'img/icons/social-twitter.svg');
             }])
         .run(['$rootScope', '$location', '$route', 'Session', function($rootScope, $location, $route, Session){
             $rootScope.$on('$locationChangeStart', function(event, next, current) {
@@ -82,4 +85,9 @@
                 }
             })
         }])
+        .filter('nospace', function () {
+            return function (value) {
+                return (!value) ? '' : value.replace(/ /g, '');
+            };
+        });
 })();

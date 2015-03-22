@@ -1,9 +1,7 @@
-<div ng-controller="CreateDownloadCtrl" class="md-whiteframe-z1">
-    <div layout="column" layout-align="space-around center" flex>
-        <h1>Create Download</h1>
-    </div>
-    <form name='dlForm' layout-margin layout-padding novalidate>
-        <div layout='row'>
+<md-dialog aria-label="Create Download">
+    <md-content class="sticky-container">
+        <md-subheader class="md-sticky-no-effect">Create Download</md-subheader>
+        <form layout='row' layout-sm="column" name='dlForm' layout-fill>
             <div layout='column' flex>
                 <div layout="row">
                     <md-select placeholder='Download Type' ng-model="download.type" required> <!-- Maybe good spot for md-autocomplete -->
@@ -37,14 +35,21 @@
                 <table>
                     <tr ng-repeat="file in download.files">
                         <td><span>{{file.name}}</span></td>
-                        <td><md-progress-circular ng-hide="pgress[$index] == 100" md-mode="indeterminate" value="{{pgress[$index]}}"></md-progress-circular>
-                            <md-button ng-show="pgress[$index] == 100" class="md-warn md-button-small" ng-click="removeFile($index)">X</md-button></td>
+                        <td>
+                            <md-progress-circular ng-hide="pgress[$index] == 100" md-mode="indeterminate"></md-progress-circular>
+                            <md-button ng-show="pgress[$index] == 100" class="md-warn md-button-small" ng-click="removeFile($index)">
+                                <md-icon md-svg-icon="content:clear"></md-icon>
+                            </md-button>
+                        </td>
                     </tr>
                 </table>
+
             </div>
-        </div>
-        <md-button class='md-raised md-primary' ng-disabled="!download.files.length > 0 || dlForm.$invalid" type='submit'>Save</md-button>
+        </form>
         <pre ng-bind="download | json" style="overflow: auto;"></pre>
-        <pre ng-bind="pgress | json"></pre>
-    </form>
-</div>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button class="md-warn md-button-small" ng-click="cancel('canceled')">Cancel</md-button>
+        <md-button class="md-button-small" ng-disabled="!download.files.length > 0 || dlForm.$invalid" ng-click="submit(download)">Submit</md-button>
+    </div>
+</md-dialog>

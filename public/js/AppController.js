@@ -61,7 +61,7 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
 
             //event that occurs when $location changes the page, calls openPage() to close the menu
             $rootScope.$on('$locationChangeSuccess', function(){
-                if ($scope.path().substring(1, 6) === 'admin' && Session.user()){
+                if (Session.user()){
                     $scope.menu.setSections(SECTIONS.admin);
                 } else {
                     $scope.menu.setSections(SECTIONS.default);
@@ -115,6 +115,13 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
                 var openedSection = menu.openedSection;
                 if (openedSection === section){
                     selected = true;
+                }
+                else if(section.children) {
+                    section.children.forEach(function(childSection) {
+                        if(childSection === openedSection){
+                            selected = true;
+                        }
+                    });
                 }
                 return selected;
             }

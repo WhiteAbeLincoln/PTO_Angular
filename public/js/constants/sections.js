@@ -12,11 +12,12 @@ angular.module('myApp')
             {
                 name: 'Forms',
                 type: 'toggle', // note the type
-                pages: [{
+                pages: [
+                    {
                     name: 'Membership',
                     url: '/forms/membership',
                     type: 'link'
-                },
+                    },
                     {
                         name: 'Scholarship Application',
                         url: '/forms/scholarship',
@@ -31,7 +32,8 @@ angular.module('myApp')
                         name: 'Board Membership',
                         url: '/forms/board',
                         type: 'link'
-                    }]
+                    }
+                ]
             },
             {
                 name: 'Volunteer',
@@ -47,48 +49,61 @@ angular.module('myApp')
                 name: 'Downloads',
                 url: '/downloads',
                 type: 'link'
-            }],
+            }
+        ],
 
         admin: [
-        {
-            name:'Create',
-            type:'toggle',
-            pages:[
+            {
+                name:'Me',
+                url: '/admin',
+                type:'link'
+            },
             {       //sample link
-                name: 'Download',
-                url: 'admin/download',
+                name: 'News',
+                url: '/news',
                 type: 'link'
             },
             {
-                name: 'Administrator',
-                url: 'admin/create-admin',
+                name: 'Downloads',
+                url: '/downloads',
                 type: 'link'
             },
             {
-                name:'News',
-                url: 'admin/news',
+                name: 'Applicants',
+                type: 'toggle', // note the type
+                pages: [
+                    {
+                        name: 'Membership',
+                        url: '/admin/forms/membership',
+                        type: 'link'
+                    },
+                    {
+                        name: 'Scholarship Application',
+                        url: '/admin/forms/scholarship',
+                        type: 'link'
+                    },
+                    {
+                        name: 'Service Scholarship Application',
+                        url: '/admin/forms/service',
+                        type: 'link'
+                    },
+                    {
+                        name: 'Board Membership',
+                        url: '/admin/forms/board',
+                        type: 'link'
+                    },
+                    {
+                        name: 'Volunteer',
+                        url: '/admin/forms/volunteer',
+                        type: 'link'
+                    }
+                ]
+            },
+            {
+                name: 'Meet the Board',
+                url: '/about-board',
                 type: 'link'
-            }]
-        },
-        {       //sample link
-            name: 'PTO Members',
-            url: '/admin/members',
-            type: 'link'
-        },
-        {
-            name: 'Board Applications',
-            url: '/admin/board',
-            type: 'link'
-        },
-        {
-            name: 'Volunteers',
-            url: '/admin/volunteer',
-            type:'link'
-        },
-        {
-            name: 'Scholarships',
-            url: '/admin/scholarship',
-            type: 'link'
-        }]
+            }
+        ]
 
     });

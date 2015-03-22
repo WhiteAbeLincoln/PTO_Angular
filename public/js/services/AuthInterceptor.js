@@ -25,7 +25,7 @@
                     if (rejection.status){
                         //$window.location = rejection.config.url;
                         if (rejection.config.method !== "POST"){
-                            $window.location = rejection.config.url;
+                            //$window.location = rejection.config.url;
                         }
                     }
 

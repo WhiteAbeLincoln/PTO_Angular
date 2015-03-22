@@ -1,15 +1,14 @@
 (function(){
     angular.module('myApp.controllers')
-        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$rootScope', function($scope, FileReader, $rootScope){
-            $scope.updateTitle("Admin Create Download");
+        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$mdDialog', function($scope, FileReader, $mdDialog){
             $scope.download = {};
             $scope.pgress = [];
+            $scope.download.files = [];
 
             //TODO: Change this to a directive element
             $scope.fileUpload = function(){
                 document.getElementById('fileInput').click();
             };
-            $scope.download.files = [];
 
             $scope.fileChange = function(){
                 console.log(document.getElementById('fileInput').files);
@@ -54,6 +53,14 @@
             $scope.removeFile = function(index){
                 $scope.download.files.splice(index, 1);
                 $scope.pgress.splice(index, 1);
+            };
+
+            $scope.cancel = function(){
+                $mdDialog.cancel();
+            };
+
+            $scope.submit = function(data){
+                $mdDialog.hide(data);
             }
 
         }]);
