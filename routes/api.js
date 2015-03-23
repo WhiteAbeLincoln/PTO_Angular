@@ -16,25 +16,51 @@ router.get('/',
     }
 );
 
-router.get('/download/:id', function (req, res) {
-    res.download('C:/Users/31160/Documents/angular.js', 'angular'+req.params.id+'.js', function(err){
+router.get('/downloads/', function(req, res){
+    db.downloads.queryAll().then(function(data){
+        console.log(data[0]);
+        var types = {};
+        var array = data[0];
+        for (var i in array) {
+            var download = array[i];
+            delete download.downloadType;
+
+            if (typeof (types[array[i].downloadType]) == "undefined"){
+                types[array[i].downloadType] = [];
+                console.log(types[array[i].downloadType]);
+                types[array[i].downloadType].push(download);
+            } else {
+                console.log('else');
+                console.log(types[array[i].downloadType]);
+                types[array[i].downloadType].push(download);
+            }
+        }
+        console.log(JSON.stringify(types));
+    }).catch(function(error){
+       console.log(error);
+    });
+});
+
+router.get('/downloads/:id/', function (req, res) {
+    res.send('got a single download (downloaded)');
+    /*res.download('C:/Users/31160/Documents/angular.js', 'angular'+req.params.id+'.js', function(err){
         if (err){
             console.log(err);
         } else {
             console.log('downloaded file with id '+ req.params.id);
         }
-    })
+    })*/
 });
 
-router.put('/download/:id', function (req, res, next) {
+router.put('/downloads/:id', function (req, res, next) {
     console.log('updating a download');
 });
 
-router.delete('download/:id', expressJwt({secret: mySecret}), function(req, res){
+router.delete('downloads/:id', expressJwt({secret: mySecret}), function(req, res){
 
 });
 
-router.post('/download', expressJwt({secret: mySecret}),
+router.post('/downloads', expressJwt({secret: mySecret}),
 function (req, res) {
     console.log('creating a download');
 });

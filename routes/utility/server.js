@@ -15,6 +15,7 @@ function Server() {
         db.connect(function (error) {
             if (error) {
                 console.log("Could not connect to the SQL database");
+                console.log(error);
             } else {
                 console.log("Connected to Database");
             }
@@ -68,6 +69,16 @@ function Server() {
                 +   "(?,?,?,?,?)"),
             query: function () {}
         }
+    };
+
+    this.downloads = {
+        queryAll:  Q.nbind(db.query, db,
+                "SELECT "
+                + "Downloads.downloadId, Downloads.downloadName, Downloads.filePath, "
+                + "Downloads.modDate, Downloads.shortDesc AS shortDescription, Downloads.description AS longDescription, "
+                + "Types.name AS downloadType "
+                + "FROM Downloads "
+                + "LEFT JOIN DownloadTypes AS Types ON Downloads.downloadType = Types.typeId")
     };
 
     this.admin = {
