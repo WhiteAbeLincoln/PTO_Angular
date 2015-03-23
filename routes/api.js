@@ -16,25 +16,28 @@ router.get('/',
     }
 );
 
-router.route('/download/:id')
-    .get(function (req, res, next) {
-        res.download('C:/Users/31160/Documents/angular.js', 'angular'+req.params.id+'.js', function(err){
-            if (err){
-                console.log(err);
-            } else {
-                console.log('downloaded file with id '+ req.params.id);
-            }
-        })
+router.get('/download/:id', function (req, res) {
+    res.download('C:/Users/31160/Documents/angular.js', 'angular'+req.params.id+'.js', function(err){
+        if (err){
+            console.log(err);
+        } else {
+            console.log('downloaded file with id '+ req.params.id);
+        }
     })
-    .put(function (req, res, next) {
-        console.log('updating a download');
-    });
+});
 
-router.post('/download',
-    function (req, res) {
-        console.log('creating a download');
-    }
-);
+router.put('/download/:id', function (req, res, next) {
+    console.log('updating a download');
+});
+
+router.delete('download/:id', expressJwt({secret: mySecret}), function(req, res){
+
+});
+
+router.post('/download', expressJwt({secret: mySecret}),
+function (req, res) {
+    console.log('creating a download');
+});
 
 /* POST membership form */
 router.post('/members',
@@ -134,11 +137,6 @@ router.post('/admin/admin', function(req, res){
         console.log("ERRORED");
         if (err) throw err;
     })
-});
-
-router.get('/admin/members/:id',
-function (req, res) {
-    res.json({'accessed':'restricted member ' + req.params.id});
 });
 
 router.post('/scholars',
