@@ -1,0 +1,52 @@
+<div layout-margin layout-padding>
+    <div layout="column" layout-align="space-around center" flex>
+        <h1>Downloads</h1>
+    </div>
+    <md-input-container>
+        <label>Search</label>
+        <input type="search" ng-model="search.$">
+    </md-input-container>
+    <section ng-repeat="(name, dltype) in dltypes">
+        <md-subheader class="md-primary">{{name}}</md-subheader>
+
+        <md-list>
+            <md-item ng-repeat="download in dltype | filter:search | orderBy:'-modDate'">
+                <md-item-content>
+                    <div class="md-tile-left">
+                        <md-icon
+                                md-svg-icon="file:{{iconStyles[download.fileType] ? iconStyles[download.fileType].icon : 'file'}}"
+                                ng-style="iconStyles[download.fileType].style || iconStyles['file'].style"></md-icon>
+                    </div>
+                    <div class="md-tile-content" layout="row" layout-align="space-between center">
+                        <div layout="column">
+                            <h3>{{download.name}}</h3>
+
+                            <p>{{download.shortDesc}}</p>
+                        </div>
+                        <div layout="row">
+                            <table>
+                                <tr>
+                                    <td><h4 class="date-pad">{{download.modDate | amDateFormat:'MM/DD/YYYY h:mm:ss A' }}</h4></td>
+                                    <td>
+                                        <md-button class="md-accent md-button-small" aria-label="Download File"
+                                                   ng-href="api/downloads/{{download.id}}">
+                                            <md-icon md-svg-icon="file:file_download"
+                                                     style="width:24px; height: 24px;"></md-icon>
+                                        </md-button>
+                                    </td>
+                                </tr>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </md-item-content>
+                <md-divider ng-if="!$last"></md-divider>
+            </md-item>
+        </md-list>
+    </section>
+    <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-if="user" ng-click="createDownload($event)"
+               aria-label="Add Download">
+        <md-icon md-svg-icon="content:add"></md-icon>
+    </md-button>
+</div>

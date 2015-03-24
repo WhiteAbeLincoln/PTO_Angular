@@ -1,0 +1,65 @@
+<md-dialog aria-label="Create Download">
+    <md-content class="sticky-container">
+        <md-subheader class="md-sticky-no-effect">Create Download</md-subheader>
+        <form name='dlForm'>
+            <md-autocomplete placeholder="Download Type" md-selected-item="debug.typeObj"
+                             md-search-text="debug.searchText"
+                             md-items="item in query(debug.searchText)" md-item-text="item.display"
+                             md-selected-item-change="createType()"
+                             md-search-text-change="createType()" required>
+                <span md-highlight-text="debug.searchText">{{item.display}}</span>
+            </md-autocomplete>
+            <div layout='row' layout-sm="column" layout-fill>
+                <div layout='column' flex>
+                    <md-input-container>
+                        <label>Name</label>
+                        <input type='text' name='dlname' ng-model='download.name' required>
+
+                        <div ng-messages="dlForm.dlname.$error">
+                            <div ng-message="required">This is required</div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Short Description</label>
+                        <input type='text' name='shortDesc' ng-model='download.shortDesc'>
+                    </md-input-container>
+                    <md-input-container>
+                        <label>Description</label>
+                        <textarea name='desc' ng-model='download.desc' required></textarea>
+
+                        <div ng-messages="dlForm.desc.$error">
+                            <div ng-message="required">This is required</div>
+                        </div>
+                    </md-input-container>
+                </div>
+                <div layout='column' layout-align='center center'>
+                    <input multiple type="file" id="fileInput" name="file" style='display:none' ng-model="download.file"
+                           onchange="angular.element(this).scope().fileChange()">
+                    <md-button type='button' ng-click="fileUpload()">Upload File</md-button>
+                    <table>
+                        <tr ng-repeat="file in download.files">
+                            <td><span>{{file.name}}</span></td>
+                            <td>
+                                <md-progress-circular ng-hide="pgress[$index] == 100"
+                                                      md-mode="indeterminate"></md-progress-circular>
+                                <md-button ng-show="pgress[$index] == 100" class="md-warn md-button-small"
+                                           ng-click="removeFile($index)" aria-label="Delete">
+                                    <md-icon md-svg-icon="content:clear"></md-icon>
+                                </md-button>
+                            </td>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
+        </form>
+        <pre ng-bind="download | json" style="overflow: auto;"></pre>
+        <pre ng-bind="debug | json" style="overflow: auto;"></pre>
+    </md-content>
+    <div class="md-actions" layout="row">
+        <md-button class="md-warn md-button-small" ng-click="cancel('canceled')">Cancel</md-button>
+        <md-button class="md-button-small" ng-disabled="!download.files.length > 0 || !download.type || dlForm.$invalid"
+                   ng-click="submit(download)">Submit
+        </md-button>
+    </div>
+</md-dialog>

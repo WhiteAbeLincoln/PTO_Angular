@@ -6,7 +6,6 @@ Built using the angular material library
 + Install grunt using `npm install -g grunt-cli` on the command line.
 + Install development dependencies with `npm install` when in the project directory.
 + Run `grunt wiredep` to insert bower component scripts.
-
 ## Server ##
 login with your real first name, lowercase -- hopefully you know the hostname, b/c i'm not typing it here.
 @princeali97 - remember you are using nodejs and creating a RESTful api for our database
