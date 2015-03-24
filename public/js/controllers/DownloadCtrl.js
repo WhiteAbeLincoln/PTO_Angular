@@ -17,7 +17,12 @@
                     templateUrl: 'partials/admin/download.tmpl.html',
                     targetEvent: ev
                 }).then(function(answer){
-                    alert(JSON.stringify(answer));
+                    prompt(null, JSON.stringify(answer));
+                    var dl = new Download(answer);
+                    dl.$save(function(data, headers){
+
+                    });
+
                 }, function(){
                     alert('cancelled');
                 })
