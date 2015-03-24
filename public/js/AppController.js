@@ -18,7 +18,7 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
     }])
 
     .factory('Download', ['$resource', function($resource){
-        return $resource('/api/download/:id');
+        return $resource('/api/downloads/:id');
     }])
 
     .factory('Volunteer', ['$resource', function($resource){

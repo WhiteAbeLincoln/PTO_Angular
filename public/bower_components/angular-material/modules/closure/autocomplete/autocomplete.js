@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -28,17 +28,13 @@ goog.require('ng.material.core');
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $q, $mdUtil, $mdConstant) {
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
 
     //-- private variables
     var self = this,
         itemParts = $scope.itemsExpr.split(/ in /i),
         itemExpr = itemParts[1],
-        elements = {
-          main:  $element[0],
-          ul:    $element[0].getElementsByTagName('ul')[0],
-          input: $element[0].getElementsByTagName('input')[0]
-        },
+        elements = null,
         promise = null,
         cache = {},
         noBlur = false;
@@ -58,6 +54,7 @@ goog.require('ng.material.core');
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
     self.messages = [];
+    self.id = $mdUtil.nextUid();
 
     //-- While the mouse is inside of the dropdown, we don't want to handle input blur
     //-- This is to allow the user to scroll the list without causing it to hide
@@ -69,16 +66,17 @@ goog.require('ng.material.core');
 
     //-- start method definitions
     function init () {
+      if ($scope.autofocus) elements.input.focus();
       configureWatchers();
-      configureAria();
+      $timeout(gatherElements);
     }
 
-    function configureAria () {
-      var ul = angular.element(elements.ul),
-          input = angular.element(elements.input),
-          id = ul.attr('id') || 'ul_' + $mdUtil.nextUid();
-      ul.attr('id', id);
-      input.attr('aria-owns', id);
+    function gatherElements () {
+      elements = {
+        main:  $element[0],
+        ul:    $element[0].getElementsByTagName('ul')[0],
+        input: $element[0].getElementsByTagName('input')[0]
+      };
     }
 
     function getItemScope (item) {
@@ -94,13 +92,22 @@ goog.require('ng.material.core');
           ? $mdUtil.debounce(handleSearchText, wait)
           : handleSearchText);
       $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+        if (selectedItem) {
+          $scope.searchText = getDisplayValue(selectedItem);
+        }
         if ($scope.itemChange && selectedItem !== previousSelectedItem)
           $scope.itemChange(getItemScope(selectedItem));
       });
     }
 
     function handleSearchText (searchText, previousSearchText) {
-      self.index = -1;
+      self.index = 0;
+      //-- do nothing on init if there is no initial value
+      if (!searchText && searchText === previousSearchText) return;
+      //-- clear selected item if search text no longer matches it
+      if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
+      else return;
+      //-- cancel results if search text is not long enough
       if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
         self.loading = false;
         self.matches = [];
@@ -109,15 +116,17 @@ goog.require('ng.material.core');
         return;
       }
       var term = searchText.toLowerCase();
+      //-- cancel promise if a promise is in progress
       if (promise && promise.cancel) {
         promise.cancel();
         promise = null;
       }
+      //-- if results are cached, pull in cached results
       if (!$scope.noCache && cache[term]) {
         self.matches = cache[term];
         updateMessages();
       } else {
-        self.fetch(searchText);
+        fetchResults(searchText);
       }
       self.hidden = shouldHide();
       if ($scope.textChange && searchText !== previousSearchText)
@@ -131,7 +140,9 @@ goog.require('ng.material.core');
         handleResults(items);
       } else {
         self.loading = true;
-        promise = $q.when(items).then(handleResults);
+        if (items.success) items.success(handleResults);
+        if (items.then)    items.then(handleResults);
+        if (items.error)   items.error(function () { self.loading = false; });
       }
       function handleResults (matches) {
         cache[term] = matches;
@@ -187,7 +198,7 @@ goog.require('ng.material.core');
         case $mdConstant.KEY_CODE.ESCAPE:
             self.matches = [];
             self.hidden = true;
-            self.index = -1;
+            self.index = 0;
             break;
         case $mdConstant.KEY_CODE.TAB:
             break;
@@ -202,7 +213,9 @@ goog.require('ng.material.core');
     }
 
     function shouldHide () {
-      return self.matches.length === 1 && $scope.searchText === getDisplayValue(self.matches[0]);
+      return self.matches.length === 1
+          && $scope.searchText === getDisplayValue(self.matches[0])
+          && $scope.selectedItem === self.matches[0];
     }
 
     function getCurrentDisplayValue () {
@@ -217,7 +230,7 @@ goog.require('ng.material.core');
       $scope.selectedItem = self.matches[index];
       $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
       self.hidden = true;
-      self.index = -1;
+      self.index = 0;
       self.matches = [];
     }
 
@@ -233,7 +246,7 @@ goog.require('ng.material.core');
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$q", "$mdUtil", "$mdConstant"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout"];
 })();
 
 (function () {
@@ -262,6 +275,7 @@ goog.require('ng.material.core');
    * @param {boolean=} ng-disabled Determines whether or not to disable the input field
    * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will make suggestions
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
+   * @param {boolean=} md-autofocus If true, will immediately focus the input element
    *
    * @usage
    * <hljs lang="html">
@@ -277,14 +291,37 @@ goog.require('ng.material.core');
 
   function MdAutocomplete () {
     return {
-      template:     '\
+      template: '\
         <md-autocomplete-wrap role="listbox">\
+          <md-input-container ng-if="floatingLabel">\
+            <label>{{floatingLabel}}</label>\
+            <input type="text"\
+                id="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                name="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                autocomplete="off"\
+                ng-disabled="isDisabled"\
+                ng-model="$mdAutocompleteCtrl.scope.searchText"\
+                ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+                ng-blur="$mdAutocompleteCtrl.blur()"\
+                aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                aria-label="{{floatingLabel}}"\
+                aria-autocomplete="list"\
+                aria-haspopup="true"\
+                aria-activedescendant=""\
+                aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
+              \
+          </md-input-container>\
           <input type="text"\
+              id="input-{{$mdAutocompleteCtrl.id}}"\
+              name="input-{{$mdAutocompleteCtrl.id}}"\
+              ng-if="!floatingLabel"\
+              autocomplete="off"\
               ng-disabled="isDisabled"\
-              ng-model="searchText"\
+              ng-model="$mdAutocompleteCtrl.scope.searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur()"\
               placeholder="{{placeholder}}"\
+              aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\
               aria-haspopup="true"\
@@ -292,7 +329,7 @@ goog.require('ng.material.core');
               aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
           <button\
               type="button"\
-              ng-if="searchText"\
+              ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
               ng-click="$mdAutocompleteCtrl.clear()">\
             <md-icon md-svg-icon="cancel"></md-icon>\
             <span class="visually-hidden">Clear</span>\
@@ -300,19 +337,20 @@ goog.require('ng.material.core');
           <md-progress-linear\
               ng-if="$mdAutocompleteCtrl.loading"\
               md-mode="indeterminate"></md-progress-linear>\
+          <ul role="presentation"\
+              id="ul-{{$mdAutocompleteCtrl.id}}"\
+              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+              ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+            <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
+                ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
+                ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
+                ng-click="$mdAutocompleteCtrl.select(index)"\
+                ng-transclude\
+                md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
+            </li>\
+          </ul>\
         </md-autocomplete-wrap>\
-        <ul role="presentation"\
-            ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-            ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-            ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
-          <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
-              ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-              ng-show="searchText && !$mdAutocompleteCtrl.hidden"\
-              ng-click="$mdAutocompleteCtrl.select(index)"\
-              ng-transclude\
-              md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
-          </li>\
-        </ul>\
         <aria-status\
             class="visually-hidden"\
             role="status"\
@@ -323,17 +361,19 @@ goog.require('ng.material.core');
       controller:   'MdAutocompleteCtrl',
       controllerAs: '$mdAutocompleteCtrl',
       scope:        {
-        searchText:   '=mdSearchText',
-        selectedItem: '=mdSelectedItem',
-        itemsExpr:    '@mdItems',
-        itemText:     '&mdItemText',
-        placeholder:  '@placeholder',
-        noCache:      '=mdNoCache',
-        itemChange:   '&mdSelectedItemChange',
-        textChange:   '&mdSearchTextChange',
-        isDisabled:   '=ngDisabled',
-        minLength:    '=mdMinLength',
-        delay:        '=mdDelay'
+        searchText:    '=mdSearchText',
+        selectedItem:  '=mdSelectedItem',
+        itemsExpr:     '@mdItems',
+        itemText:      '&mdItemText',
+        placeholder:   '@placeholder',
+        noCache:       '=mdNoCache',
+        itemChange:    '&mdSelectedItemChange',
+        textChange:    '&mdSearchTextChange',
+        isDisabled:    '=ngDisabled',
+        minLength:     '=mdMinLength',
+        delay:         '=mdDelay',
+        autofocus:     '=mdAutofocus',
+        floatingLabel: '@mdFloatingLabel'
       }
     };
   }

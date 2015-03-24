@@ -64,9 +64,9 @@ function Server() {
             },
             insert: Q.nbind(db.query, db,
                 "INSERT INTO M_Payments"
-                +   "(memberId, charge, nameFirst, nameLast, amount) "
-                +   "VALUES "
-                +   "(?,?,?,?,?)"),
+                + "(memberId, charge, nameFirst, nameLast, amount) "
+                + "VALUES "
+                + "(?,?,?,?,?)"),
             query: function () {}
         }
     };
@@ -74,12 +74,34 @@ function Server() {
     this.downloads = {
         queryAll:  Q.nbind(db.query, db,
                 "SELECT "
-                + "Downloads.downloadId, Downloads.downloadName, Downloads.filePath, "
-                + "Downloads.modDate, Downloads.shortDesc AS shortDescription, Downloads.description AS longDescription, "
-                + "Types.name AS downloadType "
+                + "Downloads.downloadId AS id, Downloads.downloadName AS name, "
+                + "Downloads.modDate, Downloads.shortDesc, Downloads.description, "
+                + "Downloads.filePath, Downloads.mimeType, Types.name AS downloadType "
                 + "FROM Downloads "
-                + "LEFT JOIN DownloadTypes AS Types ON Downloads.downloadType = Types.typeId")
+                + "LEFT JOIN DownloadTypes AS Types ON Downloads.downloadType = Types.typeId"),
+        query: Q.nbind(db.query, db,
+                "SELECT "
+                + "Downloads.downloadId AS id, Downloads.downloadName AS name, "
+                + "Downloads.modDate, Downloads.shortDesc, Downloads.description, "
+                + "Downloads.filePath, Downloads.mimeType, Types.name AS downloadType "
+                + "FROM Downloads "
+                + "LEFT JOIN DownloadTypes AS Types ON Downloads.downloadType = Types.typeId "
+                + "WHERE Downloads.downloadId = ?"),
+        insert: Q.nbind(db.query, db,
+                "INSERT INTO Admins "
+                + "(firstName, lastName, email, type, username, password, salt) "
+                + "VALUES "
+                + "(?,?,?,?,?,?,?)"),
+        types: {
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM DownloadTypes"),
+            insert: Q.nbind(db.query, db,
+                "INSERT INTO DownloadTypes "
+                + "(name) "
+                + "VALUES (?)")
+        }
     };
+
 
     this.admin = {
         create: Q.nbind(db.query, db,

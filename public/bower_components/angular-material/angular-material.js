@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -96,7 +96,9 @@ function MdConstantFactory($$rAF, $sniffer) {
       UP_ARROW : 38,
       RIGHT_ARROW : 39,
       DOWN_ARROW : 40,
-      TAB : 9
+      TAB : 9,
+      BACKSPACE: 8,
+      DELETE: 46
     },
     CSS: {
       /* Constants */
@@ -139,7 +141,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function(){
 
@@ -376,7 +378,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function(){
 
@@ -515,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -810,7 +812,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -900,7 +902,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -1045,7 +1047,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -1464,7 +1466,7 @@ angular.module('material.core')
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -1899,7 +1901,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
   'use strict';
@@ -2032,7 +2034,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -2457,7 +2459,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -2829,7 +2831,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -3416,7 +3418,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -3437,7 +3439,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -3476,7 +3478,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -3744,7 +3746,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -3808,7 +3810,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
   };
 
   function isAnchor(attr) {
-    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref);
+    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref) || angular.isDefined(attr.uiSref);
   }
   
   function getTemplate(element, attr) {
@@ -3844,7 +3846,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -3903,7 +3905,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -4044,7 +4046,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -4130,7 +4132,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -4795,7 +4797,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -4844,7 +4846,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -5588,7 +5590,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -5701,7 +5703,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
   'use strict';
@@ -6165,7 +6167,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 
@@ -6508,7 +6510,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -6604,7 +6606,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -6714,7 +6716,7 @@ MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -6843,7 +6845,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -7141,7 +7143,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -8044,7 +8046,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -8380,7 +8382,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
   'use strict';
@@ -8783,7 +8785,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9095,7 +9097,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9182,7 +9184,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9260,7 +9262,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9429,7 +9431,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9468,7 +9470,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9612,7 +9614,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -9878,7 +9880,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -10037,7 +10039,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -10046,10 +10048,9 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * @ngdoc module
  * @name material.components.tooltip
  */
-angular.module('material.components.tooltip', [
-  'material.core'
-])
-  .directive('mdTooltip', MdTooltipDirective);
+angular
+    .module('material.components.tooltip', [ 'material.core' ])
+    .directive('mdTooltip', MdTooltipDirective);
 
 /**
  * @ngdoc directive
@@ -10078,15 +10079,15 @@ angular.module('material.components.tooltip', [
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement, $animate, $q) {
 
-  var TOOLTIP_SHOW_DELAY = 0;
+  var TOOLTIP_SHOW_DELAY = 300;
   var TOOLTIP_WINDOW_EDGE_SPACE = 8;
 
   return {
     restrict: 'E',
     transclude: true,
-    template:
-      '<div class="md-background"></div>' +
-      '<div class="md-content" ng-transclude></div>',
+    template: '\
+        <div class="md-background"></div>\
+        <div class="md-content" ng-transclude></div>',
     scope: {
       visible: '=?mdVisible',
       delay: '=?mdDelay'
@@ -10094,59 +10095,73 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     link: postLink
   };
 
-  function postLink(scope, element, attr, contentCtrl) {
+  function postLink(scope, element, attr) {
+
     $mdTheming(element);
-    var parent = element.parent();
-    var background = angular.element(element[0].getElementsByClassName('md-background')[0]);
-    var content = angular.element(element[0].getElementsByClassName('md-content')[0]);
-    var direction = attr.mdDirection;
 
-    // Keep looking for a higher parent if our current one has no pointer events
-    while ($window.getComputedStyle(parent[0])['pointer-events'] == 'none') {
-      parent = parent.parent();
+    var parent        = getParentWithPointerEvents(),
+        background    = angular.element(element[0].getElementsByClassName('md-background')[0]),
+        content       = angular.element(element[0].getElementsByClassName('md-content')[0]),
+        direction     = attr.mdDirection,
+        current       = getNearestContentElement(),
+        tooltipParent = angular.element(current || document.body),
+        debouncedOnResize = $$rAF.throttle(function () { if (scope.visible) positionTooltip(); });
+
+    return init();
+
+    function init () {
+      setDefaults();
+      manipulateElement();
+      bindEvents();
+      configureWatchers();
     }
 
-    // Look for the nearest parent md-content, stopping at the rootElement.
-    var current = element.parent()[0];
-    while (current && current !== $rootElement[0] && current !== document.body) {
-      if (current.tagName && current.tagName.toLowerCase() == 'md-content') break;
-      current = current.parentNode;
-    }
-    var tooltipParent = angular.element(current || document.body);
-
-    if (!angular.isDefined(attr.mdDelay)) {
-      scope.delay = TOOLTIP_SHOW_DELAY;
+    function setDefaults () {
+      if (!angular.isDefined(attr.mdDelay)) scope.delay = TOOLTIP_SHOW_DELAY;
     }
 
-    // We will re-attach tooltip when visible
-    element.detach();
-    element.attr('role', 'tooltip');
-    element.attr('id', attr.id || ('tooltip_' + $mdUtil.nextUid()));
+    function configureWatchers () {
+      scope.$watch('visible', function (isVisible) {
+        if (isVisible) showTooltip();
+        else hideTooltip();
+      });
+      scope.$on('$destroy', function() {
+        scope.visible = false;
+        element.remove();
+        angular.element($window).off('resize', debouncedOnResize);
+      });
+    }
 
-    parent.on('focus mouseenter touchstart', function() { setVisible(true); });
-    parent.on('blur mouseleave touchend touchcancel', function() { if ($document[0].activeElement !== parent[0]) setVisible(false); });
+    function manipulateElement () {
+      element.detach();
+      element.attr('role', 'tooltip');
+      element.attr('id', attr.id || ('tooltip_' + $mdUtil.nextUid()));
+    }
 
-    scope.$watch('visible', function(isVisible) {
-      if (isVisible) showTooltip();
-      else hideTooltip();
-    });
+    function getParentWithPointerEvents () {
+      var parent = element.parent();
+      while ($window.getComputedStyle(parent[0])['pointer-events'] == 'none') {
+        parent = parent.parent();
+      }
+      return parent;
+    }
 
-    var debouncedOnResize = $$rAF.throttle(function () { if (scope.visible) positionTooltip(); });
-    angular.element($window).on('resize', debouncedOnResize);
+    function getNearestContentElement () {
+      var current = element.parent()[0];
+      // Look for the nearest parent md-content, stopping at the rootElement.
+      while (current && current !== $rootElement[0] && current !== document.body) {
+        if (current.tagName && current.tagName.toLowerCase() == 'md-content') break;
+        current = current.parentNode;
+      }
+      return current;
+    }
 
-    // Be sure to completely cleanup the element on destroy
-    scope.$on('$destroy', function() {
-      scope.visible = false;
-      element.remove();
-      angular.element($window).off('resize', debouncedOnResize);
-    });
+    function bindEvents () {
+      parent.on('focus mouseenter touchstart', function() { setVisible(true); });
+      parent.on('blur mouseleave touchend touchcancel', function() { if ($document[0].activeElement !== parent[0]) setVisible(false); });
+      angular.element($window).on('resize', debouncedOnResize);
+    }
 
-    // *******
-    // Methods
-    // *******
-
-    // If setting visible to true, debounce to scope.delay ms
-    // If setting visible to false and no timeout is active, instantly hide the tooltip.
     function setVisible (value) {
       setVisible.value = !!value;
       if (!setVisible.queued) {
@@ -10156,7 +10171,6 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
             scope.visible = setVisible.value;
             setVisible.queued = false;
           }, scope.delay);
-
         } else {
           $timeout(function() { scope.visible = false; });
         }
@@ -10168,12 +10182,10 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       parent.attr('aria-describedby', element.attr('id'));
       tooltipParent.append(element);
 
-      // Wait until the element has been in the dom for two frames before fading it in.
-      // Additionally, we position the tooltip twice to avoid positioning bugs
       positionTooltip();
-      $animate.addClass(element, 'md-show');
-      $animate.addClass(background, 'md-show');
-      $animate.addClass(content, 'md-show');
+      angular.forEach([element, background, content], function (element) {
+        $animate.addClass(element, 'md-show');
+      });
     }
 
     function hideTooltip() {
@@ -10196,7 +10208,7 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
       // Otherwise, recalculate based on 'top' since default is 'bottom'
       if (direction) {
         newPosition = fitInParent(newPosition);
-      } else if (newPosition.top > tooltipParent.prop('scrollHeight') - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
+      } else if (newPosition.top > element.prop('offsetParent').scrollHeight - tipRect.height - TOOLTIP_WINDOW_EDGE_SPACE) {
         newPosition = fitInParent(getPosition('top'));
       }
 
@@ -10254,7 +10266,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -10270,7 +10282,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -10278,17 +10290,13 @@ angular.module('material.components.whiteframe', []);
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $q, $mdUtil, $mdConstant) {
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
 
     //-- private variables
     var self = this,
         itemParts = $scope.itemsExpr.split(/ in /i),
         itemExpr = itemParts[1],
-        elements = {
-          main:  $element[0],
-          ul:    $element[0].getElementsByTagName('ul')[0],
-          input: $element[0].getElementsByTagName('input')[0]
-        },
+        elements = null,
         promise = null,
         cache = {},
         noBlur = false;
@@ -10308,6 +10316,7 @@ angular.module('material.components.whiteframe', []);
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
     self.messages = [];
+    self.id = $mdUtil.nextUid();
 
     //-- While the mouse is inside of the dropdown, we don't want to handle input blur
     //-- This is to allow the user to scroll the list without causing it to hide
@@ -10319,16 +10328,17 @@ angular.module('material.components.whiteframe', []);
 
     //-- start method definitions
     function init () {
+      if ($scope.autofocus) elements.input.focus();
       configureWatchers();
-      configureAria();
+      $timeout(gatherElements);
     }
 
-    function configureAria () {
-      var ul = angular.element(elements.ul),
-          input = angular.element(elements.input),
-          id = ul.attr('id') || 'ul_' + $mdUtil.nextUid();
-      ul.attr('id', id);
-      input.attr('aria-owns', id);
+    function gatherElements () {
+      elements = {
+        main:  $element[0],
+        ul:    $element[0].getElementsByTagName('ul')[0],
+        input: $element[0].getElementsByTagName('input')[0]
+      };
     }
 
     function getItemScope (item) {
@@ -10344,13 +10354,22 @@ angular.module('material.components.whiteframe', []);
           ? $mdUtil.debounce(handleSearchText, wait)
           : handleSearchText);
       $scope.$watch('selectedItem', function (selectedItem, previousSelectedItem) {
+        if (selectedItem) {
+          $scope.searchText = getDisplayValue(selectedItem);
+        }
         if ($scope.itemChange && selectedItem !== previousSelectedItem)
           $scope.itemChange(getItemScope(selectedItem));
       });
     }
 
     function handleSearchText (searchText, previousSearchText) {
-      self.index = -1;
+      self.index = 0;
+      //-- do nothing on init if there is no initial value
+      if (!searchText && searchText === previousSearchText) return;
+      //-- clear selected item if search text no longer matches it
+      if (searchText !== getDisplayValue($scope.selectedItem)) $scope.selectedItem = null;
+      else return;
+      //-- cancel results if search text is not long enough
       if (!searchText || searchText.length < Math.max(parseInt($scope.minLength, 10), 1)) {
         self.loading = false;
         self.matches = [];
@@ -10359,15 +10378,17 @@ angular.module('material.components.whiteframe', []);
         return;
       }
       var term = searchText.toLowerCase();
+      //-- cancel promise if a promise is in progress
       if (promise && promise.cancel) {
         promise.cancel();
         promise = null;
       }
+      //-- if results are cached, pull in cached results
       if (!$scope.noCache && cache[term]) {
         self.matches = cache[term];
         updateMessages();
       } else {
-        self.fetch(searchText);
+        fetchResults(searchText);
       }
       self.hidden = shouldHide();
       if ($scope.textChange && searchText !== previousSearchText)
@@ -10381,7 +10402,9 @@ angular.module('material.components.whiteframe', []);
         handleResults(items);
       } else {
         self.loading = true;
-        promise = $q.when(items).then(handleResults);
+        if (items.success) items.success(handleResults);
+        if (items.then)    items.then(handleResults);
+        if (items.error)   items.error(function () { self.loading = false; });
       }
       function handleResults (matches) {
         cache[term] = matches;
@@ -10437,7 +10460,7 @@ angular.module('material.components.whiteframe', []);
         case $mdConstant.KEY_CODE.ESCAPE:
             self.matches = [];
             self.hidden = true;
-            self.index = -1;
+            self.index = 0;
             break;
         case $mdConstant.KEY_CODE.TAB:
             break;
@@ -10452,7 +10475,9 @@ angular.module('material.components.whiteframe', []);
     }
 
     function shouldHide () {
-      return self.matches.length === 1 && $scope.searchText === getDisplayValue(self.matches[0]);
+      return self.matches.length === 1
+          && $scope.searchText === getDisplayValue(self.matches[0])
+          && $scope.selectedItem === self.matches[0];
     }
 
     function getCurrentDisplayValue () {
@@ -10467,7 +10492,7 @@ angular.module('material.components.whiteframe', []);
       $scope.selectedItem = self.matches[index];
       $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
       self.hidden = true;
-      self.index = -1;
+      self.index = 0;
       self.matches = [];
     }
 
@@ -10483,14 +10508,14 @@ angular.module('material.components.whiteframe', []);
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$q", "$mdUtil", "$mdConstant"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout"];
 })();
 
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -10518,6 +10543,7 @@ angular.module('material.components.whiteframe', []);
    * @param {boolean=} ng-disabled Determines whether or not to disable the input field
    * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will make suggestions
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
+   * @param {boolean=} md-autofocus If true, will immediately focus the input element
    *
    * @usage
    * <hljs lang="html">
@@ -10533,14 +10559,37 @@ angular.module('material.components.whiteframe', []);
 
   function MdAutocomplete () {
     return {
-      template:     '\
+      template: '\
         <md-autocomplete-wrap role="listbox">\
+          <md-input-container ng-if="floatingLabel">\
+            <label>{{floatingLabel}}</label>\
+            <input type="text"\
+                id="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                name="fl-input-{{$mdAutocompleteCtrl.id}}"\
+                autocomplete="off"\
+                ng-disabled="isDisabled"\
+                ng-model="$mdAutocompleteCtrl.scope.searchText"\
+                ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
+                ng-blur="$mdAutocompleteCtrl.blur()"\
+                aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
+                aria-label="{{floatingLabel}}"\
+                aria-autocomplete="list"\
+                aria-haspopup="true"\
+                aria-activedescendant=""\
+                aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
+              \
+          </md-input-container>\
           <input type="text"\
+              id="input-{{$mdAutocompleteCtrl.id}}"\
+              name="input-{{$mdAutocompleteCtrl.id}}"\
+              ng-if="!floatingLabel"\
+              autocomplete="off"\
               ng-disabled="isDisabled"\
-              ng-model="searchText"\
+              ng-model="$mdAutocompleteCtrl.scope.searchText"\
               ng-keydown="$mdAutocompleteCtrl.keydown($event)"\
               ng-blur="$mdAutocompleteCtrl.blur()"\
               placeholder="{{placeholder}}"\
+              aria-owns="ul-{{$mdAutocompleteCtrl.id}}"\
               aria-label="{{placeholder}}"\
               aria-autocomplete="list"\
               aria-haspopup="true"\
@@ -10548,7 +10597,7 @@ angular.module('material.components.whiteframe', []);
               aria-expanded="{{!$mdAutocompleteCtrl.hidden}}"/>\
           <button\
               type="button"\
-              ng-if="searchText"\
+              ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
               ng-click="$mdAutocompleteCtrl.clear()">\
             <md-icon md-svg-icon="cancel"></md-icon>\
             <span class="visually-hidden">Clear</span>\
@@ -10556,19 +10605,20 @@ angular.module('material.components.whiteframe', []);
           <md-progress-linear\
               ng-if="$mdAutocompleteCtrl.loading"\
               md-mode="indeterminate"></md-progress-linear>\
+          <ul role="presentation"\
+              id="ul-{{$mdAutocompleteCtrl.id}}"\
+              ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
+              ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
+              ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
+            <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
+                ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
+                ng-show="$mdAutocompleteCtrl.scope.searchText && !$mdAutocompleteCtrl.hidden"\
+                ng-click="$mdAutocompleteCtrl.select(index)"\
+                ng-transclude\
+                md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
+            </li>\
+          </ul>\
         </md-autocomplete-wrap>\
-        <ul role="presentation"\
-            ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
-            ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
-            ng-mouseup="$mdAutocompleteCtrl.mouseUp()">\
-          <li ng-repeat="(index, item) in $mdAutocompleteCtrl.matches"\
-              ng-class="{ selected: index === $mdAutocompleteCtrl.index }"\
-              ng-show="searchText && !$mdAutocompleteCtrl.hidden"\
-              ng-click="$mdAutocompleteCtrl.select(index)"\
-              ng-transclude\
-              md-autocomplete-list-item="$mdAutocompleteCtrl.itemName">\
-          </li>\
-        </ul>\
         <aria-status\
             class="visually-hidden"\
             role="status"\
@@ -10579,17 +10629,19 @@ angular.module('material.components.whiteframe', []);
       controller:   'MdAutocompleteCtrl',
       controllerAs: '$mdAutocompleteCtrl',
       scope:        {
-        searchText:   '=mdSearchText',
-        selectedItem: '=mdSelectedItem',
-        itemsExpr:    '@mdItems',
-        itemText:     '&mdItemText',
-        placeholder:  '@placeholder',
-        noCache:      '=mdNoCache',
-        itemChange:   '&mdSelectedItemChange',
-        textChange:   '&mdSearchTextChange',
-        isDisabled:   '=ngDisabled',
-        minLength:    '=mdMinLength',
-        delay:        '=mdDelay'
+        searchText:    '=mdSearchText',
+        selectedItem:  '=mdSelectedItem',
+        itemsExpr:     '@mdItems',
+        itemText:      '&mdItemText',
+        placeholder:   '@placeholder',
+        noCache:       '=mdNoCache',
+        itemChange:    '&mdSelectedItemChange',
+        textChange:    '&mdSearchTextChange',
+        isDisabled:    '=ngDisabled',
+        minLength:     '=mdMinLength',
+        delay:         '=mdDelay',
+        autofocus:     '=mdAutofocus',
+        floatingLabel: '@mdFloatingLabel'
       }
     };
   }
@@ -10599,7 +10651,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -10630,7 +10682,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -10674,7 +10726,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function () {
   'use strict';
@@ -10704,7 +10756,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -10769,7 +10821,7 @@ MdTabInkDirective.$inject = ["$$rAF"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -11028,7 +11080,7 @@ TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$ti
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -11145,7 +11197,7 @@ TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$anima
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -11387,7 +11439,7 @@ MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", 
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';
@@ -11533,7 +11585,7 @@ MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 (function() {
 'use strict';

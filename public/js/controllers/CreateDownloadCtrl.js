@@ -1,9 +1,55 @@
 (function(){
     angular.module('myApp.controllers')
-        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$mdDialog', function($scope, FileReader, $mdDialog){
+        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$mdDialog', '$http', function($scope, FileReader, $mdDialog, $http){
             $scope.download = {};
             $scope.pgress = [];
             $scope.download.files = [];
+            $scope.query = querySearch;
+
+            $http.get('/api/downloadTypes').success(function(data){
+                $scope.types = data.map(function(type){
+                    return {
+                        value: type.name.toLowerCase(),
+                        display: type.name
+                    }
+                });
+            });
+
+            function querySearch (query) {
+                return query ? $scope.types.filter( createFilterFor(query) ) : [1,2,3,4,5];
+            }
+
+            function createFilterFor(query) {
+                var lowercaseQuery = angular.lowercase(query);
+                return function filterFn(type) {
+                    return (type.value.indexOf(lowercaseQuery) === 0);
+                };
+            }
+
+            $scope.createType = function(){
+                if ($scope.debug.typeObj){
+                    $scope.download.type = $scope.debug.typeObj.display;
+                    $scope.download.newType = false;
+                } else {
+                    $scope.download.type = $scope.debug.searchText;
+                    $scope.download.newType = true;
+                }
+            };
+
+            $scope.checkText = function (text){
+                for (var i =0; i < $scope.types.length; i++){
+                    var type = $scope.types[i];
+                    if (type.value == text.toLowerCase()){
+                        console.log('true');
+                        $scope.download.type = type.display;
+                        $scope.download.newType = false;
+                        break;
+                    } else {
+                        console.log('false');
+                        $scope.download.newType = true;
+                    }
+                }
+            };
 
             //TODO: Change this to a directive element
             $scope.fileUpload = function(){
@@ -60,6 +106,7 @@
             };
 
             $scope.submit = function(data){
+                $scope.checkText($scope.debug.searchText);
                 $mdDialog.hide(data);
             }
 

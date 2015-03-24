@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-a15347c
+ * v0.8.3-master-8911fad
  */
 goog.provide('ng.material.components.button');
 goog.require('ng.material.core');
@@ -68,7 +68,7 @@ function MdButtonDirective($mdInkRipple, $mdTheming, $mdAria) {
   };
 
   function isAnchor(attr) {
-    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref);
+    return angular.isDefined(attr.href) || angular.isDefined(attr.ngHref) || angular.isDefined(attr.uiSref);
   }
   
   function getTemplate(element, attr) {
