@@ -66,7 +66,7 @@
 
                 (function uploadFile (filenum){
                     var file = $scope.download.files[filenum];
-                    if (file.size < 10000000) {
+                    if (file.size < 100000000) {
                         if (!$scope.download.files[filenum].data) {
                             FileReader.readAsDataUrl(file, $scope).then(function (result) {
                                 $scope.download.files[filenum].data = result;

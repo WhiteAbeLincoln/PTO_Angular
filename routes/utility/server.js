@@ -88,17 +88,21 @@ function Server() {
                 + "LEFT JOIN DownloadTypes AS Types ON Downloads.downloadType = Types.typeId "
                 + "WHERE Downloads.downloadId = ?"),
         insert: Q.nbind(db.query, db,
-                "INSERT INTO Admins "
-                + "(firstName, lastName, email, type, username, password, salt) "
+                "INSERT INTO Downloads "
+                + "(downloadType, downloadName, description, shortDesc, filePath, modDate, mimeType) "
                 + "VALUES "
                 + "(?,?,?,?,?,?,?)"),
+        delete: Q.nbind(db.query, db,
+                "DELETE FROM Downloads WHERE downloadId = ?"),
         types: {
-            query: Q.nbind(db.query, db,
+            queryAll: Q.nbind(db.query, db,
                 "SELECT * FROM DownloadTypes"),
             insert: Q.nbind(db.query, db,
                 "INSERT INTO DownloadTypes "
                 + "(name) "
-                + "VALUES (?)")
+                + "VALUES (?)"),
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM DownloadTypes WHERE name = ?")
         }
     };
 

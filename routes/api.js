@@ -7,6 +7,8 @@ var myCrypt = require('./utility/crypto.js');
 var router = express.Router();
 var Server = require('./utility/server.js');
 var mime = require('mime');
+var fs = require('fs');
+var zip = require('jszip');
 var mySecret = 'd20042648ef8387611f9700ae50ee4dd05a3fc2410d9029a76a6e17d7873ef31abc7e2c43f6c7aac3c0d1c6be6afd996271c7c6d83f38e01fec0898fc8eac9e09ba835943734552973737384dee884e008675cd5974cd404c819b5720cf6721f702752a8ddb573c44a4b24fd9850ca756d7fb29a305c9450f151d31d0aed573e5a0f6dc291a3ab382fab5369581e4d8a8769cfbcc0521ace83de962e0a0c8449f05738802d784d26d1599eea00a3d88cb60ae0de3ec01721703e42e1a8c9cf99c7467af06bec75bf57a9a2a03d1189bd3d4e6bff49129954c8b834bc872fb83a867d4cebdf5fd0493eb6ac78c622f515ec3ac8838300f71494a52efe7522b8fe';
 var db = new Server();
 
@@ -20,12 +22,16 @@ router.get('/downloads/', function(req, res){
     db.downloads.queryAll().then(function(data){
         var types = {};
         var array = data[0];
-        for (var i in array) {      //bonus -- any downloads w/o a type will be added to an 'undefined' dl type
+
+        //creates an array of downloadTypes containing downloads from my returned array of download objects
+        for (var i in array) {
             var download = JSON.parse(JSON.stringify(array[i])); //returns new object by value -- not reference
             download.fileType = mime.extension(download.mimeType);
+            //these are not needed by client, so deleted for security
             delete download.downloadType;
             delete download.filePath;
 
+            //bonus -- any downloads w/o a type will be added to an 'undefined' dl type
             if (typeof (types[array[i].downloadType]) == "undefined"){
                 types[array[i].downloadType] = [];
             }
@@ -47,7 +53,7 @@ router.get('/downloads/:id/', function (req, res) {
         } else {
             var filename = download.name + '.' + mime.extension(download.mimeType);
             console.log(filename);
-            res.download('Files/'+download.filePath, filename, function(err){
+            res.download(download.filePath, filename, function(err){
                 if (err){
                     console.log(err);
                 } else {
@@ -64,22 +70,125 @@ router.get('/downloads/:id/', function (req, res) {
     });
 });
 
-router.put('/downloads/:id', function (req, res, next) {
+router.put('/downloads/:id', expressJwt({secret: mySecret}), function (req, res, next) {
     console.log('updating a download');
 });
 
-router.delete('downloads/:id', expressJwt({secret: mySecret}), function(req, res){
+router.delete('/downloads/:id', expressJwt({secret: mySecret}), function(req, res){
+    db.downloads.query([req.params.id]).then(function(data){
+        var download = data[0][0];
+
+        //deletes the file from the filesystem
+        fs.unlink(download.filePath, function(err){
+            if (err) throw err;
+        });
+
+        //deletes the database entry
+        return db.downloads.delete([req.params.id])
+    }).then(function(data){
+        res.status(204).send();
+    }).catch(function(err){
+        throw err;
+    });
+
+
+
 
 });
 
-router.post('/downloads', expressJwt({secret: mySecret}),
+router.post('/downloads', expressJwt({secret: mySecret}),           //This ones a monster.
 function (req, res) {
-    console.log('creating a download');
+    var path = 'files/downloads/';
+    var body = req.body;
+    var filename = body.name + Math.floor(new Date() / 1000); //unix timestamp -- ensures unique filename
+    var now = moment().format("YYYY-MM-DD HH:mm:ss");
+
+    //remove mimetype information from data string
+    var files = body.files.map(function(file){
+        file.data = file.data.split(',')[1];
+        return file;
+    });
+
+    if (typeof(body.shortDesc) == 'undefined'){       //grabs the first sentence in the long description if short doesn't exist
+        var match = body.desc.match(/^(.*?)[.?!]\s(?=[A-Z])/g) || [body.desc];
+        body.shortDesc = match[0];
+    }
+
+    if (files.length == 1) {
+        filename = filename + '.' + mime.extension(files[0].type);
+        body.mime = files[0].type;
+
+        fs.writeFile(path+filename, files[0].data, 'base64', function(err){
+            if (err) throw err;
+        });
+    } else {        //zips the file
+        filename = filename + '.zip';
+        body.mime = 'application/zip';
+        var zipFile = new zip();
+
+        for (var i = 0; i < files.length; i++){
+            zipFile.file(files[i].name, files[i].data, {base64: true});
+        }
+
+        fs.writeFile(path+filename, zipFile.generate({compression: "DEFLATE"}), 'base64', function(err){
+           if (err) throw err;
+        });
+    }
+
+    if (body.newType){      //if you need to create a new Download Type i.e. one didn't already exist
+        db.downloads.types.insert([body.type]).then(function(data) {
+            var type = data[0].insertId;
+
+            db.downloads.insert([
+                type,   body.name,  body.desc,  body.shortDesc,
+                path+filename,      now,        body.mime
+            ]).then(function(data){
+                db.downloads.query([data[0].insertId]).then(function(data2) {
+                    var types = {};         //create type object
+                    delete data2[0][0].filePath; //delete the file path off of the object, since not needed on client
+                    delete data2[0][0].downloadType;
+                    data2[0][0].fileType = mime.extension(data2[0][0].mimeType);
+
+                    types[body.type] = [];
+                    types[body.type].push(data2[0][0]);
+
+                    res.status(201).location('api/downloads/' + data[0].insertId);
+                    res.json(types);
+                })
+            })
+
+        }).catch(function(err){
+            throw err;
+        })
+    } else {
+        db.downloads.types.query([body.type]).then(function(data){
+            var type = data[0][0].typeId;
+
+            db.downloads.insert([
+                type,   body.name,  body.desc,  body.shortDesc,
+                path+filename,      now,        body.mime
+            ]).then(function(data){
+                db.downloads.query([data[0].insertId]).then(function(data2) {
+                    var types = {};
+                    delete data2[0][0].filePath;
+                    delete data2[0][0].downloadType;
+                    data2[0][0].fileType = mime.extension(data2[0][0].mimeType);
+
+                    types[body.type] = [];
+                    types[body.type].push(data2[0][0]);        //inserts an array, and pushes data to it.
+
+                    res.status(201).location('api/downloads/' + data[0].insertId);
+                    res.json(types);
+                });
+            })
+        }).catch(function(err){
+            throw err;
+        })
+    }
 });
 
 router.get('/downloadTypes', function(req, res){
-    db.downloads.types.query().then(function(data){
-        console.log(data[0]);
+    db.downloads.types.queryAll().then(function(data){
         res.json(data[0]);
     }).catch(function(err){
         console.log(err);
@@ -104,7 +213,7 @@ router.post('/members',
                 var payment = req.body.payment;
                 return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
             }).then(function(){
-                res.status(201).location('members/' + data[0].insertId);
+                res.status(201).location('api/members/' + data[0].insertId);
                 res.send();
             })
         }).catch(function(err){
@@ -125,7 +234,6 @@ router.post('/admin/login', function(req, res){
 
     db.admin.verify([req.body.username]).then(function(data){
         if (data[0].length == 0){       //if there is no user with that username
-            console.log("bad username");
             res.status(401).send('Incorrect username or password');
         }
 
@@ -133,10 +241,8 @@ router.post('/admin/login', function(req, res){
 
         return myCrypt.pbkdf2(req.body.password, creds.salt).then(function(key){
             if (creds.password === key.toString('base64')){            //correct password
-                console.log("correct pw");
                 return db.admin.getUser([req.body.username])
             } else {
-                console.log("bad pw");
                 res.status(401).send('Incorrect password or username');
             }
         });
@@ -157,7 +263,7 @@ router.post('/admin/login', function(req, res){
     }).catch(function(err){
         console.log('ERROR');
         console.log(err);
-        res.status(500).json(err);
+        throw err;
     });
 });
 
