@@ -16,19 +16,48 @@ function Server() {
             if (error) {
                 console.log("Could not connect to the SQL database");
                 console.log(error);
+                throw error;
             } else {
                 console.log("Connected to Database");
             }
         });
 
+    /**
+     * A node mysql promise
+     * @promise Mysql
+     * @fulfill {Array<object>} An array of data and server information. Index 0 is returned table data.
+     * @reject {Error} If node mysql hits an error with your request
+     */
+
+    /**
+     *
+     * @type {{insert: *, query: *, students: {insert: *, query: Function}, payments: {createCharge: Function, insert: *, query: Function}}}
+     */
     this.members = {
+
+        /**
+         * Inserts into the Members table
+         * @type {function(Array<string>)}
+         * @param {Array<string>} [firstName, lastName, address, city, state, zipcode]
+         * @returns {Mysql} A promise containing data and server information
+         */
         insert: Q.nbind(db.query, db,
             "INSERT INTO Members "
             + "(firstName,lastName,address,city,state,zipCode) "
             + "VALUES "
             + "(?,?,?,?,?,?)"),
+
+        /**
+         * Queries the members table
+         * @type {function(Array<string>)}
+         * @param {Array<string>} [membershipId]
+         * @returns {Mysql} A promise containing data and server information
+         */
         query: Q.nbind(db.query, db, "SELECT * FROM Members WHERE membershipId = ?"),
 
+        /**
+         * Students object (child table of members)
+         */
         students: {
             insert: Q.nbind(db.query, db,
                 "INSERT INTO M_Students "

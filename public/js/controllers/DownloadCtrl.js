@@ -63,7 +63,6 @@
                 }, 4001);
 
                 $mdToast.show(toast).then(function(){
-                    alert('UNDO '+id);
                     $timeout.cancel(pDelete);
                 });
 
