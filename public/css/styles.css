@@ -1,4 +1,4 @@
-.md-button:not(.md-fab):not(.md-button-small) {
+.md-button:not(.md-fab):not(.md-button-small):not(.md-action) {
     min-width: 10em;
 }
 
