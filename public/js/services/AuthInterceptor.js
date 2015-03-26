@@ -23,8 +23,20 @@
             return {
                 responseError: function(rejection){
                     if (rejection.status){
-                        //$window.location = rejection.config.url;
                         if (rejection.config.method !== "POST"){
+
+                            switch(rejection.status){
+                                case 404:
+                                    $window.location = rejection.config.url;
+                                    break;
+                                case 401:
+                                    $window.location = rejection.config.url;
+                                    break;
+                                case 500:
+                                    $window.location = rejection.config.url;
+                                    break;
+                            }
+
                             //$window.location = rejection.config.url;
                         }
                     }

@@ -207,8 +207,7 @@ router.post('/members',
                 return db.members.students.insert([data[0].insertId, student.first, student.last, student.grade, student.unit]);
             })).then(function(val){
                 var payment = req.body.payment;
-                var date = moment(payment.exp_date, 'MM/YY').toDate();
-                return db.members.payments.createCharge(payment,date);
+                return db.members.payments.createCharge(payment);
             }).then(function(card){
                 var payment = req.body.payment;
                 return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
@@ -232,34 +231,29 @@ router.get('/members/:id', expressJwt({secret: mySecret}),
 
 router.post('/admin/login', function(req, res){
 
-    db.admin.verify([req.body.username]).then(function(data){
+    db.admin.query([req.body.username]).then(function(data){
         if (data[0].length == 0){       //if there is no user with that username
             res.status(401).send('Incorrect username or password');
         }
+        var user = data[0][0];
 
-        var creds = data[0][0];
+        return myCrypt.pbkdf2(req.body.password, user.salt).then(function(key){
+            if (user.password === key.toString('base64')){            //correct password
+                var profile = {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    username: user.username,
+                    type: user.type,
+                    id: user.adminId
+                };
+                var token = jwt.sign(profile, mySecret);
 
-        return myCrypt.pbkdf2(req.body.password, creds.salt).then(function(key){
-            if (creds.password === key.toString('base64')){            //correct password
-                return db.admin.getUser([req.body.username])
+                res.json({token:token, user: profile});
             } else {
                 res.status(401).send('Incorrect password or username');
             }
         });
-    }).then(function(dbData){
-        var user = dbData[0][0];
-        var profile = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            username: user.username,
-            type: user.type,
-            id: user.adminId
-        };
-
-        var token = jwt.sign(profile, mySecret);
-
-        res.json({token:token, user: profile});
     }).catch(function(err){
         console.log('ERROR');
         console.log(err);
