@@ -19,11 +19,14 @@
                 }).then(function(answer){
                     var dl = new Download(answer);
                     dl.$save(function(data, headers){
-                        angular.forEach(data, function(value, key){
 
-                            if (angular.isDefined($scope.dltypes[key])){
+                        console.log(JSON.stringify(data));
+
+                        angular.forEach(data, function(value, key){
+                            console.log(JSON.stringify(value));
+                            if (angular.isDefined($scope.dltypes[key]) && angular.isDefined(value)){
                                 $scope.dltypes[key].push(value[0]);
-                            } else {
+                            } else if (angular.isDefined(value)) {
                                 $scope.dltypes[key] = [];
                                 $scope.dltypes[key].push(value[0]);
                             }
