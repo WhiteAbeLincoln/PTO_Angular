@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -53,6 +53,12 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * - The dialog's template must have an outer `<md-dialog>` element.
  *   Inside, use an `<md-content>` element for the dialog's content, and use
  *   an element with class `md-actions` for the dialog's actions.
+ * - Dialogs must cover the entire application to keep interactions inside of them.
+ * Use the `parent` option to change where dialogs are appended.
+ *
+ * ## Sizing
+ * - Complex dialogs can be sized with `flex="percentage"`, i.e. `flex="66"`.
+ * - Default max-width is 80% of the `rootElement` or `parent`.
  *
  * @usage
  * ### HTML
@@ -294,7 +300,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   - `hasBackdrop` - `{boolean=}`: Whether there should be an opaque backdrop behind the dialog.
  *     Default true.
  *   - `clickOutsideToClose` - `{boolean=}`: Whether the user can click outside the dialog to
- *     close it. Default true.
+ *     close it. Default false.
  *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the dialog.
  *     Default true.
  *   - `focusOnOpen` - `{boolean=}`: An option to override focus behavior on open. Only disable if
@@ -366,7 +372,7 @@ function MdDialogProvider($$interimElementProvider) {
       template: [
         '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}">',
           '<md-content role="document" tabIndex="0">',
-            '<h2>{{ dialog.title }}</h2>',
+            '<h2 class="md-title">{{ dialog.title }}</h2>',
             '<p>{{ dialog.content }}</p>',
           '</md-content>',
           '<div class="md-actions">',

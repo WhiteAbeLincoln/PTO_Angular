@@ -2,14 +2,14 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 angular.module('ngMaterial', ["ng","ngAnimate","ngAria","material.core","material.core.theming.palette","material.core.theming","material.components.autocomplete","material.components.backdrop","material.components.bottomSheet","material.components.button","material.components.card","material.components.checkbox","material.components.content","material.components.dialog","material.components.divider","material.components.gridList","material.components.icon","material.components.input","material.components.list","material.components.progressCircular","material.components.progressLinear","material.components.radioButton","material.components.select","material.components.sidenav","material.components.slider","material.components.sticky","material.components.subheader","material.components.swipe","material.components.switch","material.components.tabs","material.components.textField","material.components.toast","material.components.toolbar","material.components.tooltip","material.components.whiteframe"]);
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -72,7 +72,7 @@ function rAFDecorator( $delegate ) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -141,7 +141,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function(){
 
@@ -378,7 +378,7 @@ MdConstantFactory.$inject = ["$$rAF", "$sniffer"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function(){
 
@@ -517,7 +517,7 @@ mdMediaFactory.$inject = ["$mdConstant", "$rootScope", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -554,8 +554,8 @@ angular.module('material.core')
         offsetParent.getBoundingClientRect() : 
         { left: 0, top: 0, width: 0, height: 0 };
       return {
-        left: nodeRect.left - offsetRect.left + offsetParent.scrollLeft,
-        top: nodeRect.top - offsetRect.top + offsetParent.scrollTop,
+        left: nodeRect.left - offsetRect.left,
+        top: nodeRect.top - offsetRect.top,
         width: nodeRect.width,
         height: nodeRect.height
       };
@@ -812,7 +812,7 @@ angular.element.prototype.blur = angular.element.prototype.blur || function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -902,7 +902,7 @@ AriaService.$inject = ["$$rAF", "$log", "$window"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -1047,7 +1047,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -1466,7 +1466,7 @@ angular.module('material.core')
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -1901,7 +1901,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
   'use strict';
@@ -2034,7 +2034,7 @@ function InterimElementProvider() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -2122,7 +2122,7 @@ function InkRippleService($window, $timeout) {
         isHeld = false,
         node = element[0],
         rippleSizeSetting = element.attr('md-ripple-size'),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor(options.colorElement.length && $window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
     switch (rippleSizeSetting) {
       case 'full':
@@ -2342,8 +2342,8 @@ function InkRippleService($window, $timeout) {
        * @returns {{backgroundColor: string, borderColor: string, width: string, height: string}}
        */
       function getRippleCss(size, left, top) {
-        var rect,
-            css = {
+        var rect = node.getBoundingClientRect(),
+            css  = {
               backgroundColor: rgbaToRGB(color),
               borderColor: rgbaToRGB(color),
               width: size + 'px',
@@ -2360,7 +2360,6 @@ function InkRippleService($window, $timeout) {
         if (options.center) {
           css.left = css.top = '50%';
         } else {
-          rect = node.getBoundingClientRect();
           css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
           css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
         }
@@ -2459,7 +2458,7 @@ function attrNoDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -2831,7 +2830,7 @@ angular.module('material.core.theming.palette', [])
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -3418,7 +3417,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -3439,7 +3438,7 @@ function rgba(rgbArray, opacity) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -3478,7 +3477,7 @@ BackdropDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -3746,7 +3745,7 @@ MdBottomSheetProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -3846,7 +3845,7 @@ MdButtonDirective.$inject = ["$mdInkRipple", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -3905,7 +3904,7 @@ mdCardDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -4046,7 +4045,7 @@ MdCheckboxDirective.$inject = ["inputDirective", "$mdInkRipple", "$mdAria", "$md
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -4132,7 +4131,7 @@ function iosScrollFix(node) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -4180,6 +4179,12 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * - The dialog's template must have an outer `<md-dialog>` element.
  *   Inside, use an `<md-content>` element for the dialog's content, and use
  *   an element with class `md-actions` for the dialog's actions.
+ * - Dialogs must cover the entire application to keep interactions inside of them.
+ * Use the `parent` option to change where dialogs are appended.
+ *
+ * ## Sizing
+ * - Complex dialogs can be sized with `flex="percentage"`, i.e. `flex="66"`.
+ * - Default max-width is 80% of the `rootElement` or `parent`.
  *
  * @usage
  * ### HTML
@@ -4421,7 +4426,7 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  *   - `hasBackdrop` - `{boolean=}`: Whether there should be an opaque backdrop behind the dialog.
  *     Default true.
  *   - `clickOutsideToClose` - `{boolean=}`: Whether the user can click outside the dialog to
- *     close it. Default true.
+ *     close it. Default false.
  *   - `escapeToClose` - `{boolean=}`: Whether the user can press escape to close the dialog.
  *     Default true.
  *   - `focusOnOpen` - `{boolean=}`: An option to override focus behavior on open. Only disable if
@@ -4493,7 +4498,7 @@ function MdDialogProvider($$interimElementProvider) {
       template: [
         '<md-dialog md-theme="{{ dialog.theme }}" aria-label="{{ dialog.ariaLabel }}">',
           '<md-content role="document" tabIndex="0">',
-            '<h2>{{ dialog.title }}</h2>',
+            '<h2 class="md-title">{{ dialog.title }}</h2>',
             '<p>{{ dialog.content }}</p>',
           '</md-content>',
           '<div class="md-actions">',
@@ -4797,7 +4802,7 @@ MdDialogProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -4846,7 +4851,7 @@ MdDividerDirective.$inject = ["$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -5590,7 +5595,7 @@ function GridTileCaptionDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -5703,7 +5708,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
   'use strict';
@@ -5925,17 +5930,27 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
        {
          id : 'tabs-arrow',
          url: 'tabs-arrow.svg',
-         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="tabs-arrow"><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
+         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><polygon points="15.4,7.4 14,6 8,12 14,18 15.4,16.6 10.8,12 "/></g></svg>'
        },
        {
          id : 'close',
          url: 'close.svg',
-         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="close"><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
+         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M19 6.41l-1.41-1.41-5.59 5.59-5.59-5.59-1.41 1.41 5.59 5.59-5.59 5.59 1.41 1.41 5.59-5.59 5.59 5.59 1.41-1.41-5.59-5.59z"/></g></svg>'
        },
        {
          id:  'cancel',
          url: 'cancel.svg',
-         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g id="cancel"><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
+         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 24 24"><g><path d="M12 2c-5.53 0-10 4.47-10 10s4.47 10 10 10 10-4.47 10-10-4.47-10-10-10zm5 13.59l-1.41 1.41-3.59-3.59-3.59 3.59-1.41-1.41 3.59-3.59-3.59-3.59 1.41-1.41 3.59 3.59 3.59-3.59 1.41 1.41-3.59 3.59 3.59 3.59z"/></g></svg>'
+       },
+       {
+         id:  'menu',
+         url: 'menu.svg',
+         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 100 100"><path d="M 50 0 L 100 14 L 92 80 L 50 100 L 8 80 L 0 14 Z" fill="#b2b2b2"></path><path d="M 50 5 L 6 18 L 13.5 77 L 50 94 Z" fill="#E42939"></path><path d="M 50 5 L 94 18 L 86.5 77 L 50 94 Z" fill="#B72833"></path><path d="M 50 7 L 83 75 L 72 75 L 65 59 L 50 59 L 50 50 L 61 50 L 50 26 Z" fill="#b2b2b2"></path><path d="M 50 7 L 17 75 L 28 75 L 35 59 L 50 59 L 50 50 L 39 50 L 50 26 Z" fill="#fff"></path></svg>'
+       },
+       {
+         id:  'toggle-arrow',
+         url: 'toggle-arrow-svg',
+         svg: '<svg version="1.1" x="0px" y="0px" viewBox="0 0 48 48"><path d="M24 16l-12 12 2.83 2.83 9.17-9.17 9.17 9.17 2.83-2.83z"/><path d="M0 0h48v48h-48z" fill="none"/></svg>'
        }
      ];
 
@@ -6167,7 +6182,7 @@ mdIconDirective.$inject = ["$mdIcon", "$mdTheming", "$mdAria"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 
@@ -6510,7 +6525,7 @@ function placeholderDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -6562,10 +6577,8 @@ angular.module('material.components.list', [
 function mdListDirective() {
   return {
     restrict: 'E',
-    link: function($scope, $element, $attr) {
-      $element.attr({
-        'role' : 'list'
-      });
+    compile: function(element) {
+      element[0].setAttribute('role', 'list');
     }
   };
 }
@@ -6593,10 +6606,8 @@ function mdListDirective() {
 function mdItemDirective() {
   return {
     restrict: 'E',
-    link: function($scope, $element, $attr) {
-      $element.attr({
-        'role' : 'listitem'
-      });
+    compile: function(element) {
+      element[0].setAttribute('role', 'listitem');
     }
   };
 }
@@ -6606,7 +6617,7 @@ function mdItemDirective() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -6716,7 +6727,7 @@ MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -6845,7 +6856,7 @@ var transforms = (function() {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -7143,7 +7154,7 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -7161,7 +7172,6 @@ mdRadioButtonDirective.$inject = ["$mdAria", "$mdUtil", "$mdTheming"];
 - [ ] ng-model="foo" ng-model-options="{ trackBy: '$value.id' }" for objects
 - [ ] mdOption with value
 - [ ] Usage with input inside
-- [ ] Usage with md-multiple
 
 ### TODO - POST RC1 ###
 - [ ] Abstract placement logic in $mdSelect service to $mdMenu service
@@ -7231,6 +7241,12 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
     // If not provided, we automatically make one
     if (!labelEl.length) {
       labelEl = angular.element('<md-select-label><span></span></md-select-label>');
+    } else {
+      if (!labelEl[0].firstElementChild) {
+        var spanWrapper = angular.element('<span>');
+        spanWrapper.append(labelEl.contents());
+        labelEl.append(spanWrapper);
+      }
     }
     labelEl.append('<span class="md-select-icon" aria-hidden="true"></span>');
     labelEl.addClass('md-select-label');
@@ -7275,7 +7291,6 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
       createSelect();
 
       var originalRender = ngModel.$render;
-
       ngModel.$render = function() {
         originalRender();
         syncLabelText();
@@ -7301,6 +7316,31 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $interpolate, $compile,
           mdSelectCtrl.setLabelText(selectMenuCtrl.selectedLabels());
         }
       }
+
+      var deregisterWatcher;
+      attr.$observe('ngMultiple', function(val) {
+        if (deregisterWatcher) deregisterWatcher();
+        var parser = $parse(val);
+        deregisterWatcher = scope.$watch(function() { return parser(scope); }, function(multiple, prevVal) {
+          if (multiple === undefined && prevVal === undefined) return; // assume compiler did a good job
+          if (multiple) {
+            element.attr('multiple', 'multiple');
+          } else {
+            element.removeAttr('multiple');
+          }
+          if (selectContainer) {
+            var selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
+            selectMenuCtrl.setMultiple(multiple);
+            originalRender = ngModel.$render;
+            ngModel.$render = function() {
+              originalRender();
+              syncLabelText();
+            };
+            selectMenuCtrl.refreshViewValue();
+            ngModel.$render();
+          }
+        });
+      });
 
       attr.$observe('disabled', function(disabled) {
         if (typeof disabled == "string") {
@@ -7459,6 +7499,33 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
     // and values matching every option's controller.
     self.options = {};
 
+    var deregisterCollectionWatch;
+    self.setMultiple = function(isMultiple) {
+      var ngModel = self.ngModel;
+      self.isMultiple = isMultiple;
+      if (deregisterCollectionWatch) deregisterCollectionWatch();
+
+      if (self.isMultiple) {
+        ngModel.$validators['md-multiple'] = validateArray;
+        ngModel.$render = renderMultiple;
+
+        // watchCollection on the model because by default ngModel only watches the model's
+        // reference. This allowed the developer to also push and pop from their array.
+        $scope.$watchCollection($attrs.ngModel, function(value) {
+          if (validateArray(value)) renderMultiple(value);
+        });
+      } else {
+        delete ngModel.$validators['md-multiple'];
+        ngModel.$render = renderSingular;
+      }
+
+      function validateArray(modelValue, viewValue) {
+        // If a value is truthy but not an array, reject it.
+        // If value is undefined/falsy, accept that it's an empty array.
+        return angular.isArray(modelValue || viewValue || []);
+      }
+    };
+
 
     self.init = function(ngModel) {
       self.ngModel = ngModel;
@@ -7482,25 +7549,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
           return value;
         };
       }
-
-      if (self.isMultiple) {
-        ngModel.$validators['md-multiple'] = validateArray;
-        ngModel.$render = renderMultiple;
-
-        // watchCollection on the model because by default ngModel only watches the model's
-        // reference. This allowed the developer to also push and pop from their array.
-        $scope.$watchCollection($attrs.ngModel, function(value) {
-          if (validateArray(value)) renderMultiple(value);
-        });
-      } else {
-        ngModel.$render = renderSingular;
-      }
-
-      function validateArray(modelValue, viewValue) {
-        // If a value is truthy but not an array, reject it.
-        // If value is undefined/falsy, accept that it's an empty array.
-        return angular.isArray(modelValue || viewValue || []);
-      }
+      self.setMultiple(self.isMultiple);
     };
 
     self.selectedLabels = function() {
@@ -7841,19 +7890,20 @@ function SelectProvider($$interimElementProvider) {
           focusOption('prev');
         }
 
-        if (!selectCtrl.isMultiple) {
-          opts.selectEl.on('click', closeMenu);
-          opts.selectEl.on('keydown', function(e) {
-            if (e.keyCode == 32 || e.keyCode == 13) {
-              closeMenu();
-            }
-          });
-        }
-        function closeMenu() {
-          opts.restoreFocus = true;
-          scope.$evalAsync(function() {
-            $mdSelect.hide(selectCtrl.ngModel.$viewValue);
-          });
+        opts.selectEl.on('click', checkCloseMenu);
+        opts.selectEl.on('keydown', function(e) {
+          if (e.keyCode == 32 || e.keyCode == 13) {
+            checkCloseMenu();
+          }
+        });
+
+        function checkCloseMenu() {
+          if (!selectCtrl.isMultiple) {
+            opts.restoreFocus = true;
+            scope.$evalAsync(function() {
+              $mdSelect.hide(selectCtrl.ngModel.$viewValue);
+            });
+          }
         }
       }
 
@@ -8046,7 +8096,7 @@ function nodesToArray(nodes) {
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -8382,7 +8432,7 @@ SidenavController.$inject = ["$scope", "$element", "$attrs", "$mdComponentRegist
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
   'use strict';
@@ -8785,7 +8835,7 @@ SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstan
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9097,7 +9147,7 @@ MdSticky.$inject = ["$document", "$mdConstant", "$compile", "$$rAF", "$mdUtil"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9184,7 +9234,7 @@ MdSubheaderDirective.$inject = ["$mdSticky", "$compile", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9262,7 +9312,7 @@ var module = angular.module('material.components.swipe',[]);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9431,7 +9481,7 @@ MdSwitch.$inject = ["mdCheckboxDirective", "$mdTheming", "$mdUtil", "$document",
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9470,7 +9520,7 @@ angular.module('material.components.tabs', [
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9614,7 +9664,7 @@ mdInputDirective.$inject = ["$mdUtil", "$log"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -9880,7 +9930,7 @@ MdToastProvider.$inject = ["$$interimElementProvider"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -10039,7 +10089,7 @@ mdToolbarDirective.$inject = ["$$rAF", "$mdConstant", "$mdUtil", "$mdTheming"];
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -10076,6 +10126,7 @@ angular
  * currently visible.
  * @param {number=} md-delay How many milliseconds to wait to show the tooltip after the user focuses, hovers, or touches the parent. Defaults to 400ms.
  * @param {string=} md-direction Which direction would you like the tooltip to go?  Supports left, right, top, and bottom.  Defaults to bottom.
+ * @param {boolean=} md-autohide If present or provided with a boolean value, the tooltip will hide on mouse leave, regardless of focus
  */
 function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdTheming, $rootElement, $animate, $q) {
 
@@ -10090,7 +10141,8 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
         <div class="md-content" ng-transclude></div>',
     scope: {
       visible: '=?mdVisible',
-      delay: '=?mdDelay'
+      delay: '=?mdDelay',
+      autohide: '=?mdAutohide'
     },
     link: postLink
   };
@@ -10157,8 +10209,9 @@ function MdTooltipDirective($timeout, $window, $$rAF, $document, $mdUtil, $mdThe
     }
 
     function bindEvents () {
+      var autohide = scope.hasOwnProperty('autohide') ? scope.autohide : attr.hasOwnProperty('mdAutohide');
       parent.on('focus mouseenter touchstart', function() { setVisible(true); });
-      parent.on('blur mouseleave touchend touchcancel', function() { if ($document[0].activeElement !== parent[0]) setVisible(false); });
+      parent.on('blur mouseleave touchend touchcancel', function() { if ($document[0].activeElement !== parent[0] || autohide) setVisible(false); });
       angular.element($window).on('resize', debouncedOnResize);
     }
 
@@ -10266,7 +10319,7 @@ MdTooltipDirective.$inject = ["$timeout", "$window", "$$rAF", "$document", "$mdU
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function() {
 'use strict';
@@ -10282,7 +10335,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -10293,6 +10346,7 @@ angular.module('material.components.whiteframe', []);
   function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
 
     //-- private variables
+
     var self = this,
         itemParts = $scope.itemsExpr.split(/ in /i),
         itemExpr = itemParts[1],
@@ -10302,50 +10356,43 @@ angular.module('material.components.whiteframe', []);
         noBlur = false;
 
     //-- public variables
+
     self.scope = $scope;
     self.parent = $scope.$parent;
     self.itemName = itemParts[0];
     self.matches = [];
     self.loading = false;
     self.hidden = true;
-    self.index = 0;
+    self.index = null;
+    self.messages = [];
+    self.id = $mdUtil.nextUid();
+
+    //-- public methods
+
     self.keydown = keydown;
     self.blur = blur;
     self.clear = clearValue;
     self.select = select;
     self.getCurrentDisplayValue = getCurrentDisplayValue;
     self.fetch = $mdUtil.debounce(fetchResults);
-    self.messages = [];
-    self.id = $mdUtil.nextUid();
-
-    //-- While the mouse is inside of the dropdown, we don't want to handle input blur
-    //-- This is to allow the user to scroll the list without causing it to hide
     self.listEnter = function () { noBlur = true; };
     self.listLeave = function () { noBlur = false; };
     self.mouseUp   = function () { elements.input.focus(); };
 
     return init();
 
-    //-- start method definitions
+    //-- initialization methods
+
     function init () {
-      if ($scope.autofocus) elements.input.focus();
       configureWatchers();
-      $timeout(gatherElements);
+      $timeout(function () {
+        gatherElements();
+        focusElement();
+      });
     }
 
-    function gatherElements () {
-      elements = {
-        main:  $element[0],
-        ul:    $element[0].getElementsByTagName('ul')[0],
-        input: $element[0].getElementsByTagName('input')[0]
-      };
-    }
-
-    function getItemScope (item) {
-      if (!item) return;
-      var locals = {};
-      if (self.itemName) locals[self.itemName] = item;
-      return locals;
+    function focusElement () {
+      if ($scope.autofocus) elements.input.focus();
     }
 
     function configureWatchers () {
@@ -10362,8 +10409,18 @@ angular.module('material.components.whiteframe', []);
       });
     }
 
+    function gatherElements () {
+      elements = {
+        main:  $element[0],
+        ul:    $element[0].getElementsByTagName('ul')[0],
+        input: $element[0].getElementsByTagName('input')[0]
+      };
+    }
+
+    //-- event/change handlers
+
     function handleSearchText (searchText, previousSearchText) {
-      self.index = 0;
+      self.index = getDefaultIndex();
       //-- do nothing on init if there is no initial value
       if (!searchText && searchText === previousSearchText) return;
       //-- clear selected item if search text no longer matches it
@@ -10393,6 +10450,85 @@ angular.module('material.components.whiteframe', []);
       self.hidden = shouldHide();
       if ($scope.textChange && searchText !== previousSearchText)
         $scope.textChange(getItemScope($scope.selectedItem));
+    }
+
+    function blur () {
+      if (!noBlur) self.hidden = true;
+    }
+
+    function keydown (event) {
+      switch (event.keyCode) {
+        case $mdConstant.KEY_CODE.DOWN_ARROW:
+          if (self.loading) return;
+          event.preventDefault();
+          self.index = Math.min(self.index + 1, self.matches.length - 1);
+          updateScroll();
+          updateSelectionMessage();
+          break;
+        case $mdConstant.KEY_CODE.UP_ARROW:
+          if (self.loading) return;
+          event.preventDefault();
+          self.index = Math.max(0, self.index - 1);
+          updateScroll();
+          updateSelectionMessage();
+          break;
+        case $mdConstant.KEY_CODE.ENTER:
+          if (self.loading || self.index < 0) return;
+          event.preventDefault();
+          select(self.index);
+          break;
+        case $mdConstant.KEY_CODE.ESCAPE:
+          self.matches = [];
+          self.hidden = true;
+          self.index = getDefaultIndex();
+          break;
+        case $mdConstant.KEY_CODE.TAB:
+          break;
+        default:
+      }
+    }
+
+    //-- getters
+
+    function getDisplayValue (item) {
+      return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
+    }
+
+    function getItemScope (item) {
+      if (!item) return;
+      var locals = {};
+      if (self.itemName) locals[self.itemName] = item;
+      return locals;
+    }
+
+    function getDefaultIndex () {
+      return $scope.autoselect ? 0 : -1;
+    }
+
+    function shouldHide () {
+      return self.matches.length === 1
+          && $scope.searchText === getDisplayValue(self.matches[0])
+          && $scope.selectedItem === self.matches[0];
+    }
+
+    function getCurrentDisplayValue () {
+      return getDisplayValue(self.matches[self.index]);
+    }
+
+    //-- actions
+
+    function select (index) {
+      $scope.selectedItem = self.matches[index];
+      $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
+      self.hidden = true;
+      self.index = 0;
+      self.matches = [];
+    }
+
+    function clearValue () {
+      $scope.searchText = '';
+      select(-1);
+      elements.input.focus();
     }
 
     function fetchResults (searchText) {
@@ -10432,70 +10568,6 @@ angular.module('material.components.whiteframe', []);
       self.messages.push({ display: getCurrentDisplayValue() });
     }
 
-    function blur () {
-      if (!noBlur) self.hidden = true;
-    }
-
-    function keydown (event) {
-      switch (event.keyCode) {
-        case $mdConstant.KEY_CODE.DOWN_ARROW:
-            if (self.loading) return;
-            event.preventDefault();
-            self.index = Math.min(self.index + 1, self.matches.length - 1);
-            updateScroll();
-            updateSelectionMessage();
-            break;
-        case $mdConstant.KEY_CODE.UP_ARROW:
-            if (self.loading) return;
-            event.preventDefault();
-            self.index = Math.max(0, self.index - 1);
-            updateScroll();
-            updateSelectionMessage();
-            break;
-        case $mdConstant.KEY_CODE.ENTER:
-            if (self.loading || self.index < 0) return;
-            event.preventDefault();
-            select(self.index);
-            break;
-        case $mdConstant.KEY_CODE.ESCAPE:
-            self.matches = [];
-            self.hidden = true;
-            self.index = 0;
-            break;
-        case $mdConstant.KEY_CODE.TAB:
-            break;
-        default:
-      }
-    }
-
-    function clearValue () {
-      $scope.searchText = '';
-      select(-1);
-      elements.input.focus();
-    }
-
-    function shouldHide () {
-      return self.matches.length === 1
-          && $scope.searchText === getDisplayValue(self.matches[0])
-          && $scope.selectedItem === self.matches[0];
-    }
-
-    function getCurrentDisplayValue () {
-      return getDisplayValue(self.matches[self.index]);
-    }
-
-    function getDisplayValue (item) {
-      return (item && $scope.itemText) ? $scope.itemText(getItemScope(item)) : item;
-    }
-
-    function select (index) {
-      $scope.selectedItem = self.matches[index];
-      $scope.searchText = getDisplayValue($scope.selectedItem) || $scope.searchText;
-      self.hidden = true;
-      self.index = 0;
-      self.matches = [];
-    }
-
     function updateScroll () {
       var top = 41 * self.index,
           bot = top + 41,
@@ -10515,7 +10587,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -10544,6 +10616,7 @@ angular.module('material.components.whiteframe', []);
    * @param {number=} md-min-length Specifies the minimum length of text before autocomplete will make suggestions
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
    * @param {boolean=} md-autofocus If true, will immediately focus the input element
+   * @param {boolean=} md-autoselect If true, the first item will be selected by default
    *
    * @usage
    * <hljs lang="html">
@@ -10559,6 +10632,26 @@ angular.module('material.components.whiteframe', []);
 
   function MdAutocomplete () {
     return {
+      transclude:   true,
+      controller:   'MdAutocompleteCtrl',
+      controllerAs: '$mdAutocompleteCtrl',
+      link:         link,
+      scope:        {
+        searchText:    '=mdSearchText',
+        selectedItem:  '=mdSelectedItem',
+        itemsExpr:     '@mdItems',
+        itemText:      '&mdItemText',
+        placeholder:   '@placeholder',
+        noCache:       '=?mdNoCache',
+        itemChange:    '&mdSelectedItemChange',
+        textChange:    '&mdSearchTextChange',
+        isDisabled:    '=ngDisabled',
+        minLength:     '=mdMinLength',
+        delay:         '=mdDelay',
+        autofocus:     '=?mdAutofocus',
+        floatingLabel: '@mdFloatingLabel',
+        autoselect:    '=?mdAutoselect'
+      },
       template: '\
         <md-autocomplete-wrap role="listbox">\
           <md-input-container ng-if="floatingLabel">\
@@ -10624,26 +10717,16 @@ angular.module('material.components.whiteframe', []);
             role="status"\
             aria-live="assertive">\
           <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
-        </aria-status>',
-      transclude:   true,
-      controller:   'MdAutocompleteCtrl',
-      controllerAs: '$mdAutocompleteCtrl',
-      scope:        {
-        searchText:    '=mdSearchText',
-        selectedItem:  '=mdSelectedItem',
-        itemsExpr:     '@mdItems',
-        itemText:      '&mdItemText',
-        placeholder:   '@placeholder',
-        noCache:       '=mdNoCache',
-        itemChange:    '&mdSelectedItemChange',
-        textChange:    '&mdSearchTextChange',
-        isDisabled:    '=ngDisabled',
-        minLength:     '=mdMinLength',
-        delay:         '=mdDelay',
-        autofocus:     '=mdAutofocus',
-        floatingLabel: '@mdFloatingLabel'
-      }
+        </aria-status>'
     };
+
+    function link (scope, element, attr) {
+      angular.forEach(scope.$$isolateBindings, function (binding, key) {
+        if (binding.optional && angular.isUndefined(scope[key])) {
+          scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+        }
+      });
+    }
   }
 })();
 
@@ -10651,7 +10734,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -10682,7 +10765,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -10726,7 +10809,7 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 (function () {
   'use strict';
@@ -10756,455 +10839,66 @@ angular.module('material.components.whiteframe', []);
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
-(function() {
-'use strict';
+(function () {
+  'use strict';
+  angular
+      .module('material.components.tabs')
+      .directive('mdLabelTemplate', MdLabelTemplate);
 
-/**
- * Conditionally configure ink bar animations when the
- * tab selection changes. If `mdNoBar` then do not show the
- * bar nor animate.
- */
-angular.module('material.components.tabs')
-  .directive('mdTabsInkBar', MdTabInkDirective);
-
-function MdTabInkDirective($$rAF) {
-
-  var lastIndex = 0;
-
-  return {
-    restrict: 'E',
-    require: ['^?mdNoBar', '^mdTabs'],
-    link: postLink
-  };
-
-  function postLink(scope, element, attr, ctrls) {
-    var mdNoBar = !!ctrls[0];
-
-    var tabsCtrl = ctrls[1],
-        debouncedUpdateBar = $$rAF.throttle(updateBar);
-
-    tabsCtrl.inkBarElement = element;
-
-    scope.$on('$mdTabsPaginationChanged', debouncedUpdateBar);
-
-    function updateBar() {
-      var selected = tabsCtrl.getSelectedItem();
-      var hideInkBar = !selected || tabsCtrl.count() < 2 || mdNoBar;
-
-      element.css('display', hideInkBar ? 'none' : 'block');
-
-      if (hideInkBar) return;
-
-      if (scope.pagination && scope.pagination.tabData) {
-        var index = tabsCtrl.getSelectedIndex();
-        var data = scope.pagination.tabData.tabs[index] || { left: 0, right: 0, width: 0 };
-        var right = element.parent().prop('offsetWidth') - data.right;
-        var classNames = ['md-transition-left', 'md-transition-right', 'md-no-transition'];
-        var classIndex = lastIndex > index ? 0 : lastIndex < index ? 1 : 2;
-
-        element
-            .removeClass(classNames.join(' '))
-            .addClass(classNames[classIndex])
-            .css({ left: data.left + 'px', right: right + 'px' });
-
-        lastIndex = index;
-      }
-    }
-  }
-}
-MdTabInkDirective.$inject = ["$$rAF"];
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-8911fad
- */
-(function() {
-'use strict';
-
-angular.module('material.components.tabs')
-    .directive('mdTabsPagination', TabPaginationDirective);
-
-function TabPaginationDirective($mdConstant, $window, $$rAF, $$q, $timeout, $mdMedia) {
-
-  // Must match (2 * width of paginators) in scss
-  var PAGINATORS_WIDTH = (8 * 4) * 2;
-
-  return {
-    restrict: 'A',
-    require: '^mdTabs',
-    link: postLink
-  };
-
-  function postLink(scope, element, attr, tabsCtrl) {
-
-    var tabs = element[0].getElementsByTagName('md-tab');
-    var debouncedUpdatePagination = $$rAF.throttle(updatePagination);
-    var tabsParent = element.children();
-    var locked = false;
-    var state = scope.pagination = {
-      page: -1,
-      active: false,
-      clickNext: function() { locked || userChangePage(+1); },
-      clickPrevious: function() { locked || userChangePage(-1); }
+  function MdLabelTemplate ($compile) {
+    return {
+      restrict: 'A',
+      link: link,
+      scope: { template: '=mdLabelTemplate' },
+      require: '^mdTabs'
     };
-
-    scope.$on('$mdTabsChanged', debouncedUpdatePagination);
-    angular.element($window).on('resize', debouncedUpdatePagination);
-
-    scope.$on('$destroy', function() {
-      angular.element($window).off('resize', debouncedUpdatePagination);
-    });
-
-    scope.$watch(function() { return tabsCtrl.tabToFocus; }, onTabFocus);
-
-    // Make sure we don't focus an element on the next page
-    // before it's in view
-    function onTabFocus(tab, oldTab) {
-      if (!tab) return;
-
-      var pageIndex = getPageForTab(tab);
-      if (!state.active || pageIndex === state.page) {
-        tab.element.focus();
-      } else {
-        // Go to the new page, wait for the page transition to end, then focus.
-        oldTab && oldTab.element.blur();
-        setPage(pageIndex).then(function() {
-          locked = false;
-          tab.element.focus();
-        });
-      }
-    }
-
-    // Called when page is changed by a user action (click)
-    function userChangePage(increment) {
-      var sizeData = state.tabData;
-      var newPage = Math.max(0, Math.min(sizeData.pages.length - 1, state.page + increment));
-      var newTabIndex = sizeData.pages[newPage][ increment > 0 ? 'firstTabIndex' : 'lastTabIndex' ];
-      var newTab = tabsCtrl.itemAt(newTabIndex);
-      locked = true;
-      onTabFocus(newTab);
-    }
-
-    function updatePagination() {
-      if (!element.prop('offsetParent')) {
-        var watcher = waitForVisible();
-        return;
-      }
-
-      var tabs = element.find('md-tab');
-
-      disablePagination();
-
-      var sizeData = state.tabData = calculateTabData();
-      var needPagination = state.active = sizeData.pages.length > 1;
-
-      if (needPagination) { enablePagination(); }
-
-      scope.$evalAsync(function () { scope.$broadcast('$mdTabsPaginationChanged'); });
-
-      function enablePagination() {
-        tabsParent.css('width', '9999px');
-
-        //-- apply filler margins
-        angular.forEach(sizeData.tabs, function (tab) {
-          angular.element(tab.element).css('margin-left', tab.filler + 'px');
-        });
-
-        setPage(getPageForTab(tabsCtrl.getSelectedItem()));
-      }
-
-      function disablePagination() {
-        slideTabButtons(0);
-        tabsParent.css('width', '');
-        tabs.css('width', '');
-        tabs.css('margin-left', '');
-        state.page = null;
-        state.active = false;
-      }
-
-      function waitForVisible() {
-        return watcher || scope.$watch(
-            function () {
-              $timeout(function () {
-                if (element[0].offsetParent) {
-                  if (angular.isFunction(watcher)) {
-                    watcher();
-                  }
-                  debouncedUpdatePagination();
-                  watcher = null;
-                }
-              }, 0, false);
-            }
-        );
-      }
-    }
-
-    function slideTabButtons(x) {
-      if (tabsCtrl.pagingOffset === x) {
-        // Resolve instantly if no change
-        return $$q.when();
-      }
-
-      var deferred = $$q.defer();
-
-      tabsCtrl.$$pagingOffset = x;
-      tabsParent.css($mdConstant.CSS.TRANSFORM, 'translate3d(' + x + 'px,0,0)');
-      tabsParent.on($mdConstant.CSS.TRANSITIONEND, onTabsParentTransitionEnd);
-
-      return deferred.promise;
-
-      function onTabsParentTransitionEnd(ev) {
-        // Make sure this event didn't bubble up from an animation in a child element.
-        if (ev.target === tabsParent[0]) {
-          tabsParent.off($mdConstant.CSS.TRANSITIONEND, onTabsParentTransitionEnd);
-          deferred.resolve();
-        }
-      }
-    }
-
-    function shouldStretchTabs() {
-      switch (scope.stretchTabs) {
-        case 'never':  return false;
-        case 'always': return true;
-        default:       return $mdMedia('sm');
-      }
-    }
-
-    function calculateTabData(noAdjust) {
-      var clientWidth = element.parent().prop('offsetWidth');
-      var tabsWidth = clientWidth - PAGINATORS_WIDTH - 1;
-      var $tabs = angular.element(tabs);
-      var totalWidth = 0;
-      var max = 0;
-      var tabData = [];
-      var pages = [];
-      var currentPage;
-
-      $tabs.css('max-width', '');
-      angular.forEach(tabs, function (tab, index) {
-        var tabWidth = Math.min(tabsWidth, tab.offsetWidth);
-        var data = {
-          element: tab,
-          left: totalWidth,
-          width: tabWidth,
-          right: totalWidth + tabWidth,
-          filler: 0
-        };
-
-        //-- This calculates the page for each tab.  The first page will use the clientWidth, which
-        //   does not factor in the pagination items.  After the first page, tabsWidth is used
-        //   because at this point, we know that the pagination buttons will be shown.
-        data.page = Math.ceil(data.right / ( pages.length === 1 && index === tabs.length - 1 ? clientWidth : tabsWidth )) - 1;
-
-        if (data.page >= pages.length) {
-          data.filler = (tabsWidth * data.page) - data.left;
-          data.right += data.filler;
-          data.left += data.filler;
-          currentPage = {
-            left: data.left,
-            firstTabIndex: index,
-            lastTabIndex: index,
-            tabs: [ data ]
-          };
-          pages.push(currentPage);
-        } else {
-          currentPage.lastTabIndex = index;
-          currentPage.tabs.push(data);
-        }
-        totalWidth = data.right;
-        max = Math.max(max, tabWidth);
-        tabData.push(data);
+    function link (scope, element, attr, ctrl) {
+      var index = scope.$parent.$index;
+      scope.$watch('template', function (html) {
+        element.html(html);
+        $compile(element.contents())(ctrl.tabs[index].parent);
       });
-      $tabs.css('max-width', tabsWidth + 'px');
-
-      if (!noAdjust && shouldStretchTabs()) {
-        return adjustForStretchedTabs();
-      } else {
-        return {
-          width: totalWidth,
-          max: max,
-          tabs: tabData,
-          pages: pages,
-          tabElements: tabs
-        };
-      }
-
-
-      function adjustForStretchedTabs() {
-        var canvasWidth = pages.length === 1 ? clientWidth : tabsWidth;
-        var tabsPerPage = Math.min(Math.floor(canvasWidth / max), tabs.length);
-        var tabWidth    = Math.floor(canvasWidth / tabsPerPage);
-        $tabs.css('width', tabWidth + 'px');
-        return calculateTabData(true);
-      }
-    }
-
-    function getPageForTab(tab) {
-      var tabIndex = tabsCtrl.indexOf(tab);
-      if (tabIndex === -1) return 0;
-
-      var sizeData = state.tabData;
-
-      return sizeData ? sizeData.tabs[tabIndex].page : 0;
-    }
-
-    function setPage(page) {
-      if (page === state.page) return;
-
-      var lastPage = state.tabData.pages.length - 1;
-
-      if (page < 0) page = 0;
-      if (page > lastPage) page = lastPage;
-
-      state.hasPrev = page > 0;
-      state.hasNext = page < lastPage;
-
-      state.page = page;
-
-      scope.$broadcast('$mdTabsPaginationChanged');
-
-      return slideTabButtons(-state.tabData.pages[page].left);
     }
   }
+  MdLabelTemplate.$inject = ["$compile"];
+})();
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-f086de1
+ */
+(function () {
+  'use strict';
+  angular
+      .module('material.components.tabs')
+      .directive('mdTabContent', MdTabContent);
 
-}
-TabPaginationDirective.$inject = ["$mdConstant", "$window", "$$rAF", "$$q", "$timeout", "$mdMedia"];
+  function MdTabContent ($compile, $mdUtil) {
+    return {
+      terminal: true,
+      scope: {
+        tab: '=mdTabData',
+        active: '=mdActive'
+      },
+      link: link
+    };
+    function link (scope, element) {
+      element.html(scope.tab.template);
+      $compile(element.contents())(scope.tab.parent);
+    }
+  }
+  MdTabContent.$inject = ["$compile", "$mdUtil"];
 })();
 
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
-(function() {
-'use strict';
-
-
-angular.module('material.components.tabs')
-  .controller('$mdTab', TabItemController);
-
-function TabItemController($scope, $element, $attrs, $compile, $animate, $mdUtil, $parse, $timeout) {
-  var self = this;
-  var tabsCtrl = $element.controller('mdTabs');
-
-  // Properties
-  self.contentContainer = angular.element('<div class="md-tab-content ng-hide">');
-  self.element = $element;
-
-  // Methods
-  self.isDisabled = isDisabled;
-  self.onAdd = onAdd;
-  self.onRemove = onRemove;
-  self.onSelect = onSelect;
-  self.onDeselect = onDeselect;
-
-  var disabledParsed = $parse($attrs.ngDisabled);
-  function isDisabled() {
-    return disabledParsed($scope.$parent);
-  }
-  
-  /**
-   * Add the tab's content to the DOM container area in the tabs,
-   * @param contentArea the contentArea to add the content of the tab to
-   */
-  function onAdd(contentArea, shouldDisconnectScope) {
-    if (self.content.length) {
-      self.contentContainer.append(self.content);
-      self.contentScope = $scope.$parent.$new();
-      contentArea.append(self.contentContainer);
-
-      $compile(self.contentContainer)(self.contentScope);
-      if (shouldDisconnectScope === true) {
-        $timeout(function () {
-          $mdUtil.disconnectScope(self.contentScope);
-        }, 0, false);
-      }
-    }
-  }
-
-  function onRemove() {
-    $animate.leave(self.contentContainer).then(function() {
-      self.contentScope && self.contentScope.$destroy();
-      self.contentScope = null;
-    });
-  }
-
-  function toggleAnimationClass(rightToLeft) {
-    self.contentContainer[rightToLeft ? 'addClass' : 'removeClass']('md-transition-rtl');
-  }
-
-  function onSelect(rightToLeft) {
-    // Resume watchers and events firing when tab is selected
-    $mdUtil.reconnectScope(self.contentScope);
-
-    $element
-      .addClass('active')
-      .attr({
-        'aria-selected': true,
-        'tabIndex': 0
-      })
-      .on('$md.swipeleft $md.swiperight', onSwipe);
-
-    toggleAnimationClass(rightToLeft);
-    $animate.removeClass(self.contentContainer, 'ng-hide');
-
-    $scope.onSelect();
-  }
-
-  function onDeselect(rightToLeft) {
-    // Stop watchers & events from firing while tab is deselected
-    $mdUtil.disconnectScope(self.contentScope);
-
-    $element
-      .removeClass('active')
-      .attr({
-        'aria-selected': false,
-        'tabIndex': -1
-      })
-      .off('$md.swipeleft $md.swiperight', onSwipe);
-
-    toggleAnimationClass(rightToLeft);
-    $animate.addClass(self.contentContainer, 'ng-hide');
-
-    $scope.onDeselect();
-  }
-
-  ///// Private functions
-
-  function onSwipe(ev) {
-    $scope.$apply(function() {
-      if (/left/.test(ev.type)) {
-        tabsCtrl.select(tabsCtrl.next());
-      } else {
-        tabsCtrl.select(tabsCtrl.previous());
-      }
-    });
-  }
- 
-
-}
-TabItemController.$inject = ["$scope", "$element", "$attrs", "$compile", "$animate", "$mdUtil", "$parse", "$timeout"];
-
-})();
-
-/*!
- * Angular Material Design
- * https://github.com/angular/material
- * @license MIT
- * v0.8.3-master-8911fad
- */
-(function() {
-'use strict';
-
-angular.module('material.components.tabs')
-  .directive('mdTab', MdTabDirective);
-
 /**
  * @ngdoc directive
  * @name mdTab
@@ -11227,7 +10921,6 @@ angular.module('material.components.tabs')
  * be initiated via data binding changes, programmatic invocation, or user gestures.
  *
  * @param {string=} label Optional attribute to specify a simple string as the tab label
- * @param {boolean=} md-active When evaluteing to true, selects the tab.
  * @param {boolean=} disabled If present, disabled tab selection.
  * @param {expression=} md-on-deselect Expression to be evaluated after the tab has been de-selected.
  * @param {expression=} md-on-select Expression to be evaluated after the tab has been selected.
@@ -11254,345 +10947,416 @@ angular.module('material.components.tabs')
  * </hljs>
  *
  */
-function MdTabDirective($mdInkRipple, $compile, $mdUtil, $mdConstant, $timeout) {
-  return {
-    restrict: 'E',
-    require: ['mdTab', '^mdTabs'],
-    controller: '$mdTab',
-    scope: {
-      onSelect: '&mdOnSelect',
-      onDeselect: '&mdOnDeselect',
-      label: '@'
-    },
-    compile: compile
-  };
 
-  function compile(element, attr) {
-    var tabLabel = element.find('md-tab-label');
+(function () {
+  'use strict';
 
-    if (tabLabel.length) {
-      // If a tab label element is found, remove it for later re-use.
-      tabLabel.remove();
+  angular
+      .module('material.components.tabs')
+      .directive('mdTab', MdTab);
 
-    } else if (angular.isDefined(attr.label)) {
-      // Otherwise, try to use attr.label as the label
-      tabLabel = angular.element('<md-tab-label>').html(attr.label);
-
-    } else {
-      // If nothing is found, use the tab's content as the label
-      tabLabel = angular.element('<md-tab-label>')
-                        .append(element.contents().remove());
-    }
-
-    // Everything that's left as a child is the tab's content.
-    var tabContent = element.contents().remove();
-
-    return function postLink(scope, element, attr, ctrls) {
-
-      var tabItemCtrl = ctrls[0]; // Controller for THIS tabItemCtrl
-      var tabsCtrl = ctrls[1]; // Controller for ALL tabs
-
-      $timeout(element.addClass.bind(element, 'md-tab-themed'), 0, false);
-
-      scope.$watch(
-          function () { return attr.label; },
-          function () { $timeout(function () { tabsCtrl.scope.$broadcast('$mdTabsChanged'); }, 0, false); }
-      );
-
-      transcludeTabContent();
-      configureAria();
-
-      $mdInkRipple.attachTabBehavior(scope, element, {
-        colorElement: tabsCtrl.inkBarElement
-      });
-      tabsCtrl.add(tabItemCtrl);
-      scope.$on('$destroy', function() {
-        tabsCtrl.remove(tabItemCtrl);
-      });
-      element.on('$destroy', function () {
-        //-- wait for item to be removed from the dom
-        $timeout(function () {
-          tabsCtrl.scope.$broadcast('$mdTabsChanged');
-        }, 0, false);
-      });
-
-      if (!angular.isDefined(attr.ngClick)) {
-        element.on('click', defaultClickListener);
-      }
-      element.on('keydown', keydownListener);
-
-      if (angular.isNumber(scope.$parent.$index)) {
-        watchNgRepeatIndex();
-      }
-      if (angular.isDefined(attr.mdActive)) {
-        watchActiveAttribute();
-      }
-      watchDisabled();
-
-      function transcludeTabContent() {
-        // Clone the label we found earlier, and $compile and append it
-        var label = tabLabel.clone();
-        element.append(label);
-        $compile(label)(scope.$parent);
-
-        // Clone the content we found earlier, and mark it for later placement into
-        // the proper content area.
-        tabItemCtrl.content = tabContent.clone();
-      }
-
-      //defaultClickListener isn't applied if the user provides an ngClick expression.
-      function defaultClickListener() {
-        scope.$apply(function() {
-          tabsCtrl.select(tabItemCtrl);
-          tabsCtrl.focus(tabItemCtrl);
-        });
-      }
-      function keydownListener(ev) {
-        if (ev.keyCode == $mdConstant.KEY_CODE.SPACE || ev.keyCode == $mdConstant.KEY_CODE.ENTER ) {
-          // Fire the click handler to do normal selection if space is pressed
-          element.triggerHandler('click');
-          ev.preventDefault();
-        } else if (ev.keyCode === $mdConstant.KEY_CODE.LEFT_ARROW) {
-          scope.$evalAsync(function() {
-            tabsCtrl.focus(tabsCtrl.previous(tabItemCtrl));
-          });
-        } else if (ev.keyCode === $mdConstant.KEY_CODE.RIGHT_ARROW) {
-          scope.$evalAsync(function() {
-            tabsCtrl.focus(tabsCtrl.next(tabItemCtrl));
-          });
-        }
-      }
-
-      // If tabItemCtrl is part of an ngRepeat, move the tabItemCtrl in our internal array
-      // when its $index changes
-      function watchNgRepeatIndex() {
-        // The tabItemCtrl has an isolate scope, so we watch the $index on the parent.
-        scope.$watch('$parent.$index', function $indexWatchAction(newIndex) {
-          tabsCtrl.move(tabItemCtrl, newIndex);
-        });
-      }
-
-      function watchActiveAttribute() {
-        var unwatch = scope.$parent.$watch('!!(' + attr.mdActive + ')', activeWatchAction);
-        scope.$on('$destroy', unwatch);
-
-        function activeWatchAction(isActive) {
-          var isSelected = tabsCtrl.getSelectedItem() === tabItemCtrl;
-
-          if (isActive && !isSelected) {
-            tabsCtrl.select(tabItemCtrl);
-          } else if (!isActive && isSelected) {
-            tabsCtrl.deselect(tabItemCtrl);
-          }
-        }
-      }
-
-      function watchDisabled() {
-        scope.$watch(tabItemCtrl.isDisabled, disabledWatchAction);
-
-        function disabledWatchAction(isDisabled) {
-          element.attr('aria-disabled', isDisabled);
-
-          // Auto select `next` tab when disabled
-          var isSelected = (tabsCtrl.getSelectedItem() === tabItemCtrl);
-          if (isSelected && isDisabled) {
-            tabsCtrl.select(tabsCtrl.next() || tabsCtrl.previous());
-          }
-
-        }
-      }
-
-      function configureAria() {
-        // Link together the content area and tabItemCtrl with an id
-        var tabId = attr.id || ('tab_' + $mdUtil.nextUid());
-
-        element.attr({
-          id: tabId,
-          role: 'tab',
-          tabIndex: -1 //this is also set on select/deselect in tabItemCtrl
-        });
-
-        // Only setup the contentContainer's aria attributes if tab content is provided
-        if (tabContent.length) {
-          var tabContentId = 'content_' + tabId;
-          if (!element.attr('aria-controls')) {
-            element.attr('aria-controls', tabContentId);
-          }
-          tabItemCtrl.contentContainer.attr({
-            id: tabContentId,
-            role: 'tabpanel',
-            'aria-labelledby': tabId
-          });
-        }
-      }
-
+  function MdTab () {
+    return {
+      require: '^mdTabs',
+      terminal: true,
+      scope: {
+        label:    '@',
+        active:   '=?mdActive',
+        disabled: '=?ngDisabled'
+      },
+      link: link
     };
 
+    function link (scope, element, attr, ctrl) {
+      var tabs = element.parent()[0].getElementsByTagName('md-tab'),
+          index = Array.prototype.indexOf.call(tabs, element[0]),
+          data = ctrl.insertTab({
+            scope: scope,
+            parent: scope.$parent,
+            index: index,
+            template: getTemplate(),
+            label: getLabel()
+          }, index);
+
+      scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
+      scope.$watch('disabled', function () { ctrl.refreshIndex(); });
+      scope.$watch(getTemplate, function (template, oldTemplate) {
+        if (template === oldTemplate) return;
+        data.template = template;
+        ctrl.updateInkBarStyles();
+      });
+      scope.$watch(getLabel, function (label, oldLabel) {
+        if (label === oldLabel) return;
+        data.label = label;
+        ctrl.updateInkBarStyles();
+      });
+      scope.$on('$destroy', function () { ctrl.removeTab(data); });
+
+      function getLabel () {
+        return attr.label || (element.find('md-tab-label')[0] || element[0]).innerHTML;
+      }
+
+      function getTemplate () {
+        var content = element.find('md-tab-template');
+        return content.length ? content.html() : attr.label ? element.html() : null;
+      }
+    }
   }
-
-}
-MdTabDirective.$inject = ["$mdInkRipple", "$compile", "$mdUtil", "$mdConstant", "$timeout"];
-
 })();
 
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
-(function() {
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('material.components.tabs')
-  .controller('$mdTabs', MdTabsController);
+  angular
+      .module('material.components.tabs')
+      .directive('mdTabItem', MdTabItem);
 
-function MdTabsController($scope, $element, $mdUtil, $timeout) {
-
-  var tabsList = $mdUtil.iterator([], false);
-  var self = this;
-
-  // Properties
-  self.$element = $element;
-  self.scope = $scope;
-  // The section containing the tab content $elements
-  var contentArea = self.contentArea = angular.element($element[0].querySelector('.md-tabs-content'));
-
-  // Methods from iterator
-  var inRange = self.inRange = tabsList.inRange;
-  var indexOf = self.indexOf = tabsList.indexOf;
-  var itemAt = self.itemAt = tabsList.itemAt;
-  self.count = tabsList.count;
-
-  self.getSelectedItem = getSelectedItem;
-  self.getSelectedIndex = getSelectedIndex;
-  self.add = add;
-  self.remove = remove;
-  self.move = move;
-  self.select = select;
-  self.focus = focus;
-  self.deselect = deselect;
-
-  self.next = next;
-  self.previous = previous;
-
-  $scope.$on('$destroy', function() {
-    deselect(getSelectedItem());
-    for (var i = tabsList.count() - 1; i >= 0; i--) {
-      remove(tabsList[i], true);
+  function MdTabItem () {
+    return { require: '^mdTabs', link: link };
+    function link (scope, element, attr, ctrl) {
+      ctrl.attachRipple(scope, element);
     }
-  });
-
-  // Get the selected tab
-  function getSelectedItem() {
-    return itemAt($scope.selectedIndex);
   }
-
-  function getSelectedIndex() {
-    return $scope.selectedIndex;
-  }
-
-  // Add a new tab.
-  // Returns a method to remove the tab from the list.
-  function add(tab, index) {
-    tabsList.add(tab, index);
-
-    // Select the new tab if we don't have a selectedIndex, or if the
-    // selectedIndex we've been waiting for is this tab
-    if (!angular.isDefined(tab.element.attr('md-active')) && ($scope.selectedIndex === -1 || !angular.isNumber($scope.selectedIndex) ||
-        $scope.selectedIndex === self.indexOf(tab))) {
-      tab.onAdd(self.contentArea, false);
-      self.select(tab);
-    } else {
-      tab.onAdd(self.contentArea, true);
-    }
-
-    $scope.$broadcast('$mdTabsChanged');
-  }
-
-  function remove(tab, noReselect) {
-    if (!tabsList.contains(tab)) return;
-    if (noReselect) return;
-    var isSelectedItem = getSelectedItem() === tab,
-        newTab = previous() || next();
-
-    deselect(tab);
-    tabsList.remove(tab);
-    tab.onRemove();
-
-    $scope.$broadcast('$mdTabsChanged');
-
-    if (isSelectedItem) { select(newTab); }
-  }
-
-  // Move a tab (used when ng-repeat order changes)
-  function move(tab, toIndex) {
-    var isSelected = getSelectedItem() === tab;
-
-    tabsList.remove(tab);
-    tabsList.add(tab, toIndex);
-    if (isSelected) select(tab);
-
-    $scope.$broadcast('$mdTabsChanged');
-  }
-
-  function select(tab, rightToLeft) {
-    if (!tab || tab.isSelected || tab.isDisabled()) return;
-    if (!tabsList.contains(tab)) return;
-
-    if (!angular.isDefined(rightToLeft)) {
-      rightToLeft = indexOf(tab) < $scope.selectedIndex;
-    }
-    deselect(getSelectedItem(), rightToLeft);
-
-    $scope.selectedIndex = indexOf(tab);
-    tab.isSelected = true;
-    tab.onSelect(rightToLeft);
-
-    $scope.$broadcast('$mdTabsChanged');
-  }
-
-  function focus(tab) {
-    // this variable is watched by pagination
-    self.tabToFocus = tab;
-  }
-
-  function deselect(tab, rightToLeft) {
-    if (!tab || !tab.isSelected) return;
-    if (!tabsList.contains(tab)) return;
-
-    $scope.selectedIndex = -1;
-    tab.isSelected = false;
-    tab.onDeselect(rightToLeft);
-  }
-
-  function next(tab, filterFn) {
-    return tabsList.next(tab || getSelectedItem(), filterFn || isTabEnabled);
-  }
-  function previous(tab, filterFn) {
-    return tabsList.previous(tab || getSelectedItem(), filterFn || isTabEnabled);
-  }
-
-  function isTabEnabled(tab) {
-    return tab && !tab.isDisabled();
-  }
-
-}
-MdTabsController.$inject = ["$scope", "$element", "$mdUtil", "$timeout"];
 })();
-
 /*!
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
-(function() {
-'use strict';
+(function () {
+  'use strict';
+  angular.module('material.components.tabs')
+      .directive('mdTabScroll', MdTabScroll);
 
-angular.module('material.components.tabs')
-  .directive('mdTabs', TabsDirective);
+  function MdTabScroll () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attr) {
+        element.on('mousewheel', function (event) {
+          var newScope = scope.$new();
+          newScope.$event = event;
+          newScope.$element = element;
+          newScope.$apply(function () {
+            newScope.$eval(attr.mdTabScroll);
+          });
+        });
+      }
 
+    }
+  }
+})();
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-f086de1
+ */
+(function () {
+  'use strict';
+
+  angular
+      .module('material.components.tabs')
+      .controller('MdTabsController', MdTabsController);
+
+  function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple, $mdUtil) {
+    var ctrl = this,
+        elements = getElements();
+
+    ctrl.scope = $scope;
+    ctrl.parent = $scope.$parent;
+    ctrl.tabs = [];
+    ctrl.lastSelectedIndex = null;
+    ctrl.focusIndex = 0;
+    ctrl.offsetLeft = 0;
+    ctrl.hasContent = true;
+    ctrl.hasFocus = false;
+    ctrl.lastClick = false;
+
+    ctrl.redirectFocus = redirectFocus;
+    ctrl.attachRipple = attachRipple;
+    ctrl.shouldStretchTabs = shouldStretchTabs;
+    ctrl.shouldPaginate = shouldPaginate;
+    ctrl.insertTab = insertTab;
+    ctrl.removeTab = removeTab;
+    ctrl.select = select;
+    ctrl.scroll = scroll;
+    ctrl.nextPage = nextPage;
+    ctrl.previousPage = previousPage;
+    ctrl.keydown = keydown;
+    ctrl.canPageForward = canPageForward;
+    ctrl.canPageBack = canPageBack;
+    ctrl.refreshIndex = refreshIndex;
+    ctrl.incrementSelectedIndex = incrementSelectedIndex;
+    ctrl.updateInkBarStyles = updateInkBarStyles;
+
+    init();
+
+    function init () {
+      $scope.$watch('selectedIndex', handleSelectedIndexChange);
+      $scope.$watch('$mdTabsCtrl.focusIndex', handleFocusIndexChange);
+      $scope.$watch('$mdTabsCtrl.offsetLeft', handleOffsetChange);
+      angular.element($window).on('resize', function () { $scope.$apply(handleWindowResize); });
+      $timeout(updateInkBarStyles, 0, false);
+    }
+
+    function getElements () {
+      var elements = {};
+      elements.canvas = $element[0].getElementsByTagName('md-tabs-canvas')[0];
+      elements.wrapper = elements.canvas.getElementsByTagName('md-pagination-wrapper')[0];
+      elements.tabs    = elements.wrapper.getElementsByTagName('md-tab-item');
+      elements.dummies = elements.canvas.getElementsByTagName('md-dummy-tab');
+      elements.inkBar  = elements.wrapper.getElementsByTagName('md-ink-bar')[0];
+      return elements;
+    }
+
+    function keydown (event) {
+      switch (event.keyCode) {
+        case $mdConstant.KEY_CODE.LEFT_ARROW:
+          event.preventDefault();
+          incrementSelectedIndex(-1, true);
+          break;
+        case $mdConstant.KEY_CODE.RIGHT_ARROW:
+          event.preventDefault();
+          incrementSelectedIndex(1, true);
+          break;
+        case $mdConstant.KEY_CODE.SPACE:
+        case $mdConstant.KEY_CODE.ENTER:
+          event.preventDefault();
+          $scope.selectedIndex = ctrl.focusIndex;
+          break;
+      }
+      ctrl.lastClick = false;
+    }
+
+    function incrementSelectedIndex (inc, focus) {
+      var newIndex,
+          index = focus ? ctrl.focusIndex : $scope.selectedIndex;
+      for (newIndex = index + inc;
+           ctrl.tabs[newIndex] && ctrl.tabs[newIndex].scope.disabled;
+           newIndex += inc) {}
+      if (ctrl.tabs[newIndex]) {
+        if (focus) ctrl.focusIndex = newIndex;
+        else $scope.selectedIndex = newIndex;
+      }
+    }
+
+    function handleOffsetChange (left) {
+      angular.element(elements.wrapper).css('left', '-' + left + 'px');
+      $scope.$broadcast('$mdTabsPaginationChanged');
+    }
+
+    function handleFocusIndexChange (newIndex, oldIndex) {
+      if (newIndex === oldIndex) return;
+      if (!elements.tabs[newIndex]) return;
+      adjustOffset();
+      redirectFocus();
+    }
+
+    function redirectFocus () {
+      elements.dummies[ctrl.focusIndex].focus();
+    }
+
+    function adjustOffset () {
+      var tab = elements.tabs[ctrl.focusIndex],
+          left = tab.offsetLeft,
+          right = tab.offsetWidth + left;
+      ctrl.offsetLeft = Math.max(ctrl.offsetLeft, fixOffset(right - elements.canvas.clientWidth));
+      ctrl.offsetLeft = Math.min(ctrl.offsetLeft, fixOffset(left));
+    }
+
+    function handleWindowResize () {
+      ctrl.lastSelectedIndex = $scope.selectedIndex;
+      updateInkBarStyles();
+      ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
+    }
+
+    function insertTab (tabData, index) {
+      var proto = {
+            getIndex: function () { return ctrl.tabs.indexOf(tab); },
+            isActive: function () { return this.getIndex() === $scope.selectedIndex; },
+            isLeft:   function () { return this.getIndex() < $scope.selectedIndex; },
+            isRight:  function () { return this.getIndex() > $scope.selectedIndex; },
+            hasFocus: function () { return !ctrl.lastClick && ctrl.hasFocus && this.getIndex() === ctrl.focusIndex; },
+            id:       $mdUtil.nextUid()
+          },
+          tab = angular.extend(proto, tabData);
+      if (!angular.isString(tabData.template)) {
+        ctrl.hasContent = false;
+        $element.addClass('md-no-tab-content');
+      }
+      if (angular.isDefined(index)) {
+        ctrl.tabs.splice(index, 0, tab);
+      } else {
+        ctrl.tabs.push(tab);
+      }
+      return tab;
+    }
+
+    function removeTab (tabData) {
+      ctrl.tabs.splice(tabData.getIndex(), 1);
+      refreshIndex();
+      $timeout(function () {
+        updateInkBarStyles();
+        ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
+      });
+    }
+
+    function refreshIndex () {
+      $scope.selectedIndex = getNearestSafeIndex($scope.selectedIndex);
+      ctrl.focusIndex = getNearestSafeIndex(ctrl.focusIndex);
+    }
+
+    function handleSelectedIndexChange (newValue, oldValue) {
+      if (newValue === oldValue) return;
+      $scope.selectedIndex = getNearestSafeIndex(newValue);
+      ctrl.lastSelectedIndex = oldValue;
+      updateInkBarStyles();
+      $scope.$broadcast('$mdTabsChanged');
+    }
+
+    function handleResizeWhenVisible () {
+      //-- if there is already a watcher waiting for resize, do nothing
+      if (handleResizeWhenVisible.watcher) return;
+      //-- otherwise, we will abuse the $watch function to check for visible
+      handleResizeWhenVisible.watcher = $scope.$watch(function () {
+        //-- since we are checking for DOM size, we use $timeout to wait for after the DOM updates
+        $timeout(function () {
+          //-- if the watcher has already run (ie. multiple digests in one cycle), do nothing
+          if (!handleResizeWhenVisible.watcher) return;
+
+          if ($element.prop('offsetParent')) {
+            handleResizeWhenVisible.watcher();
+            handleResizeWhenVisible.watcher = null;
+
+            //-- we have to trigger our own $apply so that the DOM bindings will update
+            $scope.$apply(handleWindowResize);
+          }
+        }, 0, false);
+      });
+    }
+
+    function updateInkBarStyles () {
+      if (!ctrl.tabs.length) return;
+      //-- if the element is not visible, we will not be able to calculate sizes until it is
+      //-- we should treat that as a resize event rather than just updating the ink bar
+      if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
+      var index = $scope.selectedIndex,
+          totalWidth = elements.wrapper.offsetWidth,
+          tab = elements.tabs[index],
+          left = tab.offsetLeft,
+          right = totalWidth - left - tab.offsetWidth;
+      updateInkBarClassName();
+      angular.element(elements.inkBar).css({ left: left + 'px', right: right + 'px' });
+
+    }
+
+    function updateInkBarClassName () {
+      var newIndex = $scope.selectedIndex,
+          oldIndex = ctrl.lastSelectedIndex,
+          ink = angular.element(elements.inkBar);
+      ink.removeClass('md-left md-right');
+      if (!angular.isNumber(oldIndex)) return;
+      if (newIndex < oldIndex) {
+        ink.addClass('md-left');
+      } else if (newIndex > oldIndex) {
+        ink.addClass('md-right');
+      }
+    }
+
+    function getNearestSafeIndex(newIndex) {
+      var maxOffset = Math.max(ctrl.tabs.length - newIndex, newIndex),
+          i, tab;
+      for (i = 0; i <= maxOffset; i++) {
+        tab = ctrl.tabs[newIndex + i];
+        if (tab && (tab.scope.disabled !== true)) return tab.getIndex();
+        tab = ctrl.tabs[newIndex - i];
+        if (tab && (tab.scope.disabled !== true)) return tab.getIndex();
+      }
+      return newIndex;
+    }
+
+    function shouldStretchTabs () {
+      switch ($scope.stretchTabs) {
+        case 'always': return true;
+        case 'never':  return false;
+        default:       return !shouldPaginate() && $window.matchMedia('(max-width: 600px)').matches;
+      }
+    }
+
+    function shouldPaginate () {
+      var canvasWidth = $element.prop('clientWidth');
+      angular.forEach(elements.tabs, function (tab) { canvasWidth -= tab.offsetWidth; });
+      return canvasWidth < 0;
+    }
+
+    function select (index) {
+      ctrl.focusIndex = $scope.selectedIndex = index;
+      ctrl.lastClick = true;
+    }
+
+    function scroll (event) {
+      if (!shouldPaginate()) return;
+      event.preventDefault();
+      ctrl.offsetLeft = fixOffset(ctrl.offsetLeft - event.wheelDelta);
+    }
+
+    function fixOffset (value) {
+      var lastTab = elements.tabs[elements.tabs.length - 1],
+          totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
+      value = Math.max(0, value);
+      value = Math.min(totalWidth - elements.canvas.clientWidth, value);
+      return value;
+    }
+
+    function nextPage () {
+      var viewportWidth = elements.canvas.clientWidth,
+          totalWidth = viewportWidth + ctrl.offsetLeft,
+          i, tab;
+      for (i = 0; i < elements.tabs.length; i++) {
+        tab = elements.tabs[i];
+        if (tab.offsetLeft + tab.offsetWidth > totalWidth) break;
+      }
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft);
+    }
+
+    function previousPage () {
+      var i, tab;
+      for (i = 0; i < elements.tabs.length; i++) {
+        tab = elements.tabs[i];
+        if (tab.offsetLeft + tab.offsetWidth >= ctrl.offsetLeft) break;
+      }
+      ctrl.offsetLeft = fixOffset(tab.offsetLeft + tab.offsetWidth - elements.canvas.clientWidth);
+    }
+
+    function canPageBack () {
+      return ctrl.offsetLeft > 0;
+    }
+
+    function canPageForward () {
+      var lastTab = elements.tabs[elements.tabs.length - 1];
+      return lastTab && lastTab.offsetLeft + lastTab.offsetWidth > elements.canvas.clientWidth + ctrl.offsetLeft;
+    }
+
+    function attachRipple (scope, element) {
+      var options = { colorElement: angular.element(elements.inkBar) };
+      $mdInkRipple.attachTabBehavior(scope, element, options);
+    }
+  }
+  MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil"];
+})();
+/*!
+ * Angular Material Design
+ * https://github.com/angular/material
+ * @license MIT
+ * v0.8.3-master-f086de1
+ */
 /**
  * @ngdoc directive
  * @name mdTabs
@@ -11625,14 +11389,10 @@ angular.module('material.components.tabs')
  * **Tabs with internal views** are the traditional usages where each tab has associated view content and the view switching is managed internally by the Tabs component.
  * **Tabs with external view content** is often useful when content associated with each tab is independently managed and data-binding notifications announce tab selection changes.
  *
- * > As a performance bonus, if the tab content is managed internally then the non-active (non-visible) tab contents are temporarily disconnected from the `$scope.$digest()` processes; which restricts and optimizes DOM updates to only the currently active tab.
- *
  * Additional features also include:
  *
  * *  Content can include any markup.
  * *  If a tab is disabled while active/selected, then the next tab will be auto-selected.
- * *  If the currently active tab is the last tab, then next() action will select the first tab.
- * *  Any markup (other than **`<md-tab>`** tags) will be transcluded into the tab header area BEFORE the tab buttons.
  *
  * ### Explanation of tab stretching
  *
@@ -11660,106 +11420,135 @@ angular.module('material.components.tabs')
  * <hljs lang="html">
  * <md-tabs md-selected="selectedIndex" >
  *   <img ng-src="img/angular.png" class="centered">
- *
  *   <md-tab
- *      ng-repeat="tab in tabs | orderBy:predicate:reversed"
- *      md-on-select="onTabSelected(tab)"
- *      md-on-deselect="announceDeselected(tab)"
- *      disabled="tab.disabled" >
- *
- *       <md-tab-label>
- *           {{tab.title}}
- *           <img src="img/removeTab.png"
- *                ng-click="removeTab(tab)"
- *                class="delete" >
- *       </md-tab-label>
- *
+ *       ng-repeat="tab in tabs | orderBy:predicate:reversed"
+ *       md-on-select="onTabSelected(tab)"
+ *       md-on-deselect="announceDeselected(tab)"
+ *       ng-disabled="tab.disabled">
+ *     <md-tab-label>
+ *       {{tab.title}}
+ *       <img src="img/removeTab.png" ng-click="removeTab(tab)" class="delete">
+ *     </md-tab-label>
+ *     <md-tab-template>
  *       {{tab.content}}
- *
+ *     </md-tab-template>
  *   </md-tab>
- *
  * </md-tabs>
  * </hljs>
  *
  */
-function TabsDirective($mdTheming) {
-  return {
-    restrict: 'E',
-    controller: '$mdTabs',
-    require: 'mdTabs',
-    transclude: true,
-    scope: {
-      selectedIndex: '=?mdSelected'
-    },
-    template:
-      '<section class="md-header" ' +
-        'ng-class="{\'md-paginating\': pagination.active}">' +
 
-        '<button class="md-paginator md-prev" ' +
-          'ng-if="pagination.active && pagination.hasPrev" ' +
-          'ng-click="pagination.clickPrevious()" ' +
-          'aria-hidden="true">' +
-          '<md-icon md-svg-icon="tabs-arrow"></md-icon>' +
-        '</button>' +
+(function () {
+  'use strict';
 
-        // overflow: hidden container when paginating
-        '<div class="md-header-items-container" md-tabs-pagination>' +
-          // flex container for <md-tab> elements
-          '<div class="md-header-items">' +
-            '<md-tabs-ink-bar></md-tabs-ink-bar>' +
-          '</div>' +
-        '</div>' +
+  angular
+      .module('material.components.tabs')
+      .directive('mdTabs', MdTabs);
 
-        '<button class="md-paginator md-next" ' +
-          'ng-if="pagination.active && pagination.hasNext" ' +
-          'ng-click="pagination.clickNext()" ' +
-          'aria-hidden="true">' +
-          '<md-icon md-svg-icon="tabs-arrow"></md-icon>' +
-        '</button>' +
-
-      '</section>' +
-      '<section class="md-tabs-content"></section>',
-    link: postLink
-  };
-
-  function postLink(scope, element, attr, tabsCtrl, transclude) {
-
-    scope.stretchTabs = attr.hasOwnProperty('mdStretchTabs') ? attr.mdStretchTabs || 'always' : 'auto';
-
-    $mdTheming(element);
-    configureAria();
-    watchSelected();
-
-    transclude(scope.$parent, function(clone) {
-      angular.element(element[0].querySelector('.md-header-items')).append(clone);
-    });
-
-    function configureAria() {
-      element.attr('role', 'tablist');
-    }
-
-    function watchSelected() {
-      scope.$watch('selectedIndex', function watchSelectedIndex(newIndex, oldIndex) {
-        if (oldIndex == newIndex) return;
-        var rightToLeft = oldIndex > newIndex;
-        tabsCtrl.deselect(tabsCtrl.itemAt(oldIndex), rightToLeft);
-
-        if (tabsCtrl.inRange(newIndex)) {
-          var newTab = tabsCtrl.itemAt(newIndex);
-          while (newTab && newTab.isDisabled()) {
-            newTab = newIndex > oldIndex 
-                ? tabsCtrl.next(newTab)
-                : tabsCtrl.previous(newTab);
-          }
-          tabsCtrl.select(newTab, rightToLeft);
-        }
-      });
-    }
+  function MdTabs ($mdTheming) {
+    return {
+      scope: {
+        selectedIndex: '=?mdSelected',
+        stretchTabs: '@?mdStretchTabs'
+      },
+      transclude: true,
+      template: '\
+        <md-tabs-wrapper ng-class="{ \'md-stretch-tabs\': $mdTabsCtrl.shouldStretchTabs() }">\
+          <md-tab-data ng-transclude></md-tab-data>\
+          <md-prev-button\
+              tabindex="-1"\
+              role="button"\
+              aria-label="Previous Page"\
+              aria-disabled="{{!$mdTabsCtrl.canPageBack()}}"\
+              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageBack() }"\
+              ng-if="$mdTabsCtrl.shouldPaginate()"\
+              ng-click="$mdTabsCtrl.previousPage()">\
+            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+          </md-prev-button>\
+          <md-next-button\
+              tabindex="-1"\
+              role="button"\
+              aria-label="Next Page"\
+              aria-disabled="{{!$mdTabsCtrl.canPageForward()}}"\
+              ng-class="{ \'md-disabled\': !$mdTabsCtrl.canPageForward() }"\
+              ng-if="$mdTabsCtrl.shouldPaginate()"\
+              ng-click="$mdTabsCtrl.nextPage()">\
+            <md-icon md-svg-icon="tabs-arrow"></md-icon>\
+          </md-next-button>\
+          <md-tabs-canvas\
+              tabindex="0"\
+              aria-activedescendant="tab-item-{{$mdTabsCtrl.tabs[$mdTabsCtrl.focusIndex].id}}"\
+              ng-focus="$mdTabsCtrl.redirectFocus()"\
+              ng-class="{ \'md-paginated\': $mdTabsCtrl.shouldPaginate() }"\
+              ng-keydown="$mdTabsCtrl.keydown($event)"\
+              role="tablist">\
+            <md-pagination-wrapper\
+                md-tab-scroll="$mdTabsCtrl.scroll($event)">\
+              <md-tab-item\
+                  tabindex="-1"\
+                  class="md-tab"\
+                  style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
+                  role="tab"\
+                  aria-selected="{{tab.isActive()}}"\
+                  aria-disabled="{{tab.scope.disabled}}"\
+                  aria-controls="tab-content-{{tab.id}}"\
+                  ng-repeat="tab in $mdTabsCtrl.tabs"\
+                  ng-click="$mdTabsCtrl.select(tab.getIndex())"\
+                  ng-class="{ \'md-active\': tab.isActive(),\
+                      \'md-focus\': tab.hasFocus(),\
+                      \'md-disabled\': tab.scope.disabled }"\
+                  ng-disabled="tab.scope.disabled"\
+                  md-swipe-left="$mdTabsCtrl.nextPage()"\
+                  md-swipe-right="$mdTabsCtrl.previousPage()"\
+                  md-label-template="tab.label"></md-tab-item>\
+              <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
+            </md-pagination-wrapper>\
+            <div class="visually-hidden">\
+              <md-dummy-tab\
+                  tabindex="-1"\
+                  id="tab-item-{{tab.id}}"\
+                  role="tab"\
+                  aria-controls="tab-content-{{tab.id}}"\
+                  aria-selected="{{tab.isActive()}}"\
+                  aria-disabled="{{tab.scope.disabled}}"\
+                  ng-focus="$mdTabsCtrl.hasFocus = true"\
+                  ng-blur="$mdTabsCtrl.hasFocus = false"\
+                  ng-repeat="tab in $mdTabsCtrl.tabs"\
+                  md-label-template="tab.label"></md-dummy-tab>\
+            </div>\
+          </md-tabs-canvas>\
+        </md-tabs-wrapper>\
+        <md-tabs-content-wrapper ng-if="$mdTabsCtrl.hasContent">\
+          <md-tab-content\
+              ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
+              md-tab-data="tab"\
+              id="tab-content-{{tab.id}}"\
+              aria-labelledby="tab-item-{{tab.id}}"\
+              role="tabpanel"\
+              md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
+              md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
+              ng-class="{\
+                \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
+                \'md-active\': tab.isActive(),\
+                \'md-left\':   tab.isLeft(),\
+                \'md-right\':  tab.isRight()\
+              }"></md-tab-content>\
+        </md-tabs-content-wrapper>\
+      ',
+      controller: 'MdTabsController',
+      controllerAs: '$mdTabsCtrl',
+      link: function (scope, element, attr) {
+        //-- watch attributes
+        attr.$observe('mdNoBar', function (value) { scope.noInkBar = angular.isDefined(value); });
+        //-- set default value for selectedIndex
+        scope.selectedIndex = angular.isNumber(scope.selectedIndex) ? scope.selectedIndex : 0;
+        //-- apply themes
+        $mdTheming(element);
+      }
+    };
   }
-}
-TabsDirective.$inject = ["$mdTheming"];
+  MdTabs.$inject = ["$mdTheming"];
 })();
-
 (function(){ 
- angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete {  background: '{{background-50}}'; }  md-autocomplete button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete button:after {    background: '{{background-600-0.3}}'; }  md-autocomplete ul {    background: '{{background-50}}'; }    md-autocomplete ul li {      border-top: 1px solid '{{background-400}}';      color: '{{background-900}}'; }      md-autocomplete ul li .highlight {        color: '{{background-600}}'; }      md-autocomplete ul li:hover, md-autocomplete ul li.selected {        background: '{{background-200}}'; }md-backdrop.md-opaque.md-THEME_NAME-theme {  background-color: '{{foreground-4-0.5}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }md-toolbar .md-button.md-THEME_NAME-theme.md-fab {  background-color: white; }.md-button.md-THEME_NAME-theme {  border-radius: 3px; }  .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {    background-color: '{{background-500-0.2}}'; }  .md-button.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {      color: '{{primary-contrast}}';      background-color: '{{primary-color}}'; }      .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):focus {        background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab {    border-radius: 50%;    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):focus {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-raised {    color: '{{background-contrast}}';    background-color: '{{background-50}}'; }    .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus {      background-color: '{{background-200}}'; }  .md-button.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {      color: '{{warn-contrast}}';      background-color: '{{warn-color}}'; }      .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):focus {        background-color: '{{warn-700}}'; }  .md-button.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {      color: '{{accent-contrast}}';      background-color: '{{accent-color}}'; }      .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):focus {        background-color: '{{accent-700}}'; }  .md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {    color: '{{foreground-3}}';    background-color: transparent;    cursor: not-allowed; }md-card.md-THEME_NAME-theme {  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-content.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-3}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }md-icon.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }md-icon.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }md-icon.md-THEME_NAME-theme.md-danger {  color: '{{danger-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  fill: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label, md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  fill: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled], [disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, '{{foreground-4}}' 100%); }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient('{{warn-100}}' 0%, '{{warn-100}}' 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient('{{accent-100}}' 0%, '{{accent-100}}' 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {  border-color: '{{foreground-3}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {  border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {  border-color: '{{foreground-1}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label.md-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-label {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-label {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-label {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-label.md-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme .md-select-label {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-label.md-placeholder {    color: '{{foreground-2}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  background-color: '{{primary-50}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    background-color: '{{primary-100}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    background-color: '{{accent-50}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      background-color: '{{accent-100}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  border-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-3}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {  border-color: '{{foreground-1}}';  border-style: dotted; }md-tabs.md-THEME_NAME-theme .md-header {  background-color: transparent; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent .md-header {  background-color: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {  color: '{{accent-100}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).active {    color: '{{accent-contrast}}'; }md-tabs.md-THEME_NAME-theme.md-primary .md-header {  background-color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]) {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).active {    color: '{{primary-contrast}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tab {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab[disabled] {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:focus {    color: '{{primary-contrast}}';    background-color: '{{primary-contrast-0.1}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab.active {    color: '{{primary-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab .md-ripple-container {    color: '{{primary-contrast}}'; }md-tabs.md-THEME_NAME-theme.md-warn .md-header {  background-color: '{{warn-color}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {  color: '{{warn-100}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).active {    color: '{{warn-contrast}}'; }md-tabs.md-THEME_NAME-theme md-tabs-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme md-tab[disabled] {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme md-tab:focus {    color: '{{foreground-1}}'; }  md-tabs.md-THEME_NAME-theme md-tab.active {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  text-shadow: '{{foreground-shadow}}'; }  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme input::-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme label {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused input, md-input-group.md-THEME_NAME-theme.md-input-focused textarea {  border-color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused label {  color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent input, md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent textarea {  border-color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {  color: '{{foreground-2}}'; }md-input-group.md-THEME_NAME-theme .md-input[disabled] {  border-bottom-color: '{{foreground-4}}';  color: '{{foreground-3}}'; }md-toast.md-THEME_NAME-theme {  background-color: '{{foreground-1}}';  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme .md-button {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-background {    background-color: '{{foreground-2}}'; }"); 
+ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete {  background: '{{background-50}}'; }  md-autocomplete button md-icon path {    fill: '{{background-600}}'; }  md-autocomplete button:after {    background: '{{background-600-0.3}}'; }  md-autocomplete ul {    background: '{{background-50}}'; }    md-autocomplete ul li {      border-top: 1px solid '{{background-400}}';      color: '{{background-900}}'; }      md-autocomplete ul li .highlight {        color: '{{background-600}}'; }      md-autocomplete ul li:hover, md-autocomplete ul li.selected {        background: '{{background-200}}'; }md-backdrop.md-opaque.md-THEME_NAME-theme {  background-color: '{{foreground-4-0.5}}'; }md-bottom-sheet.md-THEME_NAME-theme {  background-color: '{{background-50}}';  border-top-color: '{{background-300}}'; }  md-bottom-sheet.md-THEME_NAME-theme.md-list md-item {    color: '{{foreground-1}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    background-color: '{{background-50}}'; }  md-bottom-sheet.md-THEME_NAME-theme .md-subheader {    color: '{{foreground-1}}'; }md-toolbar .md-button.md-THEME_NAME-theme.md-fab {  background-color: white; }.md-button.md-THEME_NAME-theme {  border-radius: 3px; }  .md-button.md-THEME_NAME-theme:not([disabled]):hover, .md-button.md-THEME_NAME-theme:not([disabled]):focus {    background-color: '{{background-500-0.2}}'; }  .md-button.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }    .md-button.md-THEME_NAME-theme.md-primary.md-raised, .md-button.md-THEME_NAME-theme.md-primary.md-fab {      color: '{{primary-contrast}}';      background-color: '{{primary-color}}'; }      .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-primary.md-fab:not([disabled]):focus {        background-color: '{{primary-600}}'; }  .md-button.md-THEME_NAME-theme.md-fab {    border-radius: 50%;    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }    .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-fab:not([disabled]):focus {      background-color: '{{accent-A700}}'; }  .md-button.md-THEME_NAME-theme.md-raised {    color: '{{background-contrast}}';    background-color: '{{background-50}}'; }    .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-raised:not([disabled]):focus {      background-color: '{{background-200}}'; }  .md-button.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }    .md-button.md-THEME_NAME-theme.md-warn.md-raised, .md-button.md-THEME_NAME-theme.md-warn.md-fab {      color: '{{warn-contrast}}';      background-color: '{{warn-color}}'; }      .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-warn.md-fab:not([disabled]):focus {        background-color: '{{warn-700}}'; }  .md-button.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }    .md-button.md-THEME_NAME-theme.md-accent.md-raised, .md-button.md-THEME_NAME-theme.md-accent.md-fab {      color: '{{accent-contrast}}';      background-color: '{{accent-color}}'; }      .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-raised:not([disabled]):focus, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):hover, .md-button.md-THEME_NAME-theme.md-accent.md-fab:not([disabled]):focus {        background-color: '{{accent-700}}'; }  .md-button.md-THEME_NAME-theme[disabled], .md-button.md-THEME_NAME-theme.md-raised[disabled], .md-button.md-THEME_NAME-theme.md-fab[disabled] {    color: '{{foreground-3}}';    background-color: transparent;    cursor: not-allowed; }md-card.md-THEME_NAME-theme {  border-radius: 2px; }  md-card.md-THEME_NAME-theme .md-card-image {    border-radius: 2px 2px 0 0; }md-checkbox.md-THEME_NAME-theme .md-ripple {  color: '{{accent-600}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon {  background-color: '{{accent-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-ripple {  color: '{{primary-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ripple {  color: '{{background-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon {  background-color: '{{primary-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-ripple {  color: '{{warn-600}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn .md-icon {  border-color: '{{foreground-2}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon {  background-color: '{{warn-color-0.87}}'; }md-checkbox.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-icon:after {  border-color: '{{background-200}}'; }md-checkbox.md-THEME_NAME-theme[disabled] .md-icon {  border-color: '{{foreground-3}}'; }md-checkbox.md-THEME_NAME-theme[disabled].md-checked .md-icon {  background-color: '{{foreground-3}}'; }md-content.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-dialog.md-THEME_NAME-theme {  border-radius: 4px;  background-color: '{{background-hue-3}}'; }  md-dialog.md-THEME_NAME-theme.md-content-overflow .md-actions {    border-top-color: '{{foreground-4}}'; }md-divider.md-THEME_NAME-theme {  border-top-color: '{{foreground-4}}'; }md-icon.md-THEME_NAME-theme.md-primary {  color: '{{primary-color}}'; }md-icon.md-THEME_NAME-theme.md-accent {  color: '{{accent-color}}'; }md-icon.md-THEME_NAME-theme.md-warn {  color: '{{warn-color}}'; }md-icon.md-THEME_NAME-theme.md-danger {  color: '{{danger-color}}'; }md-input-container.md-THEME_NAME-theme .md-input {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}';  text-shadow: '{{foreground-shadow}}'; }  md-input-container.md-THEME_NAME-theme .md-input::-webkit-input-placeholder, md-input-container.md-THEME_NAME-theme .md-input::-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-moz-placeholder, md-input-container.md-THEME_NAME-theme .md-input:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme > md-icon {  color: '{{foreground-1}}'; }md-input-container.md-THEME_NAME-theme label, md-input-container.md-THEME_NAME-theme .md-placeholder {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-container.md-THEME_NAME-theme div[ng-messages] {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-has-value label {  color: '{{foreground-2}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused .md-input {  border-color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused label {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused md-icon {  color: '{{primary-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent .md-input {  border-color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme:not(.md-input-invalid).md-input-focused.md-warn label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid .md-input {  border-color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid label {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme.md-input-invalid ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid data-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid x-ng-message, md-input-container.md-THEME_NAME-theme.md-input-invalid [ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [data-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid [x-ng-message], md-input-container.md-THEME_NAME-theme.md-input-invalid .md-char-counter {  color: '{{warn-500}}'; }md-input-container.md-THEME_NAME-theme .md-input[disabled], [disabled] md-input-container.md-THEME_NAME-theme .md-input {  border-bottom-color: transparent;  color: '{{foreground-3}}';  background-image: linear-gradient(to right, '{{foreground-4}}' 0%, '{{foreground-4}}' 33%, transparent 0%);  background-image: -ms-linear-gradient(left, transparent 0%, '{{foreground-4}}' 100%); }md-progress-circular.md-THEME_NAME-theme {  background-color: transparent; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-gap {    border-top-color: '{{primary-color}}';    border-bottom-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-top-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-right .md-half-circle {    border-right-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme .md-inner .md-left .md-half-circle {    border-left-color: '{{primary-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-gap {    border-top-color: '{{warn-color}}';    border-bottom-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-top-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-right .md-half-circle {    border-right-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-warn .md-inner .md-left .md-half-circle {    border-left-color: '{{warn-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-gap {    border-top-color: '{{accent-color}}';    border-bottom-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle, md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-top-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-right .md-half-circle {    border-right-color: '{{accent-color}}'; }  md-progress-circular.md-THEME_NAME-theme.md-accent .md-inner .md-left .md-half-circle {    border-left-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme .md-container {  background-color: '{{primary-100}}'; }md-progress-linear.md-THEME_NAME-theme .md-bar {  background-color: '{{primary-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-container {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-warn .md-bar {  background-color: '{{warn-color}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-container {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme.md-accent .md-bar {  background-color: '{{accent-color}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-bar1 {  background-color: '{{warn-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-warn .md-dashed:before {  background: radial-gradient('{{warn-100}}' 0%, '{{warn-100}}' 16%, transparent 42%); }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-bar1 {  background-color: '{{accent-100}}'; }md-progress-linear.md-THEME_NAME-theme[md-mode=buffer].md-accent .md-dashed:before {  background: radial-gradient('{{accent-100}}' 0%, '{{accent-100}}' 16%, transparent 42%); }md-radio-button.md-THEME_NAME-theme .md-off {  border-color: '{{foreground-2}}'; }md-radio-button.md-THEME_NAME-theme .md-on {  background-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-off {  border-color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme.md-checked .md-ink-ripple {  color: '{{accent-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme .md-container .md-ripple {  color: '{{accent-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-on {  background-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-off {  border-color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary.md-checked .md-ink-ripple {  color: '{{primary-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-primary .md-container .md-ripple {  color: '{{primary-600}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-on {  background-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-off {  border-color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn.md-checked .md-ink-ripple {  color: '{{warn-color-0.87}}'; }md-radio-button.md-THEME_NAME-theme:not([disabled]).md-warn .md-container .md-ripple {  color: '{{warn-600}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-off {  border-color: '{{foreground-3}}'; }md-radio-button.md-THEME_NAME-theme[disabled] .md-container .md-on {  border-color: '{{foreground-3}}'; }md-radio-group.md-THEME_NAME-theme:focus:not(:empty) {  border-color: '{{foreground-1}}'; }md-select.md-THEME_NAME-theme.ng-invalid.ng-dirty .md-select-label {  color: '{{warn-500}}' !important;  border-bottom-color: '{{warn-500}}' !important; }md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label {  border-bottom-color: '{{primary-color}}';  color: '{{ foreground-1 }}'; }  md-select.md-THEME_NAME-theme:not([disabled]):focus .md-select-label.md-placeholder {    color: '{{ foreground-1 }}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-accent .md-select-label {  border-bottom-color: '{{accent-color}}'; }md-select.md-THEME_NAME-theme:not([disabled]):focus.md-warn .md-select-label {  border-bottom-color: '{{warn-color}}'; }md-select.md-THEME_NAME-theme[disabled] .md-select-label {  color: '{{foreground-3}}'; }  md-select.md-THEME_NAME-theme[disabled] .md-select-label.md-placeholder {    color: '{{foreground-3}}'; }md-select.md-THEME_NAME-theme .md-select-label {  border-bottom-color: '{{foreground-4}}'; }  md-select.md-THEME_NAME-theme .md-select-label.md-placeholder {    color: '{{foreground-2}}'; }md-select-menu.md-THEME_NAME-theme md-optgroup {  color: '{{foreground-2}}'; }  md-select-menu.md-THEME_NAME-theme md-optgroup md-option {    color: '{{foreground-1}}'; }md-select-menu.md-THEME_NAME-theme md-option[selected] {  background-color: '{{primary-50}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected]:focus {    background-color: '{{primary-100}}'; }  md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent {    background-color: '{{accent-50}}'; }    md-select-menu.md-THEME_NAME-theme md-option[selected].md-accent:focus {      background-color: '{{accent-100}}'; }md-select-menu.md-THEME_NAME-theme md-option:focus:not([selected]) {  background: '{{background-200}}'; }md-sidenav.md-THEME_NAME-theme {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track {  background-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme .md-track-ticks {  background-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-focus-thumb {  background-color: '{{foreground-2}}'; }md-slider.md-THEME_NAME-theme .md-focus-ring {  border-color: '{{foreground-4}}'; }md-slider.md-THEME_NAME-theme .md-disabled-thumb {  border-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme.md-min .md-thumb:after {  background-color: '{{background-hue-3}}'; }md-slider.md-THEME_NAME-theme .md-track.md-track-fill {  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb:after {  border-color: '{{accent-color}}';  background-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-sign {  background-color: '{{accent-color}}'; }  md-slider.md-THEME_NAME-theme .md-sign:after {    border-top-color: '{{accent-color}}'; }md-slider.md-THEME_NAME-theme .md-thumb-text {  color: '{{accent-contrast}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-track.md-track-fill {  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb:after {  border-color: '{{warn-color}}';  background-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-sign {  background-color: '{{warn-color}}'; }  md-slider.md-THEME_NAME-theme.md-warn .md-sign:after {    border-top-color: '{{warn-color}}'; }md-slider.md-THEME_NAME-theme.md-warn .md-thumb-text {  color: '{{warn-contrast}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-track.md-track-fill {  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb:after {  border-color: '{{primary-color}}';  background-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-sign {  background-color: '{{primary-color}}'; }  md-slider.md-THEME_NAME-theme.md-primary .md-sign:after {    border-top-color: '{{primary-color}}'; }md-slider.md-THEME_NAME-theme.md-primary .md-thumb-text {  color: '{{primary-contrast}}'; }md-slider.md-THEME_NAME-theme[disabled] .md-thumb:after {  border-color: '{{foreground-3}}'; }md-slider.md-THEME_NAME-theme[disabled]:not(.md-min) .md-thumb:after {  background-color: '{{foreground-3}}'; }.md-subheader.md-THEME_NAME-theme {  color: '{{ foreground-2-0.23 }}';  background-color: '{{background-hue-3}}'; }  .md-subheader.md-THEME_NAME-theme.md-primary {    color: '{{primary-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-accent {    color: '{{accent-color}}'; }  .md-subheader.md-THEME_NAME-theme.md-warn {    color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme .md-thumb {  background-color: '{{background-50}}'; }md-switch.md-THEME_NAME-theme .md-bar {  background-color: '{{background-500}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-thumb {  background-color: '{{accent-color}}'; }md-switch.md-THEME_NAME-theme.md-checked .md-bar {  background-color: '{{accent-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-thumb {  background-color: '{{primary-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-primary .md-bar {  background-color: '{{primary-color-0.5}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-thumb {  background-color: '{{warn-color}}'; }md-switch.md-THEME_NAME-theme.md-checked.md-warn .md-bar {  background-color: '{{warn-color-0.5}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-thumb {  background-color: '{{background-400}}'; }md-switch.md-THEME_NAME-theme[disabled] .md-bar {  background-color: '{{foreground-4}}'; }md-switch.md-THEME_NAME-theme:focus .md-label:not(:empty) {  border-color: '{{foreground-1}}';  border-style: dotted; }md-tabs.md-THEME_NAME-theme md-tabs-wrapper {  background-color: transparent;  border-color: '{{foreground-4}}'; }md-tabs.md-THEME_NAME-theme .md-paginator md-icon {  color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme md-ink-bar {  color: '{{accent-color}}';  background: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme .md-tab {  color: '{{foreground-2}}'; }  md-tabs.md-THEME_NAME-theme .md-tab[disabled] {    color: '{{foreground-3}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-active, md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    color: '{{primary-color}}'; }  md-tabs.md-THEME_NAME-theme .md-tab.md-focus {    background: '{{primary-color-0.1}}'; }  md-tabs.md-THEME_NAME-theme .md-tab .md-ripple-container {    color: '{{accent-100}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tabs-wrapper {  background-color: '{{accent-color}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]) {  color: '{{accent-100}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    color: '{{accent-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-accent md-tab:not([disabled]).md-focus {    background: '{{accent-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-accent md-ink-bar {  color: '{{primary-600-1}}';  background: '{{primary-600-1}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tabs-wrapper {  background-color: '{{primary-color}}'; }md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]) {  color: '{{primary-100}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    color: '{{primary-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-primary md-tab:not([disabled]).md-focus {    background: '{{primary-contrast-0.1}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tabs-wrapper {  background-color: '{{warn-color}}'; }md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]) {  color: '{{warn-100}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-active, md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    color: '{{warn-contrast}}'; }  md-tabs.md-THEME_NAME-theme.md-warn md-tab:not([disabled]).md-focus {    background: '{{warn-contrast-0.1}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  text-shadow: '{{foreground-shadow}}'; }  md-input-group.md-THEME_NAME-theme input::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme input::-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-moz-placeholder, md-input-group.md-THEME_NAME-theme input:-ms-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-webkit-input-placeholder, md-input-group.md-THEME_NAME-theme textarea::-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-moz-placeholder, md-input-group.md-THEME_NAME-theme textarea:-ms-input-placeholder {    color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme label {  text-shadow: '{{foreground-shadow}}';  color: '{{foreground-3}}'; }md-input-group.md-THEME_NAME-theme input, md-input-group.md-THEME_NAME-theme textarea {  color: '{{foreground-1}}';  border-color: '{{foreground-4}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused input, md-input-group.md-THEME_NAME-theme.md-input-focused textarea {  border-color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused label {  color: '{{primary-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent input, md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent textarea {  border-color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-focused.md-accent label {  color: '{{accent-500}}'; }md-input-group.md-THEME_NAME-theme.md-input-has-value:not(.md-input-focused) label {  color: '{{foreground-2}}'; }md-input-group.md-THEME_NAME-theme .md-input[disabled] {  border-bottom-color: '{{foreground-4}}';  color: '{{foreground-3}}'; }md-toast.md-THEME_NAME-theme {  background-color: '{{foreground-1}}';  color: '{{background-50}}'; }  md-toast.md-THEME_NAME-theme .md-button {    color: '{{background-50}}'; }    md-toast.md-THEME_NAME-theme .md-button.md-highlight {      color: '{{primary-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-accent {        color: '{{accent-A200}}'; }      md-toast.md-THEME_NAME-theme .md-button.md-highlight.md-warn {        color: '{{warn-A200}}'; }md-toolbar.md-THEME_NAME-theme {  background-color: '{{primary-color}}';  color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme .md-button {    color: '{{primary-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-accent {    background-color: '{{accent-color}}';    color: '{{accent-contrast}}'; }  md-toolbar.md-THEME_NAME-theme.md-warn {    background-color: '{{warn-color}}';    color: '{{warn-contrast}}'; }md-tooltip.md-THEME_NAME-theme {  color: '{{background-A100}}'; }  md-tooltip.md-THEME_NAME-theme .md-background {    background-color: '{{foreground-2}}'; }"); 
 })();

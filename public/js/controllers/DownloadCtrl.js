@@ -12,7 +12,9 @@
             $scope.dltypes = Download.get();
 
             $scope.createDownload = function (ev){
+                var parentEl = angular.element(document.body);
                 $mdDialog.show({
+                    parent: parentEl,
                     controller: 'CreateDownloadCtrl',
                     templateUrl: 'partials/admin/download.tmpl.html',
                     targetEvent: ev

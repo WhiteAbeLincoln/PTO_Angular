@@ -81,7 +81,7 @@ router.delete('/downloads/:id', expressJwt({secret: mySecret}), function(req, re
 
         //deletes the file from the filesystem
         fs.unlink(download.filePath, function(err){
-            if (err) throw err;
+            if (err) console.log(err);
         });
 
         //deletes the database entry
@@ -89,12 +89,8 @@ router.delete('/downloads/:id', expressJwt({secret: mySecret}), function(req, re
     }).then(function(data){
         res.status(204).send();
     }).catch(function(err){
-        throw err;
+        console.log(err);
     });
-
-
-
-
 });
 
 router.post('/downloads', expressJwt({secret: mySecret}),           //This ones a monster.
@@ -120,7 +116,7 @@ function (req, res) {
         body.mime = files[0].type;
 
         fs.writeFile(path+filename, files[0].data, 'base64', function(err){
-            if (err) throw err;
+            if (err) console.log(err);
         });
     } else {        //zips the file
         filename = sanitize(filename + '.zip');
@@ -132,7 +128,7 @@ function (req, res) {
         }
 
         fs.writeFile(path+filename, zipFile.generate({compression: "DEFLATE"}), 'base64', function(err){
-           if (err) throw err;
+           if (err) console.log(err);
         });
     }
 
@@ -159,7 +155,7 @@ function (req, res) {
             })
 
         }).catch(function(err){
-            throw err;
+            console.log(err);
         })
     } else {
         db.downloads.types.query([body.type]).then(function(data){
@@ -183,7 +179,7 @@ function (req, res) {
                 });
             })
         }).catch(function(err){
-            throw err;
+            console.log(err);
         })
     }
 });
@@ -256,9 +252,7 @@ router.post('/admin/login', function(req, res){
             }
         });
     }).catch(function(err){
-        console.log('ERROR');
         console.log(err);
-        throw err;
     });
 });
 
@@ -282,8 +276,7 @@ router.post('/admin/admin', function(req, res){
     }).then(function(data){
         console.log(data);
     }).catch(function(err){
-        console.log("ERRORED");
-        if (err) throw err;
+        if (err) console.log(err);
     })
 });
 

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 .md-select-menu-container {
   position: fixed;
@@ -34,10 +34,15 @@
 md-select {
   display: inline-block;
   margin-top: 1.4em; }
+  md-select:focus {
+    outline: none; }
   md-select[disabled]:hover {
     cursor: default; }
   md-select:not([disabled]):hover {
     cursor: pointer; }
+  md-select:not([disabled]).ng-invalid.ng-dirty .md-select-label {
+    padding-bottom: 7px;
+    border-bottom: 2px solid; }
   md-select:not([disabled]):focus .md-select-label {
     border-bottom: 2px solid;
     padding-bottom: 7px; }
@@ -52,11 +57,15 @@ md-select {
   padding-top: 9px;
   padding-bottom: 8px;
   border-bottom: 1px solid;
-  font-size: 1em;
+  font-size: 1.6rem;
   line-height: 0.8em;
   position: relative;
   box-sizing: border-box;
   min-width: 64px; }
+  .md-select-label *:first-child {
+    -webkit-flex: 1;
+        -ms-flex: 1;
+            flex: 1; }
   .md-select-label .md-select-icon {
     -webkit-align-items: flex-end;
         -ms-flex-align: end;
@@ -113,19 +122,26 @@ md-option {
   width: auto;
   padding: 0 16px 0 16px;
   height: 48px; }
+  md-option:focus {
+    outline: none; }
   md-option .md-text {
     width: auto;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 1em; }
+    font-size: 1.6rem; }
 
 md-optgroup {
   display: block; }
   md-optgroup label {
     display: block;
-    font-size: 1em;
+    font-size: 1.6rem;
     text-transform: uppercase;
     padding: 16px 8px; }
   md-optgroup md-option {
     padding-left: 24px; }
+
+@media screen and (-ms-high-contrast: active) {
+  .md-select-backdrop {
+    background-color: transparent; }
+ }

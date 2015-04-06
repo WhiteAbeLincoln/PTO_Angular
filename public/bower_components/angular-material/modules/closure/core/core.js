@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-8911fad
+ * v0.8.3-master-f086de1
  */
 goog.provide('ng.material.core');
 
@@ -525,8 +525,8 @@ angular.module('material.core')
         offsetParent.getBoundingClientRect() : 
         { left: 0, top: 0, width: 0, height: 0 };
       return {
-        left: nodeRect.left - offsetRect.left + offsetParent.scrollLeft,
-        top: nodeRect.top - offsetRect.top + offsetParent.scrollTop,
+        left: nodeRect.left - offsetRect.left,
+        top: nodeRect.top - offsetRect.top,
         width: nodeRect.width,
         height: nodeRect.height
       };
@@ -2057,7 +2057,7 @@ function InkRippleService($window, $timeout) {
         isHeld = false,
         node = element[0],
         rippleSizeSetting = element.attr('md-ripple-size'),
-        color = parseColor(element.attr('md-ink-ripple')) || parseColor($window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
+        color = parseColor(element.attr('md-ink-ripple')) || parseColor(options.colorElement.length && $window.getComputedStyle(options.colorElement[0]).color || 'rgb(0, 0, 0)');
 
     switch (rippleSizeSetting) {
       case 'full':
@@ -2277,8 +2277,8 @@ function InkRippleService($window, $timeout) {
        * @returns {{backgroundColor: string, borderColor: string, width: string, height: string}}
        */
       function getRippleCss(size, left, top) {
-        var rect,
-            css = {
+        var rect = node.getBoundingClientRect(),
+            css  = {
               backgroundColor: rgbaToRGB(color),
               borderColor: rgbaToRGB(color),
               width: size + 'px',
@@ -2295,7 +2295,6 @@ function InkRippleService($window, $timeout) {
         if (options.center) {
           css.left = css.top = '50%';
         } else {
-          rect = node.getBoundingClientRect();
           css.left = Math.round((left - rect.left) / container.prop('offsetWidth') * 100) + '%';
           css.top = Math.round((top - rect.top) / container.prop('offsetHeight') * 100) + '%';
         }
