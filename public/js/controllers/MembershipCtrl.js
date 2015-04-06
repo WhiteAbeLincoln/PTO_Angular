@@ -10,7 +10,7 @@
                 accepted: false,
                 index: 0,
                 accept: function(){
-                    this.accepted = true;
+                    $scope.$apply(this.accepted = true);
                     this.index = 1;
                 },
                 next: function(){

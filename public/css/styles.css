@@ -145,3 +145,7 @@ button.form-next {
     float:right;
     margin:15px;
 }
+
+th, td {
+    text-align: left;
+}
