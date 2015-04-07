@@ -3,8 +3,8 @@
  */
 (function () {
     var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar'])
-        .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider',
-            function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider) {
+        .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
+            function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
                 $httpProvider.interceptors.push('AuthInterceptor');
 
@@ -71,6 +71,11 @@
                     .icon('social:facebook', 'img/icons/social-facebook.svg')
                     .icon('social:google_plus', 'img/icons/social-google_plus.svg')
                     .icon('social:twitter', 'img/icons/social-twitter.svg');
+
+                gravatarSP.defaults = {
+                    size: 150,
+                    "default": 'retro'
+                };
             }])
         .run(['$rootScope', '$location', '$route', 'Session', function($rootScope, $location, $route, Session){
             $rootScope.$on('$locationChangeStart', function(event, next, current) {

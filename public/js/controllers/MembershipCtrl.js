@@ -53,6 +53,8 @@
                             unit: null
                         });
                     }
+                    $scope.data.index = 1;
+                    $scope.data.index = 2;
                 } else {
                     for (var i = 0; i < (oldLength - num); i++){
                         $scope.user.students.pop();

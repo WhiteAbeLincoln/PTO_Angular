@@ -242,7 +242,8 @@ router.post('/admin/login', function(req, res){
                     email: user.email,
                     username: user.username,
                     type: user.type,
-                    id: user.adminId
+                    id: user.adminId,
+                    registrationDate: user.registrationDate
                 };
                 var token = jwt.sign(profile, mySecret);
 
@@ -261,15 +262,14 @@ router.get('/admin/me', function(req, res){
 });
 
 
-router.post('/admin/admin', function(req, res){
-
+router.post('/admin/register', function(req, res){
     myCrypt.createSalt(512).then(function(data){
         var salt = data.toString('base64');
         return myCrypt.pbkdf2(req.body.password, salt)
             .then(function(key){
                 return db.admin.create([
-                    req.body.firstName, req.body.lastName, req.body.email,
-                    req.body.type,      req.body.username, key.toString('base64'), salt
+                    req.body.firstName, req.body.lastName,      req.body.email, req.body.type,
+                    req.body.username,  key.toString('base64'), salt,           moment().format("YYYY-MM-DD HH:mm:ss")
                 ]);
 
             });

@@ -1,24 +1,30 @@
 <div class="md-whiteframe-z1" layout-margin layout-padding>
     <h1>{{currentUser.username}}</h1>
-    <img gravatar-src="currentUser.email" gravatar-size="100">
-    <table>
-        <tr>
-            <th>Account Type:</th>
-            <td>{{currentUser.type}}</td>
-        </tr>
-        <tr>
-            <th>Account Age:</th>
-            <td>1 year, 2 months</td>
-        </tr>
-        <tr>
-            <th>Real Name:</th>
-            <td>{{ currentUser.firstName + ' ' + currentUser.lastName }}</td>
-        </tr>
-        <tr>
-            <th>Email:</th>
-            <td>{{ currentUser.email }}</td>
-        </tr>
-    </table>
+    <div layout="row" layout-sm='column' layout-align="start center">
+        <div style="padding:10px">
+            <img gravatar-src="currentUser.email">
+        </div>
+        <table>
+            <tr>
+                <th>Account Type:</th>
+                <td>{{currentUser.type}}</td>
+            </tr>
+            <tr>
+                <th>Account Age:</th>
+                <td>
+                    {{accountAge}}
+                </td>
+            </tr>
+            <tr>
+                <th>Real Name:</th>
+                <td>{{ currentUser.firstName + ' ' + currentUser.lastName }}</td>
+            </tr>
+            <tr>
+                <th>Email:</th>
+                <td>{{ currentUser.email }}</td>
+            </tr>
+        </table>
+    </div>
     <pre>{{debug | json}}</pre>
-    <md-button ng-click="logout()">Logout</md-button>
+    <md-button class='md-primary md-raised' ng-click="logout()">Logout</md-button>
 </div>

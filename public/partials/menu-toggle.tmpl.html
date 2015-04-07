@@ -2,14 +2,18 @@
 <md-button class="md-button-toggle"
            ng-click="toggle()"
            aria-controls="nav-menu-{{section.name | nospace}}"
-           flex layout="row"
            aria-expanded="{{isOpen()}}">
-    {{section.name}}
-  <span aria-hidden="true" class="md-toggle-icon"
-        ng-class="{'toggled' : isOpen()}"></span>
-  <span class="visuallyhidden">     <!-- for aria screen readers -->
+    <div flex layout="row">
+        {{section.name}}
+        <span flex=""></span>
+        <span aria-hidden="true" class="md-toggle-icon"
+            ng-class="{'toggled' : isOpen()}">
+            <md-icon md-svg-src="toggle-arrow"></md-icon>
+        </span>
+    </div>
+    <span class="visuallyhidden">     <!-- for aria screen readers -->
     Toggle {{isOpen()? 'expanded' : 'collapsed'}}
-  </span>
+    </span>
 </md-button>
 
 <ul ng-show="isOpen()" class="menu-toggle-list" id="nav-menu-{{section.name | nospace}}">

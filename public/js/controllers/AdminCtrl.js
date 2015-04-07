@@ -11,5 +11,8 @@
             };
 
             $scope.debug = {user: $scope.currentUser};
+
+            $scope.accountAge = moment($scope.currentUser.registrationDate).fromNow(true);
+
         }])
 })();

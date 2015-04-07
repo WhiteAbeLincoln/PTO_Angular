@@ -10,45 +10,32 @@
         <md-subheader class="md-primary">{{name}}</md-subheader>
 
         <md-list>
-            <md-item ng-repeat="download in dltype | filter:search | orderBy:'-modDate'">
-                <md-item-content>
-                    <div class="md-tile-left">
-                        <md-icon
-                                md-svg-icon="file:{{iconStyles[download.fileType] ? iconStyles[download.fileType].icon : 'file'}}"
-                                ng-style="iconStyles[download.fileType].style || iconStyles['file'].style"></md-icon>
+            <md-list-item class="md-3-line" ng-repeat="download in dltype | filter:search | orderBy:'-modDate'">
+                <md-icon
+                        md-svg-icon="file:{{iconStyles[download.fileType] ? iconStyles[download.fileType].icon : 'file'}}"
+                        ng-style="iconStyles[download.fileType].style || iconStyles['file'].style"></md-icon>
+                <div class="md-list-item-text">
+                    <h3>{{download.name}}</h3>
+                    <p>{{download.modDate | date:'MM/dd/yyyy HH:mm:ss'}}</p>
+                    <p>{{download.shortDesc}}</p>
+
+                </div>
+                <div>
+                    <div layout-fill layout="column" layout-align="start center">
+                        <md-button class="md-accent md-icon-button" aria-label="Download File"
+                                   ng-href="api/downloads/{{download.id}}">
+                            <md-icon md-svg-icon="file:file_download"
+                                     style="width:24px; height: 24px;"></md-icon>
+                        </md-button>
+                        <md-button class='md-warn md-icon-button' ng-if="user"
+                                   ng-click="deleteDownload(download.id, name)" aria-label="Delete File">
+                            <md-icon md-svg-icon="content:clear"></md-icon>
+                        </md-button>
                     </div>
-                    <div class="md-tile-content" layout="row" layout-align="space-between center">
-                        <div layout="column">
-                            <h3>{{download.name}}</h3>
 
-                            <p>{{download.shortDesc}}</p>
-                        </div>
-                        <div layout="row">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <h4 class="date-pad">{{download.modDate | date:'MM/dd/yyyy HH:mm:ss'}}</h4>
-                                    </td>
-                                    <td>
-                                        <md-button class="md-accent md-button-small" aria-label="Download File"
-                                                   ng-href="api/downloads/{{download.id}}">
-                                            <md-icon md-svg-icon="file:file_download"
-                                                     style="width:24px; height: 24px;"></md-icon>
-                                        </md-button>
-                                        <md-button class='md-warn md-button-small' ng-if="user"
-                                                   ng-click="deleteDownload(download.id, name)" aria-label="Delete File">
-                                            <md-icon md-svg-icon="content:clear"></md-icon>
-                                        </md-button>
-                                    </td>
-                                </tr>
-                            </table>
-
-
-                        </div>
-                    </div>
-                </md-item-content>
+                </div>
                 <md-divider ng-if="!$last"></md-divider>
-            </md-item>
+            </md-list-item>
         </md-list>
     </section>
     <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-if="user" ng-click="createDownload($event)"

@@ -9,7 +9,7 @@ var stripe = require('stripe')("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
  */
 function Server() {
     var db = mysql.createConnection({
-        host: process.env.PTOMYSQL || '192.168.0.12',
+        host: process.env.PTOMYSQL || 'localhost',
         port: '3306',
         user: 'chudi',
         password: 'm!sQlp4$$w0rd',
@@ -211,17 +211,17 @@ function Server() {
 
         /**
          * Inserts into the Admins table
-         * @param {Array} params [firstName, lastName, email, type, username, passwordHash, salt]
+         * @param {Array} params [firstName, lastName, email, type, username, passwordHash, salt, registrationDate]
          * @returns {Mysql} promise
          */
         create: Q.nbind(db.query, db,
             "INSERT INTO Admins "
-            + "(firstName, lastName, email, type, username, password, salt) "
+            + "(firstName, lastName, email, type, username, password, salt, registrationDate) "
             + "VALUES "
-            + "(?,?,?,?,?,?,?)"),
+            + "(?,?,?,?,?,?,?,?)"),
         /**
-         * Inserts into the Admins table
-         * @param {Array} params [firstName, lastName, email, type, username, passwordHash, salt]
+         * Selects all rows from the Admins table where username matches
+         * @param {Array} params [username]
          * @returns {Mysql} promise
          */
         query: Q.nbind(db.query, db,

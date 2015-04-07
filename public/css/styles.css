@@ -1,5 +1,5 @@
-.md-button:not(.md-fab):not(.md-button-small):not(.md-action) {
-    min-width: 10em;
+*:focus {
+    outline: 0;
 }
 
 a {
@@ -58,9 +58,6 @@ select, option:disabled {
     width: 100%;
 }
 
-.menu a.md-button {
-    display: block;
-}
 .menu button.md-button::-moz-focus-inner {
     padding:0;
 }
@@ -70,11 +67,9 @@ select, option:disabled {
 .menu-heading {
     color: #888;
     display: block;
-    font-size: inherit;
-    font-weight: 500;
     line-height: 40px;
     margin: 0;
-    padding: 0px 16px;
+    padding: 0 16px;
     text-align: left;
     width: 100%;
 }
@@ -84,7 +79,7 @@ select, option:disabled {
 }
 .menu-toggle-list {
     background: #fff;
-    max-height: 999px;
+    max-height: 1300px;
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -100,23 +95,23 @@ select, option:disabled {
 }
 .menu .menu-toggle-list a.md-button {
     display: block;
+    font-weight: 400;
     padding: 0 16px 0 32px;
     text-transform: none;
 }
 .md-button-toggle .md-toggle-icon {
-    background: transparent url(../img/icons/list_control_down.png) no-repeat center center;
-    background-size: 100% auto;
-    display: inline-block;
-    height: 24px;
-    margin: auto 0 auto auto;
+    display: block;
+    margin-left: auto;
     speak: none;
-    width: 24px;
+    vertical-align: middle;
+    transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
     transition: transform 0.3s ease-in-out;
     -webkit-transition: -webkit-transform 0.3s ease-in-out;
 }
 .md-button-toggle .md-toggle-icon.toggled {
-    transform: rotate(180deg);
-    -webkit-transform: rotate(180deg);
+    transform: rotate(0deg);
+    -webkit-transform: rotate(0deg);
 }
 /* End Docs Menu */
 
