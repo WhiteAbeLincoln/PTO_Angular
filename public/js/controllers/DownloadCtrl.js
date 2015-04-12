@@ -3,9 +3,9 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdDialog', '$mdToast', '$timeout', function ($scope, Download, ICON_STYLES, $mdDialog, $mdToast, $timeout) {
+        .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdDialog', '$mdToast', '$timeout', '$window', function ($scope, Download, ICON_STYLES, $mdDialog, $mdToast, $timeout, $window) {
             $scope.updateTitle("Downloads");
-
+            $scope.debug = {};
             $scope.user = $scope.currentUser;
 
             $scope.iconStyles = ICON_STYLES;
@@ -62,10 +62,30 @@
                     $timeout.cancel(pDelete);
                     restoreToList(backup);
                 });
+            };
 
+            $scope.expanded = null;
+            $scope.checkExpanded = function(typeIndex, dl, expanded) {
+                return angular.equals({id: dl.id, category:typeIndex}, expanded);
+            };
 
+            $scope.expandLong = function(typeIndex, dl) {
+                    if ($scope.checkExpanded(typeIndex, dl, $scope.expanded)) {
+                        $scope.expanded = null;
+                        $scope.debug.expanded = null;
+                    }
+                    else {
+                        $scope.expanded = {id: dl.id, category: typeIndex};
+                        $scope.debug.expanded = $scope.expanded;
+
+                    }
 
             };
+
+            $scope.getDownload = function(id) {
+                $window.location = 'api/downloads/'+id;
+            };
+
 
             /**
              * Removes the download object from the list of downloads

@@ -1,29 +1,16 @@
-<h1>News</h1>
-<p>The Centerville High School Parent Teacher Organization is an active organization that sponsors the following programs:</p>
-<ul>
-    <dd>Elk Pride Program</dd>
-    <dd>PTO Senior Scholarship</dd>
-    <dd>Volunteer Program</dd>
-</ul>
-<p>The CHS PTO also hosts the following events:</p>
-<dl>
-    <dd>08/28/14	Annual Open House</dd>
-    <dd>09/22/14	College Information Night for Seniors</dd>
-    <dd>09/29/14	College Information Night for Juniors</dd>
-    <dd>10/22/14	National Honor Society Induction</dd>
-    <dd>12/01/14	Financial Aid Night</dd>
-    <dd>03/03/15	College and Career Fair</dd>
-    <dd>07/04/15	“Best Seats in the House” at the Americana Fireworks</dd>
-</dl>
-<p>The philosophy of the CHS PTO is to be a service organization to parents, not to continually work on fundraising activities.  The many programs that are sponsored by the PTO come only from membership dues collected in the fall and the fundraiser that we host at the 4th of July Americana Fireworks, in which we sell tables on the stadium track for the “Best Seats in the House”.</p>
-<p>These membership donation levels are available to all faculty and high school parents:</p>
-<dl>
-    <dd>Faculty/Staff Sponsor $10</dd>
-    <dd>Family Sponsor $20</dd>
-    <dd>Elk Sponsor $35</dd>
-    <dd>Big Elk Sponsor $50 or more</dd>
-    <dd>Scholarship Sponsor $100 or more (total donation goes to the scholarship fund)</dd>
-</dl>
-<p>The estimated value of the return benefit for your membership is not substantial; therefore, the full amount of your gift may be tax deductible.  Please check with your financial advisor.</p>
-<p>Our goal is to sponsor our high school students with solid PTO support.  The PTO Board meets the first Wednesday of the month at 6:30 p.m. in the IMC on the second floor of the Central Unit of the high school.  All members are welcome to attend the business meeting.</p>
-<p>The Annual CHS Open House will be held on Thursday, August 28th at 7 p.m.  You will begin your evening in your child’s advisory and also meet his or her classroom teachers.  We hope you will make plans to be in attendance to observe your school in action.  Good luck and may your high school experience as the parent of a Centerville Elk teenager be an enjoyable one!</p>
+<div layout="column" layout-align="space-around center" flex>
+    <h1 class="md-display-1">News</h1>
+</div>
+<div layout="row" layout-wrap>
+    <md-card ng-repeat="article in articles">
+        <img class="md-card-image" ng-src="{{article.image}}" ng-style="diediedie">
+        <md-card-content>
+            <h2>{{article.title}}</h2>
+            <p>{{article.description}}</p>
+        </md-card-content>
+        <md-card-footer>
+            <md-button class="md-accent">Share</md-button>
+            <md-button class="md-primary">Read</md-button>
+        </md-card-footer>
+    </md-card>
+</div>

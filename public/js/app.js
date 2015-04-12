@@ -50,7 +50,8 @@
                     })
                     .when('/news', {
                         templateUrl: 'partials/news.tmpl.html',
-                        restricted: false
+                        restricted: false,
+                        controller: 'NewsCtrl'
                     })
                     .otherwise('/');
 

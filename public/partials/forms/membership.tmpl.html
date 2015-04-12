@@ -148,69 +148,69 @@
                     <md-button type="button" ng-disabled="studentForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
                 </md-tab>
                 <md-tab label="Donate" ng-disabled="!data.accepted">
-                    <div layout-margin layout="column" layout-align-gt-sm="space-around center">
-                        <div>
-                            <div layout="column" layout-align="center center">
-                                <h3 ng-model="payment.amount">{{ payment.amount | currency }}</h3>
+                        <ng-form name="paymentForm" layout-margin layout="column" layout-align-gt-sm="space-around center">
+                            <div>
+                                <div layout="column" layout-align="center center">
+                                    <h3 ng-model="payment.amount">{{ payment.amount | currency }}</h3>
+                                </div>
+                                <md-slider ng-model="payment.amount" min="0.00" max="500.00"></md-slider>
+                                <div layout="row">
+                                    <md-input-container flex>
+                                        <label>First</label>
+                                        <input name="paymentFirst" id="payment-first" ng-model="payment.first"
+                                               ng-required="payment.amount > 0">
+
+                                        <div ng-messages="paymentForm.paymentFirst.$error">
+                                            <div ng-message="required">Required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Last</label>
+                                        <input name="paymentLast" id="payment-last" ng-model="payment.last"
+                                               ng-required="payment.amount > 0">
+
+                                        <div ng-messages="paymentForm.paymentLast.$error">
+                                            <div ng-message="required">Required</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                                    <md-input-container flex="66">
+                                        <label>Number</label>
+                                        <input name="paymentNumber" id="payment-number" ng-model="payment.number"
+                                               ng-required="payment.amount > 0">
+
+                                        <div ng-messages="paymentForm.paymentNumber.$error">
+                                            <div ng-message="required">Required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>MM/YY</label>
+                                        <input name="paymentYear" id="payment-exp" ng-model="payment.exp_date"
+                                               ng-pattern="/^\d{2}\/\d{2}$/" ng-required="payment.amount > 0">
+
+                                        <div ng-messages="paymentForm.paymentYear.$error">
+                                            <div ng-message="required">Required</div>
+                                            <div ng-message="pattern">Must be a valid expiration date (MM/YY)</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>CVC</label>
+                                        <input name="paymentCVC" id="payment-cvc" ng-model="payment.cvv2" ng-pattern="/^\d{3}$/"
+                                               ng-required="payment.amount > 0">
+
+                                        <div ng-messages="paymentForm.paymentCVC.$error">
+                                            <div ng-message="required">Required</div>
+                                            <div ng-message="pattern">Must be a valid cvc (123)</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
                             </div>
-                            <md-slider ng-model="payment.amount" min="0.00" max="500.00"></md-slider>
-                            <div layout="row">
-                                <md-input-container flex>
-                                    <label>First</label>
-                                    <input name="paymentFirst" id="payment-first" ng-model="payment.first"
-                                           ng-required="payment.amount > 0">
-
-                                    <div ng-messages="userForm.paymentFirst.$error">
-                                        <div ng-message="required">Required</div>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container flex>
-                                    <label>Last</label>
-                                    <input name="paymentLast" id="payment-last" ng-model="payment.last"
-                                           ng-required="payment.amount > 0">
-
-                                    <div ng-messages="userForm.paymentLast.$error">
-                                        <div ng-message="required">Required</div>
-                                    </div>
-                                </md-input-container>
+                            <div layout-align="center">
+                                <md-button class="md-primary md-raised" type="submit" ng-disabled="paymentForm.$invalid || userForm.$invalid">Submit
+                                </md-button>
                             </div>
-                            <div layout="row">
-                                <md-input-container flex="66">
-                                    <label>Number</label>
-                                    <input name="paymentNumber" id="payment-number" ng-model="payment.number"
-                                           ng-required="payment.amount > 0">
-
-                                    <div ng-messages="userForm.paymentNumber.$error">
-                                        <div ng-message="required">Required</div>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container flex>
-                                    <label>MM/YY</label>
-                                    <input name="paymentYear" id="payment-exp" ng-model="payment.exp_date"
-                                           ng-pattern="/^\d{2}\/\d{2}$/" ng-required="payment.amount > 0">
-
-                                    <div ng-messages="userForm.paymentYear.$error">
-                                        <div ng-message="required">Required</div>
-                                        <div ng-message="pattern">Must be a valid expiration date (MM/YY)</div>
-                                    </div>
-                                </md-input-container>
-                                <md-input-container flex>
-                                    <label>CVC</label>
-                                    <input name="paymentCVC" id="payment-cvc" ng-model="payment.cvv2" ng-pattern="/^\d{3}$/"
-                                           ng-required="payment.amount > 0">
-
-                                    <div ng-messages="userForm.paymentCVC.$error">
-                                        <div ng-message="required">Required</div>
-                                        <div ng-message="pattern">Must be a valid cvc (123)</div>
-                                    </div>
-                                </md-input-container>
-                            </div>
-                        </div>
-                        <div layout-align="center">
-                            <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid">Submit
-                            </md-button>
-                        </div>
-                    </div>
+                        </ng-form>
                 </md-tab>
             </form>
         </md-tabs>

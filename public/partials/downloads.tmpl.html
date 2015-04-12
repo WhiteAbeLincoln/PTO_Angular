@@ -10,7 +10,8 @@
         <md-subheader class="md-primary">{{name}}</md-subheader>
 
         <md-list>
-            <md-list-item class="md-3-line" ng-repeat="download in dltype | filter:search | orderBy:'-modDate'">
+            <md-list-item class="md-3-line transition" ng-repeat="download in dltype | filter:search | orderBy:'-modDate'" ng-click="expandLong(name, download)"
+                    ng-class="{'selected md-whiteframe-z2': checkExpanded(name,download,expanded)}">
                 <md-icon
                         md-svg-icon="file:{{iconStyles[download.fileType] ? iconStyles[download.fileType].icon : 'file'}}"
                         ng-style="iconStyles[download.fileType].style || iconStyles['file'].style"></md-icon>
@@ -18,22 +19,11 @@
                     <h3>{{download.name}}</h3>
                     <p>{{download.modDate | date:'MM/dd/yyyy HH:mm:ss'}}</p>
                     <p>{{download.shortDesc}}</p>
-
+                    <div class="hr" ng-if="checkExpanded(name, download, expanded)"></div>
+                    <p class="pre" ng-if="checkExpanded(name, download, expanded)">{{download.description}}</p>
                 </div>
-                <div>
-                    <div layout-fill layout="column" layout-align="start center">
-                        <md-button class="md-accent md-icon-button" aria-label="Download File"
-                                   ng-href="api/downloads/{{download.id}}">
-                            <md-icon md-svg-icon="file:file_download"
-                                     style="width:24px; height: 24px;"></md-icon>
-                        </md-button>
-                        <md-button class='md-warn md-icon-button' ng-if="user"
-                                   ng-click="deleteDownload(download.id, name)" aria-label="Delete File">
-                            <md-icon md-svg-icon="content:clear"></md-icon>
-                        </md-button>
-                    </div>
-
-                </div>
+                <md-icon ng-if="!user" class="md-secondary" ng-click="getDownload(download.id)" md-svg-icon="file:file_download" role="button" aria-label="Download File" style="width:48px; height:48px;"></md-icon>
+                <md-icon class="md-secondary md-warn" ng-if="user" ng-click="deleteDownload(download.id, name)" role="button" aria-label="Delete File" md-svg-icon="content:clear"></md-icon>
                 <md-divider ng-if="!$last"></md-divider>
             </md-list-item>
         </md-list>

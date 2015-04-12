@@ -69,7 +69,7 @@
     <md-toolbar class="md-whiteframe-z1" layout="column">
         <div class="md-toolbar-tools" flex>
             <div layout="row" layout-align="start center" flex>
-                <md-button ng-click="openMenu()" class="md-icon-button md-button-small" hide-gt-md aria-label="Toggle Menu" role="button">
+                <md-button ng-click="openMenu()" class="md-icon-button" hide-gt-md aria-label="Toggle Menu" role="button">
                     <md-icon md-svg-src="img/icons/ic_menu_24px.svg" style="height:32px; width:32px;"></md-icon>
                 </md-button>
                 <a href="#/admin" ng-show="currentUser || $mdMedia('gt-md')" hide-md hide-sm style="padding:5px">User: {{currentUser.username}}</a>
@@ -112,6 +112,7 @@
 <script src="js/directives/menuToggle.js"></script>
 <script src="js/directives/menuLink.js"></script>
 <script src="js/AppController.js"></script>
+<script src="js/controllers/NewsCtrl.js"></script>
 <script src="js/controllers/CreateDownloadCtrl.js"></script>
 <script src="js/controllers/AdminCtrl.js"></script>
 <script src='js/controllers/LoginCtrl.js'></script>

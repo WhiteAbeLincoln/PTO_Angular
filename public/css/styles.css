@@ -144,3 +144,32 @@ button.form-next {
 th, td {
     text-align: left;
 }
+
+.md-action {
+    min-width:1em;
+    min-height:30px;
+}
+
+div.hr {
+    display: block;
+    height: 1px;
+    border-top: 1px solid rgba(0,0,0,0.12);
+    margin: 0;
+}
+
+md-list-item.transition {
+    transition: margin 500ms;
+}
+
+md-list-item.transition.selected {
+    margin: 30px -20px;
+}
+
+md-list-item.selected:last-child {
+    border-bottom-left-radius: 2px;
+    border-bottom-right-radius: 2px;
+}
+
+p.pre {
+    white-space: pre-wrap !important;
+}
