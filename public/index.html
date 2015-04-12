@@ -77,10 +77,7 @@
                 <span flex></span>
 
                 <div layout="row">
-                    <md-input-container>
-                        <label>search</label>
-                        <input type="text" ng-model="queryTerm" ng-change="search()">
-                    </md-input-container>
+                    <md-button ng-href="#/admin/login" ng-if="!currentUser">Login</md-button>
                 </div>
 
             </div>

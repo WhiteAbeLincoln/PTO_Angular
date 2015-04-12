@@ -16,7 +16,9 @@
                 </div>
             </md-input-container>
             <md-button class="md-raised md-accent" type="submit" ng-disabled="loginForm.$invalid">Login</md-button>
-            <pre >{{debug | json}}</pre>
+            <p class="md-warn md-caption">{{ error.data }}</p>
+            <pre>{{error | json}}</pre>
+            <pre>{{debug | json}}</pre>
         </div>
     </form>
     <md-button ng-click="test()">Test Restricted</md-button>

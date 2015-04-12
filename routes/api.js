@@ -231,6 +231,7 @@ router.post('/admin/login', function(req, res){
     db.admin.query([req.body.username]).then(function(data){
         if (data[0].length == 0){       //if there is no user with that username
             res.status(401).send('Incorrect username or password');
+            return;
         }
         var user = data[0][0];
 
