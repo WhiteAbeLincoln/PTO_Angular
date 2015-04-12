@@ -39,7 +39,7 @@
                 cvv2:null,
                 first:null,
                 last:null,
-                amount: null
+                amount: 0.00
             };
 
             $scope.changeStudents = function(num){

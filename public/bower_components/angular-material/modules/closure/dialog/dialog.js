@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.dialog');
 goog.require('ng.material.components.backdrop');
@@ -14,7 +14,7 @@ goog.require('ng.material.core');
  * @ngdoc module
  * @name material.components.dialog
  */
-angular.module('material.components.dialog', [
+ng.material.components.dialog = angular.module('material.components.dialog', [
   'material.core',
   'material.components.backdrop'
 ])
@@ -61,8 +61,6 @@ MdDialogDirective.$inject = ["$$rAF", "$mdTheming"];
  * - Default max-width is 80% of the `rootElement` or `parent`.
  *
  * @usage
- * ### HTML
- *
  * <hljs lang="html">
  * <div  ng-app="demoApp" ng-controller="EmployeeController">
  *   <md-button ng-click="showAlert()" class="md-raised md-warn">

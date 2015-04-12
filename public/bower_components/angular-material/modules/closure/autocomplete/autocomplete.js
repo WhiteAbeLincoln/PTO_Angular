@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.autocomplete');
 goog.require('ng.material.components.icon');
@@ -16,7 +16,7 @@ goog.require('ng.material.core');
   /*
    * @see js folder for autocomplete implementation
    */
-  angular.module('material.components.autocomplete', [
+  ng.material.components.autocomplete = angular.module('material.components.autocomplete', [
     'material.core',
     'material.components.icon'
   ]);
@@ -28,7 +28,11 @@ goog.require('ng.material.core');
       .module('material.components.autocomplete')
       .controller('MdAutocompleteCtrl', MdAutocompleteCtrl);
 
-  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout) {
+  var ITEM_HEIGHT = 41,
+      MAX_HEIGHT = 5.5 * ITEM_HEIGHT,
+      MENU_PADDING = 16;
+
+  function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $timeout, $mdTheming, $window) {
 
     //-- private variables
 
@@ -78,7 +82,52 @@ goog.require('ng.material.core');
       $timeout(function () {
         gatherElements();
         focusElement();
+        moveDropdown();
       });
+    }
+
+    function positionDropdown () {
+      if (!elements) return $timeout(positionDropdown, 0, false);
+      var hrect  = elements.wrap.getBoundingClientRect(),
+          vrect  = elements.snap.getBoundingClientRect(),
+          root   = elements.root.getBoundingClientRect(),
+          top    = vrect.bottom - root.top,
+          bot    = root.height - vrect.top,
+          left   = hrect.left - root.left,
+          width  = hrect.width,
+          styles = {
+            left:     left + 'px',
+            minWidth: width + 'px',
+            maxWidth: Math.max(hrect.right - root.left, root.right - hrect.left) - MENU_PADDING + 'px',
+            opacity:  0
+          };
+      if (top > bot && root.height - hrect.bottom - MENU_PADDING < MAX_HEIGHT) {
+        styles.top = 'auto';
+        styles.bottom = bot + 'px';
+        styles.maxHeight = Math.min(MAX_HEIGHT, hrect.top - root.top - MENU_PADDING) + 'px';
+      } else {
+        styles.top = top + 'px';
+        styles.bottom = 'auto';
+        styles.maxHeight = Math.min(MAX_HEIGHT, root.height - hrect.bottom - MENU_PADDING) + 'px';
+      }
+      $timeout(correctHorizontalAlignment, 0, false);
+      elements.$.ul.css(styles);
+
+      function correctHorizontalAlignment () {
+        var dropdown = elements.ul.getBoundingClientRect(),
+            styles   = { opacity: 1 };
+        if (dropdown.right > root.right - MENU_PADDING) {
+          styles.left = (hrect.right - dropdown.width) + 'px';
+        }
+        elements.$.ul.css(styles);
+      }
+    }
+
+    function moveDropdown () {
+      if (!elements.$.root.length) return;
+      $mdTheming(elements.$.ul);
+      elements.$.ul.detach();
+      elements.$.root.append(elements.$.ul);
     }
 
     function focusElement () {
@@ -92,14 +141,37 @@ goog.require('ng.material.core');
           : handleSearchText);
       registerSelectedItemWatcher(selectedItemChange);
       $scope.$watch('selectedItem', handleSelectedItemChange);
+      $scope.$watch('$mdAutocompleteCtrl.hidden', function (hidden, oldHidden) {
+        if (hidden && !oldHidden) positionDropdown();
+      });
+      angular.element($window).on('resize', positionDropdown);
     }
 
     function gatherElements () {
       elements = {
         main:  $element[0],
-        ul:    $element[0].getElementsByTagName('ul')[0],
-        input: $element[0].getElementsByTagName('input')[0]
+        ul:    $element.find('ul')[0],
+        input: $element.find('input')[0],
+        wrap:  $element.find('md-autocomplete-wrap')[0],
+        root:  document.body
       };
+      elements.snap = getSnapTarget();
+      elements.$ = getAngularElements(elements);
+    }
+
+    function getSnapTarget () {
+      for (var element = $element; element.length; element = element.parent()) {
+        if (angular.isDefined(element.attr('md-autocomplete-snap'))) return element[0];
+      }
+      return elements.wrap;
+    }
+
+    function getAngularElements (elements) {
+      var obj = {};
+      for (var key in elements) {
+        obj[key] = angular.element(elements[key]);
+      }
+      return obj;
     }
 
     //-- event/change handlers
@@ -183,12 +255,12 @@ goog.require('ng.material.core');
         case $mdConstant.KEY_CODE.UP_ARROW:
           if (self.loading) return;
           event.preventDefault();
-          self.index = Math.max(0, self.index - 1);
+          self.index = self.index < 0 ? self.matches.length - 1 : Math.max(0, self.index - 1);
           updateScroll();
           updateSelectionMessage();
           break;
         case $mdConstant.KEY_CODE.ENTER:
-          if (self.loading || self.index < 0) return;
+          if (self.hidden || self.loading || self.index < 0) return;
           event.preventDefault();
           select(self.index);
           break;
@@ -274,6 +346,7 @@ goog.require('ng.material.core');
         self.matches = matches;
         self.hidden = shouldHide();
         updateMessages();
+        positionDropdown();
       }
     }
 
@@ -293,9 +366,9 @@ goog.require('ng.material.core');
     }
 
     function updateScroll () {
-      var top = 41 * self.index,
-          bot = top + 41,
-          hgt = 41 * 5.5;
+      var top = ITEM_HEIGHT * self.index,
+          bot = top + ITEM_HEIGHT,
+          hgt = elements.ul.clientHeight;
       if (top < elements.ul.scrollTop) {
         elements.ul.scrollTop = top;
       } else if (bot > elements.ul.scrollTop + hgt) {
@@ -322,7 +395,7 @@ goog.require('ng.material.core');
     }
 
   }
-  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout"];
+  MdAutocompleteCtrl.$inject = ["$scope", "$element", "$mdUtil", "$mdConstant", "$timeout", "$mdTheming", "$window"];
 })();
 
 (function () {
@@ -353,6 +426,7 @@ goog.require('ng.material.core');
    * @param {number=} md-delay Specifies the amount of time (in milliseconds) to wait before looking for results
    * @param {boolean=} md-autofocus If true, will immediately focus the input element
    * @param {boolean=} md-autoselect If true, the first item will be selected by default
+   * @param {string=} md-menu-class This will be applied to the dropdown menu for styling
    *
    * @usage
    * <hljs lang="html">
@@ -366,7 +440,7 @@ goog.require('ng.material.core');
    * </hljs>
    */
 
-  function MdAutocomplete () {
+  function MdAutocomplete ($mdTheming) {
     return {
       controller:   'MdAutocompleteCtrl',
       controllerAs: '$mdAutocompleteCtrl',
@@ -386,10 +460,14 @@ goog.require('ng.material.core');
         delay:         '=?mdDelay',
         autofocus:     '=?mdAutofocus',
         floatingLabel: '@?mdFloatingLabel',
-        autoselect:    '=?mdAutoselect'
+        autoselect:    '=?mdAutoselect',
+        menuClass:     '@?mdMenuClass'
       },
       template: function (element, attr) {
+        //-- grab the original HTML for custom transclusion before Angular attempts to parse it
+        //-- the HTML is being stored on the attr object so that it is available to postLink
         attr.$mdAutocompleteTemplate = element.html();
+        //-- return the replacement template, which will wipe out the original HTML
         return '\
           <md-autocomplete-wrap role="listbox">\
             <md-input-container ng-if="floatingLabel">\
@@ -433,12 +511,13 @@ goog.require('ng.material.core');
                 ng-if="$mdAutocompleteCtrl.scope.searchText && !isDisabled"\
                 ng-click="$mdAutocompleteCtrl.clear()">\
               <md-icon md-svg-icon="cancel"></md-icon>\
-              <span class="visually-hidden">Clear</span>\
+              <span class="md-visually-hidden">Clear</span>\
             </button>\
             <md-progress-linear\
                 ng-if="$mdAutocompleteCtrl.loading"\
                 md-mode="indeterminate"></md-progress-linear>\
             <ul role="presentation"\
+                class="md-autocomplete-suggestions {{menuClass || \'\'}}"\
                 id="ul-{{$mdAutocompleteCtrl.id}}"\
                 ng-mouseenter="$mdAutocompleteCtrl.listEnter()"\
                 ng-mouseleave="$mdAutocompleteCtrl.listLeave()"\
@@ -453,7 +532,7 @@ goog.require('ng.material.core');
             </ul>\
           </md-autocomplete-wrap>\
           <aria-status\
-              class="visually-hidden"\
+              class="md-visually-hidden"\
               role="status"\
               aria-live="assertive">\
             <p ng-repeat="message in $mdAutocompleteCtrl.messages">{{message.display}}</p>\
@@ -463,13 +542,16 @@ goog.require('ng.material.core');
 
     function link (scope, element, attr) {
       scope.contents = attr.$mdAutocompleteTemplate;
+      delete attr.$mdAutocompleteTemplate;
       angular.forEach(scope.$$isolateBindings, function (binding, key) {
         if (binding.optional && angular.isUndefined(scope[key])) {
           scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
         }
       });
+      $mdTheming(element);
     }
   }
+  MdAutocomplete.$inject = ["$mdTheming"];
 })();
 
 (function () {
@@ -558,18 +640,21 @@ goog.require('ng.material.core');
 
   function MdAutocompleteListItem ($compile, $mdUtil) {
     return {
-      require: '^?mdAutocomplete',
       terminal: true,
-      link: link,
+      link: postLink,
       scope: false
     };
-    function link (scope, element, attr, ctrl) {
-      var newScope = ctrl.parent.$new(false, ctrl.parent),
+    function postLink (scope, element, attr) {
+      var ctrl     = scope.$parent.$mdAutocompleteCtrl,
+          newScope = ctrl.parent.$new(false, ctrl.parent),
           itemName = ctrl.scope.$eval(attr.mdAutocompleteListItem);
       newScope[itemName] = scope.item;
       element.html(ctrl.scope.$eval(attr.mdAutocompleteListItemTemplate));
       $compile(element.contents())(newScope);
-      element.attr({ 'role': 'option', 'id': 'item_' + $mdUtil.nextUid() });
+      element.attr({
+        role: 'option',
+        id: 'item_' + $mdUtil.nextUid()
+      });
     }
   }
   MdAutocompleteListItem.$inject = ["$compile", "$mdUtil"];

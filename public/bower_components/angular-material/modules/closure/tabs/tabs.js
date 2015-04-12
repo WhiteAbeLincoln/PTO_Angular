@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.tabs');
 goog.require('ng.material.components.icon');
@@ -33,7 +33,7 @@ goog.require('ng.material.core');
 /*
  * @see js folder for tabs implementation
  */
-angular.module('material.components.tabs', [
+ng.material.components.tabs = angular.module('material.components.tabs', [
   'material.core',
   'material.components.icon'
 ]);
@@ -153,10 +153,10 @@ angular.module('material.components.tabs', [
         select:   '&?mdOnSelect',
         deselect: '&?mdOnDeselect'
       },
-      link: link
+      link: postLink
     };
 
-    function link (scope, element, attr, ctrl) {
+    function postLink (scope, element, attr, ctrl) {
       var tabs = element.parent()[0].getElementsByTagName('md-tab'),
           index = Array.prototype.indexOf.call(tabs, element[0]),
           data = ctrl.insertTab({
@@ -166,6 +166,10 @@ angular.module('material.components.tabs', [
             template: getTemplate(),
             label:    getLabel()
           }, index);
+
+      scope.deselect = scope.deselect || angular.noop;
+      scope.select = scope.select || angular.noop;
+
 
       scope.$watch('active', function (active) { if (active) ctrl.select(data.getIndex()); });
       scope.$watch('disabled', function () { ctrl.refreshIndex(); });
@@ -234,8 +238,10 @@ angular.module('material.components.tabs', [
       .module('material.components.tabs')
       .controller('MdTabsController', MdTabsController);
 
-  function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple, $mdUtil) {
+  function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
+                             $mdUtil, $animate) {
     var ctrl = this,
+        locked = false,
         elements = getElements();
 
     ctrl.scope = $scope;
@@ -308,7 +314,7 @@ angular.module('material.components.tabs', [
         case $mdConstant.KEY_CODE.SPACE:
         case $mdConstant.KEY_CODE.ENTER:
           event.preventDefault();
-          $scope.selectedIndex = ctrl.focusIndex;
+          if (!locked) $scope.selectedIndex = ctrl.focusIndex;
           break;
       }
       ctrl.lastClick = false;
@@ -354,7 +360,6 @@ angular.module('material.components.tabs', [
 
     function handleWindowResize () {
       ctrl.lastSelectedIndex = $scope.selectedIndex;
-      updateHeightFromContent();
       updateInkBarStyles();
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     }
@@ -397,13 +402,14 @@ angular.module('material.components.tabs', [
 
     function handleSelectedIndexChange (newValue, oldValue) {
       if (newValue === oldValue) return;
+
       $scope.selectedIndex = getNearestSafeIndex(newValue);
       ctrl.lastSelectedIndex = oldValue;
       updateInkBarStyles();
       updateHeightFromContent();
       $scope.$broadcast('$mdTabsChanged');
       ctrl.tabs[oldValue] && ctrl.tabs[oldValue].scope.deselect();
-      ctrl.tabs[newValue].scope.select();
+      ctrl.tabs[newValue] && ctrl.tabs[newValue].scope.select();
     }
 
     function handleResizeWhenVisible () {
@@ -429,11 +435,25 @@ angular.module('material.components.tabs', [
 
     function updateHeightFromContent () {
       if (!$scope.dynamicHeight) return $element.css('height', '');
-      var tabContent = elements.contents[$scope.selectedIndex],
+      var tabContent    = elements.contents[$scope.selectedIndex],
           contentHeight = tabContent.offsetHeight,
           tabsHeight    = elements.wrapper.offsetHeight,
-          newHeight     = contentHeight + tabsHeight;
-      $element.css('height', newHeight + 'px');
+          newHeight     = contentHeight + tabsHeight,
+          currentHeight = $element.prop('clientHeight');
+      if (currentHeight === newHeight) return;
+      locked = true;
+      $animate
+          .animate(
+            $element,
+            { height: currentHeight + 'px' },
+            { height: newHeight + 'px'}
+          )
+          .then(function () {
+            $timeout(function () {
+              $element.css('height', '');
+              locked = false;
+            }, 0, false);
+          });
     }
 
     function updateInkBarStyles () {
@@ -495,7 +515,7 @@ angular.module('material.components.tabs', [
     }
 
     function select (index) {
-      ctrl.focusIndex = $scope.selectedIndex = index;
+      if (!locked) ctrl.focusIndex = $scope.selectedIndex = index;
       ctrl.lastClick = true;
     }
 
@@ -506,6 +526,7 @@ angular.module('material.components.tabs', [
     }
 
     function fixOffset (value) {
+      if (!elements.tabs.length) return;
       var lastTab = elements.tabs[elements.tabs.length - 1],
           totalWidth = lastTab.offsetLeft + lastTab.offsetWidth;
       value = Math.max(0, value);
@@ -547,8 +568,9 @@ angular.module('material.components.tabs', [
       $mdInkRipple.attachTabBehavior(scope, element, options);
     }
   }
-  MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil"];
+  MdTabsController.$inject = ["$scope", "$element", "$window", "$timeout", "$mdConstant", "$mdInkRipple", "$mdUtil", "$animate"];
 })();
+
 /**
  * @ngdoc directive
  * @name mdTabs
@@ -693,16 +715,18 @@ angular.module('material.components.tabs', [
                   aria-controls="tab-content-{{tab.id}}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
-                  ng-class="{ \'md-active\': tab.isActive(),\
-                      \'md-focus\': tab.hasFocus(),\
-                      \'md-disabled\': tab.scope.disabled }"\
+                  ng-class="{\
+                      \'md-active\':    tab.isActive(),\
+                      \'md-focus\':     tab.hasFocus(),\
+                      \'md-disabled\':  tab.scope.disabled\
+                  }"\
                   ng-disabled="tab.scope.disabled"\
                   md-swipe-left="$mdTabsCtrl.nextPage()"\
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
                   md-label-template="tab.label"></md-tab-item>\
               <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
             </md-pagination-wrapper>\
-            <div class="visually-hidden">\
+            <div class="md-visually-hidden">\
               <md-dummy-tab\
                   tabindex="-1"\
                   id="tab-item-{{tab.id}}"\
@@ -729,10 +753,10 @@ angular.module('material.components.tabs', [
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
-                \'md-active\': tab.isActive(),\
-                \'md-left\':   tab.isLeft(),\
-                \'md-right\':  tab.isRight(),\
-                \'md-no-scroll\': dynamicHeight\
+                \'md-active\':        tab.isActive(),\
+                \'md-left\':          tab.isLeft(),\
+                \'md-right\':         tab.isRight(),\
+                \'md-no-scroll\':     dynamicHeight\
               }"></md-tab-content>\
         </md-tabs-content-wrapper>\
       ',

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
@@ -13,7 +13,7 @@ goog.require('ng.material.core');
    * @ngdoc module
    * @name material.components.slider
    */
-  angular.module('material.components.slider', [
+  ng.material.components.slider = angular.module('material.components.slider', [
     'material.core'
   ])
   .directive('mdSlider', SliderDirective);

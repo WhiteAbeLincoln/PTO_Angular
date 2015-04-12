@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.content');
 goog.require('ng.material.core');
@@ -16,7 +16,7 @@ goog.require('ng.material.core');
  * @description
  * Scrollable content
  */
-angular.module('material.components.content', [
+ng.material.components.content = angular.module('material.components.content', [
   'material.core'
 ])
   .directive('mdContent', mdContentDirective);
@@ -31,13 +31,12 @@ angular.module('material.components.content', [
  * @description
  * The `<md-content>` directive is a container element useful for scrollable content
  *
- * ### Restrictions
- *
- * - Add the `md-padding` class to make the content padded.
- *
  * @usage
+ *
+ * - Add the `[layout-padding]` attribute to make the content padded.
+ *
  * <hljs lang="html">
- *  <md-content class="md-padding">
+ *  <md-content layout-padding>
  *      Lorem ipsum dolor sit amet, ne quod novum mei.
  *  </md-content>
  * </hljs>

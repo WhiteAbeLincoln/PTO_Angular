@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-f3cd5b9
+ * v0.8.3-master-ffd299d
  */
 goog.provide('ng.material.components.list');
 goog.require('ng.material.core');
@@ -15,11 +15,11 @@ goog.require('ng.material.core');
  * @description
  * List module
  */
-angular.module('material.components.list', [
+ng.material.components.list = angular.module('material.components.list', [
   'material.core'
 ])
   .directive('mdList', mdListDirective)
-  .directive('mdListItem', mdItemDirective);
+  .directive('mdListItem', mdListItemDirective);
 
 /**
  * @ngdoc directive
@@ -58,25 +58,25 @@ mdListDirective.$inject = ["$mdTheming"];
 
 /**
  * @ngdoc directive
- * @name mdItem
+ * @name mdListItem
  * @module material.components.list
  *
  * @restrict E
  *
  * @description
- * The `<md-item>` directive is a container intended for row items in a `<md-list>` container.
+ * The `<md-list-item>` directive is a container intended for row items in a `<md-list>` container.
  *
  * @usage
  * <hljs lang="html">
  *  <md-list>
- *    <md-item>
+ *    <md-list-item>
  *            Item content in list
- *    </md-item>
+ *    </md-list-item>
  *  </md-list>
  * </hljs>
  *
  */
-function mdItemDirective($document, $log, $mdUtil, $mdAria) {
+function mdListItemDirective($mdAria) {
   var proxiedTypes = ['md-checkbox', 'md-switch'];
   return {
     restrict: 'E',
@@ -223,5 +223,5 @@ function mdItemDirective($document, $log, $mdUtil, $mdAria) {
     }
   };
 }
-mdItemDirective.$inject = ["$document", "$log", "$mdUtil", "$mdAria"];
+mdListItemDirective.$inject = ["$mdAria"];
 })();
