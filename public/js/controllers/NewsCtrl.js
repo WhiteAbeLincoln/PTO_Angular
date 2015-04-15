@@ -3,11 +3,23 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('NewsCtrl', ['$scope', '$mdMedia', function($scope, $mdMedia){
-            console.log($mdMedia('gt-sm'));
-            if ($mdMedia('gt-sm')){
-                $scope.diediedie = {'width':'350px'};
-            }
+        .controller('NewsCtrl', ['$scope', '$mdMedia', '$location', function($scope, $mdMedia, $location){
+            $scope.$watch(function(){return $mdMedia('gt-sm')},
+                function(larger){
+                    if (larger){
+                        $scope.diediedie = {'width':'375px'};
+                    } else {
+                        $scope.diediedie = null;
+                    }
+                }
+            );
+
+            $scope.readArticle = function(article){
+                var url = '/news/'+article.year+'/'+article.month+'/'+article.day+'/'+article.urlSlug;
+                console.log(url);
+                $location.url(url);
+            };
+
 
             $scope.articles = [
                 {
@@ -23,7 +35,7 @@
                     image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
                     title:'New Material Article',
                     description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
+                    urlSlug: 'material-2-test',
                     year:'2015',
                     month:'4',
                     day:'12'
@@ -32,7 +44,7 @@
                     image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
                     title:'New Material Article',
                     description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
+                    urlSlug: 'material-3-test',
                     year:'2015',
                     month:'4',
                     day:'12'
@@ -41,7 +53,7 @@
                     image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
                     title:'New Material Article',
                     description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
+                    urlSlug: 'material-4-test',
                     year:'2015',
                     month:'4',
                     day:'12'
@@ -49,16 +61,7 @@
                 {
                     image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
                     description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
-                    year:'2015',
-                    month:'4',
-                    day:'12'
-                },
-                {
-                    image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
-                    title:'New Material Article',
-                    description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
+                    urlSlug: 'material-5-test',
                     year:'2015',
                     month:'4',
                     day:'12'
@@ -67,7 +70,16 @@
                     image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
                     title:'New Material Article',
                     description:'A short Description of the article',
-                    urlSlug: 'material-1-test',
+                    urlSlug: 'material-6-test',
+                    year:'2015',
+                    month:'4',
+                    day:'12'
+                },
+                {
+                    image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
+                    title:'New Material Article',
+                    description:'A short Description of the article',
+                    urlSlug: 'material-7-test',
                     year:'2015',
                     month:'4',
                     day:'12'

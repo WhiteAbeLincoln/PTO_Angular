@@ -53,6 +53,11 @@
                         restricted: false,
                         controller: 'NewsCtrl'
                     })
+                    .when('/news/:year/:month/:day/:name', {
+                        templateUrl: 'partials/article.tmpl.html',
+                        restricted: false,
+                        controller: 'ArticleCtrl'
+                    })
                     .otherwise('/');
 
                 $mdThemingProvider.theme('default')
@@ -83,7 +88,7 @@
                 if (!Session.user()) {
 
                     var altPath = '/' + $location.path().split("/")[1] + '/:tmpl';
-                    var nextRoute = $route.routes[$location.path()] || $route.routes[altPath];
+                    var nextRoute = $route.routes[$location.path()] || $route.routes[altPath] || $route.routes['/news/:year/:month/:day/:name'];
                     var currentPath = current.split('#')[1];
                     if (nextRoute.restricted && nextRoute.restricted !== currentPath){
                         $location.path('/admin/login');
