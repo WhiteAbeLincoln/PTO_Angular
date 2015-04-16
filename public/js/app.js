@@ -2,7 +2,7 @@
  * Created by abe on 1/7/15.
  */
 (function () {
-    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar'])
+    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar', 'ngTable'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
@@ -29,10 +29,9 @@
                         controller: 'LoginCtrl',
                         restricted: false
                     })
-                    .when('/admin/:tmpl',{
-                        templateUrl: function(params){
-                            return 'partials/admin/' + params.tmpl + '.tmpl.html';
-                        },
+                    .when('/admin/forms/membership',{
+                        templateUrl: 'partials/admin/forms/membership.tmpl.html',
+                        controller: 'MembershipViewCtrl',
                         restricted: true
                     })
                     .when('/downloads', {

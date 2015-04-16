@@ -116,6 +116,9 @@ select, option:disabled {
 /* End Docs Menu */
 
 
+/* mdDataTable */
+.mdDataTable
+
 /* form styling */
 .small-form {
     max-width: 864px; 
@@ -141,7 +144,7 @@ button.form-next {
     margin:15px;
 }
 
-th, td {
+.user-details th, .user-details td {
     text-align: left;
 }
 
