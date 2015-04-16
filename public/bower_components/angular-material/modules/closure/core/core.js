@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-ffd299d
+ * v0.9.0-rc1-master-bf6ef07
  */
 goog.provide('ng.material.core');
 
@@ -536,9 +536,67 @@ angular.module('material.core')
       return Util.clientRect(element, offsetParent, true);
     },
 
+    disableScrollAround: function(element) {
+      var parentContent = element[0] || element;
+      var disableTarget, scrollEl, useDocElement;
+      while (parentContent = this.getClosest(parentContent.parentNode, 'MD-CONTENT')) {
+        disableTarget = angular.element(parentContent);
+      }
+      if (!disableTarget) disableTarget = angular.element($document[0].body);
+
+      if (disableTarget[0].nodeName == 'BODY' && $document[0].documentElement.scrollTop) {
+        scrollEl = $document[0].documentElement;
+        useDocElement = true;
+      } else {
+        scrollEl = disableTarget[0];
+      }
+
+      var heightOffset = scrollEl.scrollTop;
+      var restoreOffset = heightOffset;
+
+      if (!useDocElement) {
+        heightOffset = heightOffset - disableTarget[0].offsetTop;
+      }
+
+      var wrapperEl = angular.element('<div>');
+      wrapperEl.append(disableTarget.children());
+      disableTarget.append(wrapperEl);
+
+      var computedStyle = $window.getComputedStyle(disableTarget[0]);
+
+      var scrollBarsShowing = !Util.floatingScrollbars() &&
+          scrollEl.scrollHeight > scrollEl.offsetHeight;
+
+      if (scrollBarsShowing) {
+        var restoreOverflowY = disableTarget.css('overflow-y');
+        disableTarget.css('overflow-y', 'scroll');
+      }
+
+      wrapperEl.css({
+        overflow: 'hidden',
+        position: 'fixed',
+        width: '100%',
+        'padding-top': computedStyle.paddingTop,
+        top: (-1 * heightOffset) + 'px'
+      });
+
+      return function restoreScroll() {
+        disableTarget.append(wrapperEl.children());
+        wrapperEl.remove();
+        if (scrollBarsShowing) {
+          disableTarget.css('overflow-y', restoreOverflowY || false);
+        }
+        if (useDocElement) {
+          $document[0].documentElement.scrollTop = restoreOffset;
+        } else {
+          disableTarget[0].scrollTop = restoreOffset;
+        }
+      };
+    },
+
     floatingScrollbars: function() {
       if (this.floatingScrollbars.cached === undefined) {
-        var tempNode = angular.element('<div style="z-index: -1; position: absolute; height: 1px; overflow-y: scroll"><div style="height: 2px;"></div></div>');
+        var tempNode = angular.element('<div style="width: 100%; z-index: -1; position: absolute; height: 35px; overflow-y: scroll"><div style="height: 60;"></div></div>');
         $document[0].body.appendChild(tempNode[0]);
         this.floatingScrollbars.cached = (tempNode[0].offsetWidth == tempNode[0].childNodes[0].offsetWidth);
         tempNode.remove();
@@ -1012,13 +1070,55 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
    * It contains normalized x and y coordinates from DOM events,
    * as well as other information abstracted from the DOM.
    */
-  var pointer, lastPointer;
+  var pointer, lastPointer, forceSkipClickHijack = false;
 
+  // Used to attach event listeners once when multiple ng-apps are running.
+  var isInitialized = false;
+  
   angular
     .module('material.core.gestures', [ ])
-    .factory('$mdGesture', MdGesture)
+    .provider('$mdGesture', MdGestureProvider)
     .factory('$$MdGestureHandler', MdGestureHandler)
     .run( attachToDocument );
+
+  /**
+     * @ngdoc service
+     * @name $mdGestureProvider
+     * @module material.core.gestures
+     *
+     * @description
+     * In some scenarios on Mobile devices (without jQuery), the click events should NOT be hijacked.
+     * `$mdGestureProvider` is used to configure the Gesture module to ignore or skip click hijacking on mobile
+     * devices.
+     *
+     * <hljs lang="js">
+     *   app.config(function($mdGestureProvider) {
+     *
+     *     // For mobile devices without jQuery loaded, do not
+     *     // intercept click events during the capture phase.
+     *     $mdGestureProvider.skipClickHijack();
+     *
+     *   });
+     * </hljs>
+     *
+     */
+  function MdGestureProvider() { }
+
+  MdGestureProvider.prototype = {
+
+    // Publish access to setter to configure a variable  BEFORE the
+    // $mdGesture service is instantiated...
+    skipClickHijack: function() {
+      return forceSkipClickHijack = true;
+    },
+    
+    // $get is used to build an instance of $mdGesture 
+    $get : ['$$MdGestureHandler', '$$rAF', '$timeout', function($$MdGestureHandler, $$rAF, $timeout) {
+         return new MdGesture($$MdGestureHandler, $$rAF, $timeout);
+    }]
+  };
+
+
 
   /**
    * MdGesture factory construction function
@@ -1031,9 +1131,8 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
     var self = {
       handler: addHandler,
       register: register,
-      // TODO only hijack clicks on Android < 4.4
-      // TODO allow an override for this (through provider?)
-      isHijackingClicks: (isIos || isAndroid) && !jQuery
+      // On mobile w/out jQuery, we normally intercept clicks. Should we skip that?
+      isHijackingClicks: (isIos || isAndroid) && !jQuery && !forceSkipClickHijack
     };
 
     if (self.isHijackingClicks) {
@@ -1226,7 +1325,6 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       });
 
   }
-  MdGesture.$inject = ["$$MdGestureHandler", "$$rAF", "$timeout"];
 
   /**
    * MdGestureHandler
@@ -1397,7 +1495,7 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
       return document.body.contains(node);
     });
 
-    if ( $mdGesture.isHijackingClicks ) {
+    if (!isInitialized && $mdGesture.isHijackingClicks ) {
       /*
        * If hijack clicks is true, we preventDefault any click that wasn't
        * sent by ngMaterial. This is because on older Android & iOS, a false, or 'ghost',
@@ -1415,6 +1513,8 @@ mdCompilerService.$inject = ["$q", "$http", "$injector", "$compile", "$controlle
           ev.stopPropagation();
         }
       }, true);
+      
+      isInitialized = true;
     }
 
     // Listen to all events to cover all platforms.
@@ -2961,8 +3061,8 @@ angular.module('material.core.theming', ['material.core.theming.palette'])
  */
 
 // In memory storage of defined themes and color palettes (both loaded by CSS, and user specified)
-var PALETTES = { };
-var THEMES = { };
+var PALETTES;
+var THEMES;
 var GENERATED;
 
 var DARK_FOREGROUND = {
@@ -3348,7 +3448,7 @@ function parseRules(theme, colorType, rules) {
     generatedRules.push(newRule);
   });
 
-  return generatedRules.join('');
+  return generatedRules;
 }
 
 // Generate our themes at run time given the state of THEMES and PALETTES
@@ -3408,16 +3508,17 @@ function generateThemes($injector) {
     angular.forEach(THEMES, function(theme) {
       if ( !GENERATED[theme.name] ) {
 
-        var styleStrings = '';
-        var style = document.createElement('style');
-            style.setAttribute('type', 'text/css');
 
         THEME_COLOR_TYPES.forEach(function(colorType) {
-          styleStrings += parseRules(theme, colorType, rulesByType[colorType] + '');
+          var styleStrings = parseRules(theme, colorType, rulesByType[colorType]);
+          while (styleStrings.length) {
+            var style = document.createElement('style');
+                style.setAttribute('type', 'text/css');
+            style.appendChild(document.createTextNode(styleStrings.shift()));
+            head.insertBefore(style, firstChild);
+          }
         });
 
-        style.innerHTML = styleStrings;
-        head.insertBefore(style, firstChild);
 
         if (theme.colors.primary.name == theme.colors.accent.name) {
           console.warn("$mdThemingProvider: Using the same palette for primary and" +

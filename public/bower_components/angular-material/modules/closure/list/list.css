@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.8.3-master-ffd299d
+ * v0.9.0-rc1-master-bf6ef07
  */
 /* mixin definition ; sets LTR and RTL within the same style call */
 md-list {
@@ -26,8 +26,8 @@ md-list-item.md-clickable:hover {
   cursor: pointer; }
 md-list-item md-divider {
   position: absolute;
-  bottom: 0px;
-  left: 0px;
+  bottom: 0;
+  left: 0;
   width: 100%; }
   md-list-item md-divider[md-inset] {
     left: 96px;
@@ -86,7 +86,7 @@ md-list-item, md-list-item .md-list-item-inner {
     border-radius: 50%;
     box-sizing: content-box; }
   md-list-item md-checkbox.md-secondary, md-list-item md-switch.md-secondary, md-list-item .md-list-item-inner md-checkbox.md-secondary, md-list-item .md-list-item-inner md-switch.md-secondary {
-    margin-right: 0px; }
+    margin-right: 0; }
   md-list-item .md-secondary, md-list-item .md-list-item-inner .md-secondary {
     margin-left: 16px;
     position: absolute;
@@ -108,6 +108,8 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
             flex: 1;
     padding: 16px 0;
     text-overflow: ellipsis; }
+    md-list-item.md-2-line .md-list-item-text.md-offset, md-list-item.md-2-line > .md-no-style .md-list-item-text.md-offset, md-list-item.md-3-line .md-list-item-text.md-offset, md-list-item.md-3-line > .md-no-style .md-list-item-text.md-offset {
+      margin-left: 56px; }
     md-list-item.md-2-line .md-list-item-text h3, md-list-item.md-2-line > .md-no-style .md-list-item-text h3, md-list-item.md-3-line .md-list-item-text h3, md-list-item.md-3-line > .md-no-style .md-list-item-text h3 {
       margin: 0 0 6px 0;
       font-weight: 400;
@@ -123,8 +125,12 @@ md-list-item.md-2-line, md-list-item.md-2-line > .md-no-style, md-list-item.md-3
       font-size: 0.75em;
       line-height: 1.6em; }
 
-md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-avatar:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child, md-list-item.md-2-line > .md-no-style > .md-avatar:first-child {
+md-list-item.md-2-line > .md-avatar:first-child, md-list-item.md-2-line > .md-no-style > .md-avatar:first-child {
   margin-top: 12px; }
+md-list-item.md-2-line > md-icon:first-child, md-list-item.md-2-line > .md-no-style > md-icon:first-child {
+  -webkit-align-self: center;
+      -ms-flex-item-align: center;
+          align-self: center; }
 md-list-item.md-2-line .md-list-item-text, md-list-item.md-2-line > .md-no-style .md-list-item-text {
   -webkit-flex: 1;
       -ms-flex: 1;
