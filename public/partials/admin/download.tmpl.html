@@ -35,7 +35,6 @@
                 <div layout='column' layout-align='center center'>
                     <input multiple type="file" id="fileInput" name="file" style='display:none' ng-model="download.file"
                            onchange="angular.element(this).scope().fileChange()">
-                    <md-button type='button' ng-click="fileUpload()">Upload File</md-button>
                     <table>
                         <tr ng-repeat="file in download.files">
                             <td><span>{{file.name}}</span></td>
@@ -49,12 +48,12 @@
                             </td>
                         </tr>
                     </table>
-
+                    <md-button class="md-primary md-raised" type='button' ng-click="fileUpload()">Upload File</md-button>
                 </div>
             </div>
         </form>
-        <pre ng-bind="download | json" style="overflow: auto;"></pre>
-        <pre ng-bind="debug | json" style="overflow: auto;"></pre>
+        <!--<pre ng-bind="download | json" style="overflow: auto;"></pre>
+        <pre ng-bind="debug | json" style="overflow: auto;"></pre>-->
     </md-content>
     <div class="md-actions" layout="row">
         <md-button class="md-warn md-button-small" ng-click="cancel('canceled')">Cancel</md-button>

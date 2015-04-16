@@ -1,6 +1,8 @@
 (function(){
     angular.module('myApp.controllers')
         .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$mdDialog', '$http', function($scope, FileReader, $mdDialog, $http){
+            $scope.debug = {};
+            $scope.debug.searchText = '';
             $scope.download = {};
             $scope.pgress = [];
             $scope.download.files = [];

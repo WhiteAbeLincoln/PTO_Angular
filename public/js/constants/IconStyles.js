@@ -92,6 +92,14 @@
                 },
                 icon: 'image'
             },
+            markdown: {
+                style: {
+                    color: '#666',
+                    height: '48px',
+                    width: '48px'
+                },
+                icon: 'document'
+            },
             document: {
                 style: {
                     color: '#4285f4',

@@ -20,7 +20,7 @@ function Server() {
         if (error) {
             console.log("Could not connect to the SQL database");
             console.log(error);
-            throw error;
+            //throw error;
         } else {
             console.log("Connected to Database");
         }

@@ -1,0 +1,43 @@
+Metaphysics - Philosophy
+=====================
+#3.0
+**Ockham's Razor** - we should eliminate all unnecessary parts of theories
+**Metaphysical Dualism** - 2 kinds of reality
+**Inference** - both science and metaphysics use to verify theories.
+**Metaphysics**- the area of philosophy concerned with the fundamental nature of reality
+**Physicalism** - a synonym for metaphysical materialism
+**René Magritte** - painted The Treachery of Images
+**Bottom-line** - strategy that clarifies which things are fundamentally real
+**Eliminativist (eliminativism)** - the strategy that eliminates things that are not real
+Three categories - non-realities; reducible realities; fundamental realities
+
+#3.1
+**identity theory (reductionism)** - denies the existence of a nonphysical mind, but retains language
+**Interactionism** - the most common version of dualism - mind and body different, but causually react
+**Mind-body dualism** - the mind and body are seperate entities
+**Idealism** - Position that asserts the physical and the body are aspects of the mental reality
+**Functionalism** The mind is characterized by particular patterns of input -> processing -> output
+**Physicalism** - humans can be explained purely by physical or material components
+
+#3.2
+**Argument from Doubt**
+	1. I can doubt my body exists
+	2. I cannot doubt my mind exists
+	3. If 2 things do not have exactly identical properties they are not identical
+	4. Therefore, mind and body are not the same
+**Cerebral Commissurotomy (Corpus callosotomy)** - severing Corpus Callosum nerve bundle
+**Pineal Gland** - Descartes solution to interactionism problem
+**Interactionsim** - Descartes view that mind and body are separate but interact
+**Argument From Consciousness**
+	1. Minds have the property of consciousness.
+	2. Bodies as materials objects do not have the property of consciousness.
+	3. If two things do not have exactly identical properties, then they cannot be identical.
+	4. Therefore, the mind and the body are not identical.
+**Nonidentity of discernibles (Indiscernibility of identicals)** - no two distinct things exactly resemble each other. - implicit within all of Descartes arguments
+**Cartesian Compromise** - science cannot tell us about souls, only bodies.
+Three arguments: Argument from Doubt; Argument from Divisibility; Argument from Consiousness
+
+
+
+
+> Written with [StackEdit](https://stackedit.io/).
