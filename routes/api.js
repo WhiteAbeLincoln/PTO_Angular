@@ -226,6 +226,15 @@ router.get('/members/:id', expressJwt({secret: mySecret}),
         res.json({'accessed':'restricted member ' + req.params.id});
     });
 
+router.get('/members', function(req, res) {
+    db.members.queryAll().then(function(data){
+        console.log(JSON.stringify(data[0]));
+        res.json(data[0]);
+    }).catch(function(err){
+        console.log(err);
+    });
+});
+
 router.post('/admin/login', function(req, res){
 
     db.admin.query([req.body.username]).then(function(data){

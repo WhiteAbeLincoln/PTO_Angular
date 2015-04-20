@@ -57,6 +57,7 @@ function Server() {
          * @returns {Mysql} A promise containing data and server information
          */
         query: Q.nbind(db.query, db, "SELECT * FROM Members WHERE membershipId = ?"),
+        queryAll: Q.nbind(db.query, db, "SELECT Members.membershipId, Members.lastName, Members.firstName, Members.address, Members.city, Members.state, Members.zipCode, GROUP_CONCAT(DISTINCT Students.studentId ORDER BY Students.studentId SEPARATOR ',') as studentIds FROM `Members` JOIN `M_Students` AS Students ON Members.membershipId = Students.parentId GROUP BY Members.membershipId"),
         students: {
 
             /**
