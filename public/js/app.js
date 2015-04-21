@@ -2,7 +2,7 @@
  * Created by abe on 1/7/15.
  */
 (function () {
-    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar', 'ngTable'])
+    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar', 'smart-table'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
@@ -65,6 +65,7 @@
 
                 $mdIconProvider
                     .iconSet('file', 'img/icons/file-icons.svg')
+                    .iconSet('action', 'img/icons/action-icons.svg')
                     .iconSet('content', 'img/icons/content-icons.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')

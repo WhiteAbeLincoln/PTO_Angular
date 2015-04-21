@@ -4,7 +4,11 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
     .factory('Member', ['$resource', function($resource){
            return $resource('/api/members/:id');
     }])
-	
+
+    .factory('Student', ['$resource', function($resource){
+        return $resource('/api/member-students/:id');
+    }])
+
 	.factory('Scholar', ['$resource', function($resource){
            return $resource('/api/scholars/:id');
     }])
@@ -32,6 +36,17 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
                 $scope.pageTitle = title + " - Centerville PTO";
             };
 
+
+            $scope.hideSidenav = false;
+            $scope.toggleHidden = function(){
+                $scope.hideSidenav = !$scope.hideSidenav;
+                if ($scope.hideSidenav){
+                    $scope.hiddenStyle = 'initial';
+                } else {
+                    $scope.hiddenStyle = '';
+                }
+
+            };
 
             $scope.menu = menu;
             $scope.currentUser = null;

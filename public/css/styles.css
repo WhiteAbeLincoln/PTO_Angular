@@ -117,7 +117,70 @@ select, option:disabled {
 
 
 /* mdDataTable */
-.mdDataTable
+.md-data-table {
+    border-collapse: collapse;
+}
+.md-data-table thead {
+    font-size: 1.2rem;
+    color: rgba(0, 0, 0, 0.54);
+}
+.md-data-table thead th {
+    border-bottom: 1px solid #E3E3E3;
+    font-weight: 500;
+    height: 48px;
+    text-align: left;
+}
+.md-data-table thead th:not(.dt-checkbox):not(:last-child) {
+    padding-right: 56px;
+}
+.md-data-table thead th:first-child {
+    padding-left: 24px;
+}
+.md-data-table thead th:last-child {
+    padding-right: 24px;
+}
+.md-data-table tbody {
+    font-weight: normal;
+    font-size: 1.3rem;
+    color: rgba(0, 0, 0, 0.87);
+}
+.md-data-table tbody tr {
+    height: 48px;
+}
+.md-data-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #E3E3E3;
+}
+.md-data-table tbody tr:hover {
+    background-color: #EEEEEE;
+}
+.md-data-table tbody tr.dt-checked {
+    background-color: #E0E0E0;
+}
+.md-data-table tbody tr td {
+    padding-right: 24px;
+}
+.md-data-table tbody tr td:not(.dt-checkbox):not(:last-child) {
+    padding-right: 56px;
+}
+.md-data-table tbody tr td:first-child {
+    padding-left: 24px;
+}
+.md-data-table tbody tr td.dt-number-column {
+    text-align: right;
+}
+
+/* My mdCard extensions */
+md-card md-card-header {
+    padding: 16px;
+}
+
+md-card[md-table-card] > md-card-content {
+    padding: 0;
+}
+
+md-card md-card-header.dt-select-header {
+    background-color: #ECEFF1; /* 50 value of secondary app color (blue-grey ) */
+}
 
 /* form styling */
 .small-form {

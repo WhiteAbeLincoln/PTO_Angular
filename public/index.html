@@ -16,7 +16,7 @@
 <md-sidenav md-component-id="left"
             layout="column"
             class="md-sidenav-left md-whiteframe-z2"
-            md-is-locked-open="$mdMedia('gt-md')">
+            md-is-locked-open="!hideSidenav && $mdMedia('gt-md')">
     <md-toolbar class="md-theme-primary" layout="column">
         <h1 class="md-toolbar-tools" flex layout="column">
             <a href="" ng-click="goHome()" layout="row" flex>
@@ -45,23 +45,29 @@
             </li>
         </ul>
         <span flex></span> <!-- span to fill the gap -->
-        <div layout="row" layout-padding layout-align="space-around center" layout-fill flex>
-            <md-button class="md-button-small" aria-label="Twitter"
-                       ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
-                <md-tooltip md-direction="top">Follow on Twitter</md-tooltip>
-                <md-icon md-svg-icon="social:twitter" style="width: 48px; height: 48px;"></md-icon>
-            </md-button>
-            <md-button class="md-button-small" aria-label="Google+"
-                       ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
-                <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
-                <md-icon md-svg-icon="social:google_plus" style="width: 48px; height: 48px;"></md-icon>
-            </md-button>
-            <md-button class="md-button-small" aria-label="Facebook"
-                       ng-click="social('https://www.facebook.com/abelincoln.white')">
-                <md-tooltip md-direction="top">Follow on Facebook</md-tooltip>
-                <md-icon md-svg-icon="social:facebook" style="width: 48px; height: 48px;"></md-icon>
-            </md-button>
+        <div layout="column">
+            <div layout="row" layout-align="space-around center" layout-fill flex>
+                <md-button class="md-icon-button" aria-label="Twitter"
+                           ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
+                    <md-tooltip md-direction="top">Follow on Twitter</md-tooltip>
+                    <md-icon md-svg-icon="social:twitter" style="width: 48px; height: 48px;"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Google+"
+                           ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
+                    <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
+                    <md-icon md-svg-icon="social:google_plus" style="width: 48px; height: 48px;"></md-icon>
+                </md-button>
+                <md-button class="md-icon-button" aria-label="Facebook"
+                           ng-click="social('https://www.facebook.com/abelincoln.white')">
+                    <md-tooltip md-direction="top">Follow on Facebook</md-tooltip>
+                    <md-icon md-svg-icon="social:facebook" style="width: 48px; height: 48px;"></md-icon>
+                </md-button>
+            </div>
+            <div layout="column" layout-align="center center">
+                <md-button class="md-accent" ng-click="toggleHidden()">Toggle Nav Lock</md-button>
+            </div>
         </div>
+
 
     </md-content>
 </md-sidenav>
@@ -70,7 +76,7 @@
     <md-toolbar class="md-whiteframe-z1" layout="column">
         <div class="md-toolbar-tools" flex>
             <div layout="row" layout-align="start center" flex>
-                <md-button ng-click="openMenu()" class="md-icon-button" hide-gt-md aria-label="Toggle Menu" role="button">
+                <md-button ng-click="openMenu()" class="md-icon-button" hide-gt-md ng-style="{'display': hiddenStyle}" aria-label="Toggle Menu" role="button">
                     <md-icon md-svg-src="img/icons/ic_menu_24px.svg" style="height:32px; width:32px;"></md-icon>
                 </md-button>
                 <a href="#/admin" ng-show="currentUser || $mdMedia('gt-md')" hide-md hide-sm style="padding:5px">User: {{currentUser.username}}</a>
@@ -95,9 +101,9 @@
 <script src="bower_components/angular-material/angular-material.js"></script>
 <script src="bower_components/angular-resource/angular-resource.js"></script>
 <script src="bower_components/angular-messages/angular-messages.js"></script>
-<script src="bower_components/ng-table/dist/ng-table.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular-gravatar/build/angular-gravatar.js"></script>
+<script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
 <!-- endbower -->
 
 <script src="js/app.js"></script>
@@ -111,6 +117,7 @@
 <script src="js/services/AuthTokenFactory.js"></script>
 <script src="js/services/Session.js"></script>
 <script src="js/services/UserFactory.js"></script>
+<script src="js/directives/dataTable.js"></script>
 <script src="js/directives/menuToggle.js"></script>
 <script src="js/directives/menuLink.js"></script>
 <script src="js/AppController.js"></script>

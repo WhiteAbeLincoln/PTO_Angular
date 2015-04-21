@@ -6,7 +6,7 @@
             scope: {
                 section: '='
             },
-            templateUrl: 'partials/menu-toggle.tmpl.html',
+            templateUrl: 'partials/directives/menu-toggle.tmpl.html',
             link: function($scope, $element){
                 var controller = $element.parent().controller();
 

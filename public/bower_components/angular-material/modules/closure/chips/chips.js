@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-bf6ef07
+ * v0.9.0-rc1-master-55fa76a
  */
 goog.provide('ng.material.components.chips');
 goog.require('ng.material.components.autocomplete');
@@ -62,13 +62,17 @@ goog.require('ng.material.core');
   function MdChip($mdTheming) {
     return {
       restrict: 'E',
-      requires: '^mdChips',
-      compile: compile
+      require: '^?mdChips',
+      compile:  compile
     };
 
     function compile(element, attr) {
       element.append(DELETE_HINT_TEMPLATE);
-      return function postLink(scope, element, attr) {
+      return function postLink(scope, element, attr, ctrl) {
+        if (ctrl) angular.element(element[0].querySelector('.md-chip-content'))
+            .on('blur', function () {
+              ctrl.$scope.$apply(function () { ctrl.selectedChip = -1; });
+            });
         element.addClass('md-chip');
         $mdTheming(element);
       };
@@ -125,7 +129,7 @@ goog.require('ng.material.core');
       // Child elements aren't available until after a $timeout tick as they are hidden by an
       // `ng-if`. see http://goo.gl/zIWfuw
       $timeout(function() {
-        element.attr('tabindex', '-1');
+        element.attr({ tabindex: -1, ariaHidden: true });
         element.find('button').attr('tabindex', '-1');
       });
     }
@@ -245,21 +249,18 @@ goog.require('ng.material.core');
    * @param event
    */
   MdChipsCtrl.prototype.inputKeydown = function(event) {
-    var chipBuffer;
+    var chipBuffer = this.getChipBuffer();
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.ENTER:
-        chipBuffer = this.getChipBuffer();
-        if (chipBuffer) {
-          event.preventDefault();
-          this.appendChip(chipBuffer);
-          this.resetChipBuffer();
-        }
+        if (this.$scope.requireMatch || !chipBuffer) break;
+        event.preventDefault();
+        this.appendChip(chipBuffer);
+        this.resetChipBuffer();
         break;
       case this.$mdConstant.KEY_CODE.BACKSPACE:
-        if (!event.target.value.length) {
-          event.stopPropagation();
-          if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
-        }
+        if (chipBuffer) break;
+        event.stopPropagation();
+        if (this.items.length) this.selectAndFocusChipSafe(this.items.length - 1);
         break;
     }
   };
@@ -270,6 +271,7 @@ goog.require('ng.material.core');
    * @param event
    */
   MdChipsCtrl.prototype.chipKeydown = function (event) {
+    if (this.getChipBuffer()) return;
     switch (event.keyCode) {
       case this.$mdConstant.KEY_CODE.BACKSPACE:
       case this.$mdConstant.KEY_CODE.DELETE:
@@ -278,8 +280,8 @@ goog.require('ng.material.core');
         this.removeAndSelectAdjacentChip(this.selectedChip);
         break;
       case this.$mdConstant.KEY_CODE.LEFT_ARROW:
-        if (this.selectedChip < 0) this.selectedChip = this.items.length;
         event.preventDefault();
+        if (this.selectedChip < 0) this.selectedChip = this.items.length;
         if (this.items.length) this.selectAndFocusChipSafe(this.selectedChip - 1);
         break;
       case this.$mdConstant.KEY_CODE.RIGHT_ARROW:
@@ -290,7 +292,7 @@ goog.require('ng.material.core');
       case this.$mdConstant.KEY_CODE.TAB:
         if (this.selectedChip < 0) return;
         event.preventDefault();
-        this.selectAndFocusChipSafe(this.selectedChip);
+        this.onFocus();
         break;
     }
   };
@@ -468,9 +470,18 @@ goog.require('ng.material.core');
   };
 
   MdChipsCtrl.prototype.onFocus = function () {
-    var input = this.$element[0].querySelectorAll('input')[0];
+    var input = this.$element[0].querySelector('input');
     input && input.focus();
     this.resetSelectedChip();
+  };
+
+  MdChipsCtrl.prototype.onInputFocus = function () {
+    this.inputHasFocus = true;
+    this.resetSelectedChip();
+  };
+
+  MdChipsCtrl.prototype.onInputBlur = function () {
+    this.inputHasFocus = false;
   };
 
   /**
@@ -491,8 +502,10 @@ goog.require('ng.material.core');
     var scope = this.$scope;
     var ctrl = this;
     inputElement
+        .attr({ tabindex: 0 })
         .on('keydown', function(event) { scope.$apply(function() { ctrl.inputKeydown(event); }); })
-        .on('focus', function () { scope.$apply(function () { ctrl.selectedChip = null; }); });
+        .on('focus', function () { this.$scope.$apply(this.onInputFocus.bind(this)); }.bind(this))
+        .on('blur', function () { this.$scope.$apply(this.onInputBlur.bind(this)); }.bind(this));
   };
 
   MdChipsCtrl.prototype.configureAutocomplete = function(ctrl) {
@@ -502,6 +515,13 @@ goog.require('ng.material.core');
         this.resetChipBuffer();
       }
     }.bind(this));
+    this.$element.find('input')
+        .on('focus', function () { this.$scope.$apply(this.onInputFocus.bind(this)); }.bind(this))
+        .on('blur', function () { this.$scope.$apply(this.onInputBlur.bind(this)); }.bind(this));
+  };
+
+  MdChipsCtrl.prototype.hasFocus = function () {
+    return this.inputHasFocus || this.selectedChip >= 0;
   };
 })();
 
@@ -601,13 +621,15 @@ goog.require('ng.material.core');
       <md-chips-wrap\
           ng-if="!$mdChipsCtrl.readonly || $mdChipsCtrl.items.length > 0"\
           ng-keydown="$mdChipsCtrl.chipKeydown($event)"\
+          ng-class="{ \'md-focused\': $mdChipsCtrl.hasFocus() }"\
           class="md-chips">\
         <md-chip ng-repeat="$chip in $mdChipsCtrl.items"\
             index="{{$index}}"\
             ng-class="{\'md-focused\': $mdChipsCtrl.selectedChip == $index}">\
           <div class="md-chip-content"\
               tabindex="-1"\
-              ng-click="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
+              aria-hidden="true"\
+              ng-focus="!$mdChipsCtrl.readonly && $mdChipsCtrl.selectChip($index)"\
               md-chip-transclude="$mdChipsCtrl.chipContentsTemplate"></div>\
           <div class="md-chip-remove-container"\
               md-chip-transclude="$mdChipsCtrl.chipRemoveTemplate"></div>\
@@ -620,10 +642,12 @@ goog.require('ng.material.core');
 
   var CHIP_INPUT_TEMPLATE = '\
         <input\
+            tabindex="0"\
             placeholder="{{$mdChipsCtrl.getPlaceholder()}}"\
             aria-label="{{$mdChipsCtrl.getPlaceholder()}}"\
             ng-model="$mdChipsCtrl.chipBuffer"\
-            ng-focus="$mdChipsCtrl.resetSelectedChip()"\
+            ng-focus="$mdChipsCtrl.onInputFocus()"\
+            ng-blur="$mdChipsCtrl.onInputBlur()"\
             ng-keydown="$mdChipsCtrl.inputKeydown($event)">';
 
   var CHIP_DEFAULT_TEMPLATE = '\
@@ -634,6 +658,7 @@ goog.require('ng.material.core');
           class="md-chip-remove"\
           ng-if="!$mdChipsCtrl.readonly"\
           ng-click="$mdChipsCtrl.removeChipAndFocusInput($$replacedScope.$index)"\
+          aria-hidden="true"\
           tabindex="-1">\
         <md-icon md-svg-icon="close"></md-icon>\
         <span class="md-visually-hidden">\
@@ -652,7 +677,6 @@ goog.require('ng.material.core');
         // element propagates to the link function via the attrs argument,
         // where various contained-elements can be consumed.
         attrs['$mdUserTemplate'] = element.clone();
-        attrs['tabindex'] = '0';
         return MD_CHIPS_TEMPLATE;
       },
       require: ['mdChips'],
@@ -667,7 +691,8 @@ goog.require('ng.material.core');
         secondaryPlaceholder: '@',
         mdOnAppend: '&',
         deleteHint: '@',
-        deleteButtonLabel: '@'
+        deleteButtonLabel: '@',
+        requireMatch: '=?mdRequireMatch'
       }
     };
 
@@ -723,14 +748,23 @@ goog.require('ng.material.core');
        * Configures controller and transcludes.
        */
       return function postLink(scope, element, attrs, controllers) {
+
+        //-- give optional properties with no value a boolean true by default
+        angular.forEach(scope.$$isolateBindings, function (binding, key) {
+          if (binding.optional && angular.isUndefined(scope[key])) {
+            scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+          }
+        });
+
         $mdTheming(element);
-        element.attr('tabindex', '0');
         var mdChipsCtrl = controllers[0];
         mdChipsCtrl.chipContentsTemplate = chipContentsTemplate;
         mdChipsCtrl.chipRemoveTemplate   = chipRemoveTemplate;
         mdChipsCtrl.chipInputTemplate    = chipInputTemplate;
 
-        element.on('focus', function () { mdChipsCtrl.onFocus(); });
+        element
+            .attr({ ariaHidden: true, tabindex: -1 })
+            .on('focus', function () { mdChipsCtrl.onFocus(); });
 
         if (attr.ngModel) {
           mdChipsCtrl.configureNgModel(element.controller('ngModel'));
@@ -744,7 +778,10 @@ goog.require('ng.material.core');
           // configure the controller.
           if (chipInputTemplate != CHIP_INPUT_TEMPLATE) {
             $timeout(function() {
-              if (chipInputTemplate.indexOf('<md-autocomplete') === 0) mdChipsCtrl.configureAutocomplete(element.find('md-autocomplete').controller('mdAutocomplete'));
+              if (chipInputTemplate.indexOf('<md-autocomplete') === 0)
+                mdChipsCtrl
+                    .configureAutocomplete(element.find('md-autocomplete')
+                        .controller('mdAutocomplete'));
               mdChipsCtrl.configureUserInput(element.find('input'));
             });
           }
@@ -847,6 +884,7 @@ goog.require('ng.material.core');
   var MD_CONTACT_CHIPS_TEMPLATE = '\
       <md-chips class="md-contact-chips"\
           ng-model="$mdContactChipsCtrl.contacts"\
+          md-require-match="$mdContactChipsCtrl.requireMatch"\
           md-autocomplete-snap>\
           <md-autocomplete\
               md-menu-class="md-contact-chips-suggestions"\
@@ -906,12 +944,21 @@ goog.require('ng.material.core');
         contactImage: '@mdContactImage',
         contactEmail: '@mdContactEmail',
         filterSelected: '=',
-        contacts: '=ngModel'
+        contacts: '=ngModel',
+        requireMatch: '=?mdRequireMatch'
       }
     };
 
     function compile(element, attr) {
       return function postLink(scope, element, attrs, controllers) {
+
+        //-- give optional properties with no value a boolean true by default
+        angular.forEach(scope.$$isolateBindings, function (binding, key) {
+          if (binding.optional && angular.isUndefined(scope[key])) {
+            scope[key] = attr.hasOwnProperty(attr.$normalize(binding.attrName));
+          }
+        });
+
         $mdTheming(element);
         element.attr('tabindex', '-1');
       };

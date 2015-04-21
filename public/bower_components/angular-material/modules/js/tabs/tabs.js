@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-bf6ef07
+ * v0.9.0-rc1-master-55fa76a
  */
 (function() {
 'use strict';
@@ -37,52 +37,6 @@ angular.module('material.components.tabs', [
 
 })();
 
-(function () {
-  'use strict';
-  angular
-      .module('material.components.tabs')
-      .directive('mdLabelTemplate', MdLabelTemplate);
-
-  function MdLabelTemplate ($compile) {
-    return {
-      restrict: 'A',
-      link: link,
-      scope: { template: '=mdLabelTemplate' },
-      require: '^mdTabs'
-    };
-    function link (scope, element, attr, ctrl) {
-      var index = scope.$parent.$index;
-      scope.$watch('template', function (html) {
-        element.html(html);
-        $compile(element.contents())(ctrl.tabs[index].parent);
-      });
-    }
-  }
-  MdLabelTemplate.$inject = ["$compile"];
-})();
-(function () {
-  'use strict';
-  angular
-      .module('material.components.tabs')
-      .directive('mdTabContent', MdTabContent);
-
-  function MdTabContent ($compile, $mdUtil) {
-    return {
-      terminal: true,
-      scope: {
-        tab: '=mdTabData',
-        active: '=mdActive'
-      },
-      link: link
-    };
-    function link (scope, element) {
-      element.html(scope.tab.template);
-      $compile(element.contents())(scope.tab.parent);
-    }
-  }
-  MdTabContent.$inject = ["$compile", "$mdUtil"];
-})();
-
 /**
  * @ngdoc directive
  * @name mdTab
@@ -96,6 +50,9 @@ angular.module('material.components.tabs', [
  * If the `label` attribute is not specified, then an optional `<md-tab-label>` tag can be used to specify more
  * complex tab header markup. If neither the **label** nor the **md-tab-label** are specified, then the nested
  * markup of the `<md-tab>` is used as the tab header markup.
+ *
+ * Please note that if you use `<md-tab-label>`, your content **MUST** be wrapped in the `<md-tab-body>` tag.  This
+ * is to define a clear separation between the tab content and the tab label.
  *
  * If a tab **label** has been identified, then any **non-**`<md-tab-label>` markup
  * will be considered tab content and will be transcluded to the internal `<div class="md-tabs-content">` container.
@@ -121,12 +78,14 @@ angular.module('material.components.tabs', [
  *   <md-tab-label>
  *     <h3>My Tab content</h3>
  *   </md-tab-label>
- *   <p>
- *     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
- *     totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
- *     dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
- *     sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
- *   </p>
+ *   <md-tab-body>
+ *     <p>
+ *       Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium,
+ *       totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae
+ *       dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit,
+ *       sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+ *     </p>
+ *   </md-tab-body>
  * </md-tab>
  * </hljs>
  *
@@ -141,7 +100,7 @@ angular.module('material.components.tabs', [
 
   function MdTab () {
     return {
-      require: '^mdTabs',
+      require: '^?mdTabs',
       terminal: true,
       scope: {
         label:    '@',
@@ -154,6 +113,7 @@ angular.module('material.components.tabs', [
     };
 
     function postLink (scope, element, attr, ctrl) {
+      if (!ctrl) return;
       var tabs = element.parent()[0].getElementsByTagName('md-tab'),
           index = Array.prototype.indexOf.call(tabs, element[0]),
           data = ctrl.insertTab({
@@ -187,7 +147,7 @@ angular.module('material.components.tabs', [
       }
 
       function getTemplate () {
-        var content = element.find('md-tab-template'),
+        var content = element.find('md-tab-body'),
             template = content.length ? content.html() : attr.label ? element.html() : null;
         if (content.length) content.remove();
         else if (attr.label) element.empty();
@@ -205,8 +165,9 @@ angular.module('material.components.tabs', [
       .directive('mdTabItem', MdTabItem);
 
   function MdTabItem () {
-    return { require: '^mdTabs', link: link };
+    return { require: '^?mdTabs', link: link };
     function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
       ctrl.attachRipple(scope, element);
     }
   }
@@ -240,9 +201,10 @@ angular.module('material.components.tabs', [
 
   function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdInkRipple,
                              $mdUtil, $animate) {
-    var ctrl = this,
-        locked = false,
-        elements = getElements();
+    var ctrl     = this,
+        locked   = false,
+        elements = getElements(),
+        queue    = [];
 
     ctrl.scope = $scope;
     ctrl.parent = $scope.$parent;
@@ -250,7 +212,7 @@ angular.module('material.components.tabs', [
     ctrl.lastSelectedIndex = null;
     ctrl.focusIndex = 0;
     ctrl.offsetLeft = 0;
-    ctrl.hasContent = true;
+    ctrl.hasContent = false;
     ctrl.hasFocus = false;
     ctrl.lastClick = false;
 
@@ -278,9 +240,14 @@ angular.module('material.components.tabs', [
       $scope.$watch('selectedIndex', handleSelectedIndexChange);
       $scope.$watch('$mdTabsCtrl.focusIndex', handleFocusIndexChange);
       $scope.$watch('$mdTabsCtrl.offsetLeft', handleOffsetChange);
+      $scope.$watch('$mdTabsCtrl.hasContent', handleHasContent);
       angular.element($window).on('resize', function () { $scope.$apply(handleWindowResize); });
       $timeout(updateInkBarStyles, 0, false);
       $timeout(updateHeightFromContent, 0, false);
+    }
+
+    function handleHasContent (hasContent) {
+      $element[hasContent ? 'removeClass' : 'addClass']('md-no-tab-content');
     }
 
     function getElements () {
@@ -364,6 +331,11 @@ angular.module('material.components.tabs', [
       ctrl.offsetLeft = fixOffset(ctrl.offsetLeft);
     }
 
+    function processQueue () {
+      queue.forEach(function (func) { $timeout(func); });
+      queue = [];
+    }
+
     function insertTab (tabData, index) {
       var proto = {
             getIndex: function () { return ctrl.tabs.indexOf(tab); },
@@ -374,16 +346,22 @@ angular.module('material.components.tabs', [
             id:       $mdUtil.nextUid()
           },
           tab = angular.extend(proto, tabData);
-      if (!tabData.template) {
-        ctrl.hasContent = false;
-        $element.addClass('md-no-tab-content');
-      }
       if (angular.isDefined(index)) {
         ctrl.tabs.splice(index, 0, tab);
       } else {
         ctrl.tabs.push(tab);
       }
+      processQueue();
+      updateHasContent();
       return tab;
+    }
+
+    function updateHasContent () {
+      var hasContent = false;
+      angular.forEach(ctrl.tabs, function (tab) {
+        if (tab.template) hasContent = true;
+      });
+      ctrl.hasContent = hasContent;
     }
 
     function removeTab (tabData) {
@@ -435,8 +413,9 @@ angular.module('material.components.tabs', [
 
     function updateHeightFromContent () {
       if (!$scope.dynamicHeight) return $element.css('height', '');
+      if (!ctrl.tabs.length) return queue.push(updateHeightFromContent);
       var tabContent    = elements.contents[$scope.selectedIndex],
-          contentHeight = tabContent.offsetHeight,
+          contentHeight = tabContent ? tabContent.offsetHeight : 0,
           tabsHeight    = elements.wrapper.offsetHeight,
           newHeight     = contentHeight + tabsHeight,
           currentHeight = $element.prop('clientHeight');
@@ -455,7 +434,7 @@ angular.module('material.components.tabs', [
     }
 
     function updateInkBarStyles () {
-      if (!ctrl.tabs.length) return;
+      if (!ctrl.tabs.length) return queue.push(updateInkBarStyles);
       //-- if the element is not visible, we will not be able to calculate sizes until it is
       //-- we should treat that as a resize event rather than just updating the ink bar
       if (!$element.prop('offsetParent')) return handleResizeWhenVisible();
@@ -644,9 +623,9 @@ angular.module('material.components.tabs', [
  *       {{tab.title}}
  *       <img src="img/removeTab.png" ng-click="removeTab(tab)" class="delete">
  *     </md-tab-label>
- *     <md-tab-template>
+ *     <md-tab-body>
  *       {{tab.content}}
- *     </md-tab-template>
+ *     </md-tab-body>
  *   </md-tab>
  * </md-tabs>
  * </hljs>
@@ -708,17 +687,21 @@ angular.module('material.components.tabs', [
                   class="md-tab"\
                   style="max-width: {{ tabWidth ? tabWidth + \'px\' : \'none\' }}"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  role="presentation"\
+                  role="tab"\
+                  aria-controls="tab-content-{{tab.id}}"\
+                  aria-selected="{{tab.isActive()}}"\
+                  aria-disabled="{{tab.scope.disabled || \'false\'}}"\
                   ng-click="$mdTabsCtrl.select(tab.getIndex())"\
                   ng-class="{\
                       \'md-active\':    tab.isActive(),\
-                      \'md-focus\':     tab.hasFocus(),\
+                      \'md-focused\':   tab.hasFocus(),\
                       \'md-disabled\':  tab.scope.disabled\
                   }"\
                   ng-disabled="tab.scope.disabled"\
                   md-swipe-left="$mdTabsCtrl.nextPage()"\
                   md-swipe-right="$mdTabsCtrl.previousPage()"\
-                  md-label-template="tab.label"></md-tab-item>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-tab-item>\
               <md-ink-bar ng-hide="noInkBar"></md-ink-bar>\
             </md-pagination-wrapper>\
             <div class="md-visually-hidden md-dummy-wrapper">\
@@ -732,7 +715,8 @@ angular.module('material.components.tabs', [
                   ng-focus="$mdTabsCtrl.hasFocus = true"\
                   ng-blur="$mdTabsCtrl.hasFocus = false"\
                   ng-repeat="tab in $mdTabsCtrl.tabs"\
-                  md-label-template="tab.label"></md-dummy-tab>\
+                  md-template="tab.label"\
+                  md-scope="tab.parent"></md-dummy-tab>\
             </div>\
           </md-tabs-canvas>\
         </md-tabs-wrapper>\
@@ -741,11 +725,12 @@ angular.module('material.components.tabs', [
               id="tab-content-{{tab.id}}"\
               role="tabpanel"\
               aria-labelledby="tab-item-{{tab.id}}"\
-              md-tab-data="tab"\
               md-swipe-left="$mdTabsCtrl.incrementSelectedIndex(1)"\
               md-swipe-right="$mdTabsCtrl.incrementSelectedIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
               ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
+              md-template="tab.template"\
+              md-scope="tab.parent"\
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
                 \'md-active\':        tab.isActive(),\
@@ -773,4 +758,28 @@ angular.module('material.components.tabs', [
     };
   }
   MdTabs.$inject = ["$mdTheming"];
+})();
+(function () {
+  'use strict';
+  angular
+      .module('material.components.tabs')
+      .directive('mdTemplate', MdTemplate);
+
+  function MdTemplate ($compile) {
+    return {
+      restrict: 'A',
+      link: link,
+      scope: {
+        template: '=mdTemplate',
+        compileScope: '=mdScope'
+      },
+      require: '^?mdTabs'
+    };
+    function link (scope, element, attr, ctrl) {
+      if (!ctrl) return;
+      element.html(scope.template);
+      $compile(element.contents())(scope.compileScope);
+    }
+  }
+  MdTemplate.$inject = ["$compile"];
 })();

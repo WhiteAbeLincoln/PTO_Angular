@@ -1,0 +1,22 @@
+<md-card md-table-card>
+    <md-card-header ng-class="{'dt-select-header': selected.length > 0 && customHeader}">
+        <h2 class="md-title" ng-if="!customHeader">{{title}}</h2>
+        <div ng-transclude></div>
+    </md-card-header>
+    <md-card-content>
+        <table class="md-data-table">
+            <thead>
+            <tr>
+                <th><md-checkbox md-no-ink ng-model="$allChecked" ng-change="checkAll($allChecked)" aria-label="Select All"></md-checkbox></th>
+                <th ng-repeat="header in headers">{{header}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="row in data | limitTo:10" ng-class="{'dt-checked': row.$checked}">
+                <td><md-checkbox md-no-ink ng-model='row.$checked' ng-change="checkItem(row.$checked, row)" aria-label="Select Row"></md-checkbox></td>
+                <td ng-repeat="prop in properties">{{ row[prop] }}</td>
+            </tr>
+            </tbody>
+        </table>
+    </md-card-content>
+</md-card>

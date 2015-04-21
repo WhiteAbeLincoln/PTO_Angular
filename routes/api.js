@@ -223,16 +223,35 @@ router.post('/members',
 
 router.get('/members/:id', expressJwt({secret: mySecret}),
     function (req, res) {
-        res.json({'accessed':'restricted member ' + req.params.id});
+        db.members.query([req.params.id]).then(function(data){
+            res.json(data[0])
+        }).catch(function(err){
+            console.log(err);
+        })
     });
 
-router.get('/members', function(req, res) {
+router.get('/members', expressJwt({secret: mySecret}), function(req, res) {
     db.members.queryAll().then(function(data){
-        console.log(JSON.stringify(data[0]));
         res.json(data[0]);
     }).catch(function(err){
         console.log(err);
     });
+});
+
+router.get('/member-students/:id', expressJwt({secret: mySecret}), function(req, res){
+    db.members.students.query([req.params.id]).then(function(data){
+        res.json(data[0])
+    }).catch(function(err){
+        console.log(err);
+    })
+});
+
+router.get('/member-students/', expressJwt({secret: mySecret}), function(req, res){
+    db.members.students.queryAll().then(function(data){
+        res.json(data[0])
+    }).catch(function(err){
+        console.log(err);
+    })
 });
 
 router.post('/admin/login', function(req, res){
