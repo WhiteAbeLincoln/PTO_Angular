@@ -2,7 +2,7 @@
  * Created by 31160 on 4/16/2015.
  */
 angular.module('myApp.controllers')
-    .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', function($scope, Member, Student){
+    .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', '$mdToast', function($scope, Member, Student, $mdToast){
         $scope.members = Member.query();
         $scope.students = Student.query();
         $scope.data = {};
@@ -12,17 +12,28 @@ angular.module('myApp.controllers')
             $scope.members.push(generateRandomItem());
         };
 
+        $scope.deleteSelected = function(deletedItems){
+            var message = deletedItems.length == 1 ? '1 Row Deleted' : deletedItems.length + ' Rows Deleted';
 
-        $scope.deleteSelected = function(object){
-            console.log('deleting');
-            console.log(object);
-            object.forEach(function(item, idx, arr){
-                if (item.$checked) {
-                    arr.splice(idx, 1);
-                }
+            var backup = [];
+            angular.copy($scope.data, backup);
+            backup = backup.filter(function(val){
+                if (val.$checked) delete val.$checked;
+                return val;
+            });
+
+            var toast = $mdToast.simple()
+                .content(message)
+                .action('UNDO')
+                .highlightAction(true)
+                .position('bottom left')
+                .hideDelay(4000);
+
+            $mdToast.show(toast).then(function(){
+                $scope.members = Member.query();
+                $scope.students = Student.query();
             });
         };
-
 
         function generateRandomItem() {
             var firstname = "Abe";

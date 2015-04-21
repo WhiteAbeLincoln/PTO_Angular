@@ -11,34 +11,91 @@
                 title: '@',
                 headers: '=',
                 data: '=',
-                properties: '='
+                properties: '=',
+                remove: '&onDelete'
             },
             transclude:'true',
             templateUrl: 'partials/directives/data-table.tmpl.html',
-            controller: ['$scope', function($scope) {
+            controller: ['$scope', '$filter', function($scope, $filter) {
                 $scope.checkAll = function(check) {
                     if (check) {
-                        $scope.data.forEach(function (row) {
+                        $scope.filteredArr.forEach(function (row) {
                             row.$checked = true;
                             pushItem(row);
                         })
                     } else {
-                        $scope.data.forEach(function (row) {
+                        $scope.filteredArr.forEach(function (row) {
                             row.$checked = false;
                             popItem(row);
                         });
                     }
                 };
+
+                this.deleteSelected = function(timeout){
+                    var toDelete = $scope.data.filter(function(val){
+                        if (val.$checked){
+                            return val;
+                        }
+                    });
+
+                    $scope.data = $scope.data.filter(function(val){
+                        if (!val.$checked){
+                            return val;
+                        }
+                    });
+
+
+                    $scope.remove({deleted: toDelete});
+                };
+
                 $scope.selected = [];
+                $scope.viewLimit = 10;
+                $scope.currentPage = 0;
+
+                $scope.prevPage = function() {
+                    if ($scope.currentPage > 0) {
+                        $scope.currentPage--;
+                    }
+                };
+
+                $scope.pageCount = function() {
+                    return Math.ceil($scope.data.length/$scope.viewLimit)-1;
+                };
+
+                $scope.nextPage = function() {
+                    if ($scope.currentPage < $scope.pageCount()) {
+                        $scope.currentPage++;
+                    }
+                };
+
+                $scope.getRange = function(){
+                    $scope.filteredArr = $filter('limitTo')(
+                      $filter('offset')($scope.data, $scope.currentPage*$scope.viewLimit),
+                      $scope.viewLimit);
+                    var firstEl = $scope.filteredArr[0];
+                    var lastEl = $scope.filteredArr[$scope.filteredArr.length -1];
+
+                    var first = $scope.data.indexOf(firstEl)+1;
+                    var last = $scope.data.indexOf(lastEl)+1;
+
+                    return first + '-' + last;
+                };
+
+                $scope.nextPageDisabled = function() {
+                    return $scope.currentPage === $scope.pageCount();
+                };
 
                 $scope.$watchCollection('data', function(newData, oldData){
                    if (newData !== oldData){
-                       $scope.selected.forEach(function(select, idx){
-                           if (newData.indexOf(select) == -1){
-                               $scope.selected.splice(idx, 1);
-                               console.log($scope.selected);
+                       $scope.selected = [];
+                       newData.forEach(function(data){
+                           if (data.$checked){
+                               $scope.selected.push(data);
                            }
-                       })
+                       });
+                       if ($scope.selected.length == 0){
+                           $scope.$allChecked = false;
+                       }
                    }
                 });
 
@@ -78,9 +135,6 @@
             }]
         }
     }
-    function postLink(scope, element, attr, ctrl) {
-
-    }
     angular.module('myApp')
         .directive('mdtTableHeader', function(){
             return {
@@ -104,9 +158,13 @@
                 '<h2 class="md-title">' +
                 '<ng-pluralize count="selector" when="{\'one\':\'1 row selected\', \'other\': \'{} rows selected\'}"></ng-pluralize>' +
                 '</h2>' +
-                '<div ng-transclude layout="row"></div>' +
+                '<div layout="row">' +
+                '<ng-transclude layout="row"></ng-transclude>' +
+                '<md-button class="md-icon-button" ng-click="deleteinator()"><md-icon md-svg-icon="action:delete" aria-label="Delete Selected"></md-icon></md-button>' +
+                '</div>' +
                 '</div>',
                 link: function(scope, element, attr, ctrl){
+                    scope.deleteinator = ctrl.deleteSelected;
                     scope.selector = ctrl.getSelected();
                     scope.$watch(ctrl.getSelected,
                         function(newVal, old){
@@ -122,9 +180,15 @@
                                 scope.anything = false;
                             }
 
-                        }) ;
+                        });
                 }
 
+            }
+        })
+        .filter('offset', function(){
+            return function(input, start) {
+                start = parseInt(start, 10);
+                return input.slice(start);
             }
         })
 })();

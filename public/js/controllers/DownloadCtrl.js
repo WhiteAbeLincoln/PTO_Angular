@@ -65,24 +65,27 @@
             };
 
             $scope.expanded = null;
+
             $scope.checkExpanded = function(typeIndex, dl, expanded) {
                 return angular.equals({id: dl.id, category:typeIndex}, expanded);
             };
 
             $scope.expandLong = function(typeIndex, dl) {
-                    if ($scope.checkExpanded(typeIndex, dl, $scope.expanded)) {
-                        $scope.expanded = null;
-                        $scope.debug.expanded = null;
-                    }
-                    else {
-                        $scope.expanded = {id: dl.id, category: typeIndex};
-                        $scope.debug.expanded = $scope.expanded;
 
-                    }
+                $scope.expanded =
+                    $scope.checkExpanded(typeIndex, dl, $scope.expanded)
+                    ? null
+                    : {id: dl.id, category: typeIndex};
+
 
             };
 
-            $scope.getDownload = function(id) {
+            $scope.getDownload = function(id, name) {
+                //bit hacky, but it works
+                if ($scope.user) {
+                    $scope.deleteDownload(id, name);
+                    return;
+                }
                 $window.location = 'api/downloads/'+id;
             };
 

@@ -178,8 +178,13 @@ md-card[md-table-card] > md-card-content {
     padding: 0;
 }
 
-md-card md-card-header.dt-select-header {
+md-card[md-table-card] md-card-header.dt-select-header {
     background-color: #ECEFF1; /* 50 value of secondary app color (blue-grey ) */
+}
+
+md-card[md-table-card] md-card-footer {
+    color: rgba(0,0,0,.54);
+    height: 56px;
 }
 
 /* form styling */

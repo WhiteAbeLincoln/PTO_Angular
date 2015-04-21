@@ -67,6 +67,7 @@
                     .iconSet('file', 'img/icons/file-icons.svg')
                     .iconSet('action', 'img/icons/action-icons.svg')
                     .iconSet('content', 'img/icons/content-icons.svg')
+                    .iconSet('navigation', 'img/icons/navigation-icons.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')
                     .icon('file:image', 'img/icons/file-image-box.svg')
