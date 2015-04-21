@@ -12,6 +12,18 @@ angular.module('myApp.controllers')
             $scope.members.push(generateRandomItem());
         };
 
+
+        $scope.deleteSelected = function(object){
+            console.log('deleting');
+            console.log(object);
+            object.forEach(function(item, idx, arr){
+                if (item.$checked) {
+                    arr.splice(idx, 1);
+                }
+            });
+        };
+
+
         function generateRandomItem() {
             var firstname = "Abe";
             var lastname = "White";

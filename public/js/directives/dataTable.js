@@ -30,6 +30,18 @@
                     }
                 };
                 $scope.selected = [];
+
+                $scope.$watchCollection('data', function(newData, oldData){
+                   if (newData !== oldData){
+                       $scope.selected.forEach(function(select, idx){
+                           if (newData.indexOf(select) == -1){
+                               $scope.selected.splice(idx, 1);
+                               console.log($scope.selected);
+                           }
+                       })
+                   }
+                });
+
                 $scope.checkItem = function(check, item) {
                     if (check) {
                         pushItem(item);
@@ -48,7 +60,6 @@
                     if ($scope.selected.indexOf(item) == -1) {
                         $scope.selected.push(item);
                     }
-                    console.log($scope.selected);
                 }
 
                 function popItem(item){
@@ -56,7 +67,6 @@
                     if ($scope.selected.indexOf(item) !== -1){
                         $scope.selected.splice($scope.selected.indexOf(item), 1);
                     }
-                    console.log($scope.selected);
                 }
 
                 $scope.customHeader = false;

@@ -5,7 +5,7 @@
                 data="members"
                 properties="['membershipId', 'lastName', 'firstName', 'address', 'city', 'state', 'zipCode', 'studentIds']">
         <mdt-select-actions>
-            <md-button class="md-icon-button"><md-icon md-svg-icon="action:delete" aria-label="Delete Selected"></md-icon></md-button>
+            <md-button class="md-icon-button" ng-click="deleteSelected(members)"><md-icon md-svg-icon="action:delete" aria-label="Delete Selected"></md-icon></md-button>
         </mdt-select-actions>
     </mdt-data-table>
 
@@ -14,7 +14,9 @@
             data="students"
             properties="['studentId', 'firstName', 'lastName', 'grade', 'unit', 'parentId']">
         <mdt-select-actions>
-            <md-button class="md-icon-button"><md-icon md-svg-icon="action:delete" aria-label="Delete Selected"></md-icon></md-button>
+            <md-button class="md-icon-button" ng-click="deleteSelected(students)"><md-icon md-svg-icon="action:delete" aria-label="Delete Selected"></md-icon></md-button>
         </mdt-select-actions>
     </mdt-data-table>
+
+    <pre>{{members | json}}</pre>
 </div>
