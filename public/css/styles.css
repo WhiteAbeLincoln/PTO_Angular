@@ -116,7 +116,7 @@ select, option:disabled {
 /* End Docs Menu */
 
 
-/* mdDataTable */
+/* mdtDataTable (migrate to real mdDataTable when that comes) */
 .md-data-table {
     border-collapse: collapse;
 }
