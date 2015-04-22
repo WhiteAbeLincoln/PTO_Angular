@@ -98,7 +98,7 @@
                     height: '48px',
                     width: '48px'
                 },
-                icon: 'document'
+                icon: 'markdown'
             },
             document: {
                 style: {

@@ -8,11 +8,12 @@
         return {
             restrict: 'E',
             scope: {
-                title: '@',
-                headers: '=',
-                data: '=',
-                properties: '=',
-                remove: '&onDelete'
+                title: '@mdtTitle',
+                headers: '=mdtHeaders',
+                data: '=mdtData',
+                properties: '=mdtProps',
+                remove: '&mdtOnDelete',
+                search: '=mdtSearch'
             },
             transclude:'true',
             templateUrl: 'partials/directives/data-table.tmpl.html',
@@ -29,6 +30,12 @@
                             popItem(row);
                         });
                     }
+                };
+                $scope.doSearch = false;
+                $scope.searchFilter = {};
+
+                $scope.toggleSearch = function(){
+                    $scope.doSearch = !$scope.doSearch;
                 };
 
                 this.deleteSelected = function(timeout){
@@ -51,6 +58,60 @@
                 $scope.selected = [];
                 $scope.viewLimit = 10;
                 $scope.currentPage = 0;
+                $scope.sortedColumn = {};
+                $scope.sortedColumn.predicate = '';
+                $scope.hoverStyle = {};
+                $scope.hoverStyle.idx = '';
+
+                $scope.hoverStyle.isHovered = function(idx){
+                     return idx === $scope.hoverStyle.idx && $scope.sortedColumn.predicate.substring(1) !== $scope.properties[idx];
+                };
+
+                $scope.hoverStyle.shouldStyle = function(idx){
+                    if ($scope.sortedColumn.predicate.substring(1) !== $scope.properties[idx]){
+                        return $scope.hoverStyle.style;
+                    } else {
+                        return '';
+                    }
+                };
+
+                $scope.setHover = function(idx){
+                    $scope.hoverStyle.style = {'color': 'rgba(0,0,0,.26)'};
+                    $scope.hoverStyle.idx = idx;
+                };
+                $scope.clearHover = function(){
+                    $scope.hoverStyle.style = '';
+                    $scope.hoverStyle.idx = '';
+                };
+
+                $scope.sort = function(idx){
+                    var order = '';
+
+                    //if the order is current order is ascending, then set it to desc (-)
+                    if ($scope.sortedColumn.order) {
+                        order = $scope.sortedColumn.order == '+' ? '-' : '+';
+                    } else {
+                        order = '+';
+                    }
+
+                    //if the current sorted column is different from the new one, we start in ascending order
+                    if ($scope.sortedColumn.predicate.substring(1) !== $scope.properties[idx]) {
+                        order = '+';
+                    }
+
+                    //if the new column is the same as the last column and the sort is descending, remove the sort
+                    if ($scope.sortedColumn.predicate == '-' + $scope.properties[idx]){
+                        $scope.sortedColumn = {};
+                        $scope.sortedColumn.predicate = '';
+                    } else {
+                        //otherwise set the selected sort order
+                        $scope.sortedColumn.predicate = order + $scope.properties[idx];
+                        $scope.sortedColumn.index = idx;
+                        $scope.sortedColumn.order = order;
+                    }
+
+
+                };
 
                 $scope.prevPage = function() {
                     if ($scope.currentPage > 0) {

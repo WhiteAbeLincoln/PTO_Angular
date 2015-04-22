@@ -1,6 +1,15 @@
 <md-card md-table-card>
     <md-card-header ng-class="{'dt-select-header': selected.length > 0 && customHeader}">
-        <h2 class="md-title" ng-if="!customHeader">{{title}}</h2>
+        <div layout="row" ng-if="!customHeader">
+            <h2 class="md-title">{{title}}</h2>
+            <span ng-if="search" flex></span>
+            <div layout="row" ng-if="search" layout-align="end center">
+                <md-button aria-label="Search table" class="md-icon-button" ng-click="toggleSearch()" ng-if="!doSearch"><md-icon md-svg-icon="action:search"></md-icon></md-button>
+                <md-input-container ng-if="doSearch" style="padding-bottom: 0;">
+                    <label for="dtSearch">Search</label><input id="dtSearch" type="search" ng-model="searchFilter.$" ng-blur="toggleSearch()"/>
+                </md-input-container>
+            </div>
+        </div>
         <div ng-transclude></div>
     </md-card-header>
     <md-card-content>
@@ -8,11 +17,15 @@
             <thead>
             <tr>
                 <th><md-checkbox md-no-ink ng-model="$allChecked" ng-change="checkAll($allChecked)" aria-label="Select All"></md-checkbox></th>
-                <th ng-repeat="header in headers">{{header}}</th>
+                <th ng-repeat="header in headers" ng-click="sort($index)" ng-mouseenter="setHover($index)" ng-mouseleave="clearHover()">
+                    <md-icon md-svg-icon="navigation:arrow_up" ng-style="hoverStyle.shouldStyle($index)" ng-if="(sortedColumn.index == $index && sortedColumn.order == '+') || hoverStyle.isHovered($index)"></md-icon>
+                    <md-icon md-svg-icon="navigation:arrow_down" ng-if="sortedColumn.index == $index && sortedColumn.order == '-'"></md-icon>
+                    <md-tooltip ng-if="header.description">{{header.description}}</md-tooltip>
+                    {{header.title}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="row in data | offset: currentPage*viewLimit | limitTo: viewLimit" ng-class="{'dt-checked': row.$checked}">
+            <tr ng-repeat="row in data | filter: searchFilter | orderBy:sortedColumn.predicate | offset: currentPage*viewLimit | limitTo: viewLimit" ng-class="{'dt-checked': row.$checked}">
                 <td><md-checkbox md-no-ink ng-model='row.$checked' ng-change="checkItem(row.$checked, row)" aria-label="Select Row"></md-checkbox></td>
                 <td ng-repeat="prop in properties">{{ row[prop] }}</td>
             </tr>

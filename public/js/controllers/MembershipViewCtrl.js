@@ -7,6 +7,26 @@ angular.module('myApp.controllers')
         $scope.students = Student.query();
         $scope.data = {};
 
+        $scope.memberHeaders = [
+            {title:'Membership Id'},
+            {title:'Last Name'},
+            {title:'First Name'},
+            {title:'Address'},
+            {title:'City'},
+            {title:'State'},
+            {title:'Zip Code'},
+            {title:'Linked Students', description:"id's of students with this parent"}
+        ];
+
+        $scope.studentHeaders = [
+            {title:'Student Id'},
+            {title:'First Name'},
+            {title:'Last Name'},
+            {title:'Grade'},
+            {title:'Unit'},
+            {title:'Parent Id', description:"id of parent member"}
+        ];
+
 
         $scope.addRandomItem = function addRandomItem() {
             $scope.members.push(generateRandomItem());

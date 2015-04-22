@@ -1,20 +1,20 @@
 <div layout="column" layout-align="center center">
     <md-button type="button" ng-click="addRandomItem()">Add Item</md-button>
-    <mdt-data-table title="Members"
-                headers="['Membership Id', 'Last Name', 'First Name', 'Address', 'City', 'State', 'Zip Code', 'Linked Students']"
-                data="members"
-                properties="['membershipId', 'lastName', 'firstName', 'address', 'city', 'state', 'zipCode', 'studentIds']"
-                on-delete="deleteSelected(deleted)">
+    <mdt-data-table mdt-title="Members"
+                    mdt-headers="memberHeaders"
+                    mdt-data="members"
+                    mdt-props="['membershipId', 'lastName', 'firstName', 'address', 'city', 'state', 'zipCode', 'studentIds']"
+                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-search="true">
         <mdt-select-actions></mdt-select-actions>
     </mdt-data-table>
 
-    <mdt-data-table title="Students"
-            headers="['Student Id', 'First Name', 'Last Name', 'Grade', 'Unit', 'Linked Parent']"
-            data="students"
-            properties="['studentId', 'firstName', 'lastName', 'grade', 'unit', 'parentId']"
-            on-delete="deleteSelected(deleted)">
+    <mdt-data-table mdt-title="Students"
+                    mdt-headers="studentHeaders"
+                    mdt-data="students"
+                    mdt-props="['studentId', 'firstName', 'lastName', 'grade', 'unit', 'parentId']"
+                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-search="true">
         <mdt-select-actions></mdt-select-actions>
     </mdt-data-table>
-
-    <pre>{{members | json}}</pre>
 </div>

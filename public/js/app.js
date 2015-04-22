@@ -68,6 +68,8 @@
                     .iconSet('action', 'img/icons/action-icons.svg')
                     .iconSet('content', 'img/icons/content-icons.svg')
                     .iconSet('navigation', 'img/icons/navigation-icons.svg')
+                    .icon('navigation:arrow_up', 'img/icons/arrow-up.svg')
+                    .icon('navigation:arrow_down', 'img/icons/arrow-down.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')
                     .icon('file:image', 'img/icons/file-image-box.svg')
@@ -75,6 +77,7 @@
                     .icon('file:powerpoint', 'img/icons/file-powerpoint-box.svg')
                     .icon('file:word', 'img/icons/file-word-box.svg')
                     .icon('file:file', 'img/icons/file.svg')
+                    .icon('file:markdown', 'img/icons/file-markdown.svg')
                     .icon('social:facebook', 'img/icons/social-facebook.svg')
                     .icon('social:google_plus', 'img/icons/social-google_plus.svg')
                     .icon('social:twitter', 'img/icons/social-twitter.svg');
