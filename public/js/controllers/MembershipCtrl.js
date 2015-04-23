@@ -5,14 +5,8 @@
     angular.module('myApp.controllers')
         .controller('MembershipCtrl', ['$scope', '$window', '$log', '$http', 'Member', function($scope, $window, $log, $http, Member){
             $scope.updateTitle("Membership Application");
-            $scope.numStudents = 0;
             $scope.data = {
-                accepted: false,
                 index: 0,
-                accept: function(){
-                    //$scope.$apply($scope.data.accepted = true);
-                    $scope.data.index = 1;
-                },
                 next: function(){
                     $scope.data.index++;
                 }

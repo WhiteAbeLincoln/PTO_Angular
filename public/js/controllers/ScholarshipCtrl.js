@@ -4,59 +4,58 @@
 (function() {
     angular.module('myApp.controllers')
         .controller('ScholarshipCtrl', ['$scope', '$log', '$http', 'Scholar', function($scope, $log, $http, Scholar){
-            $scope.updateTitle("Scholarship Application");
+            $scope
 
-            $scope.numStudents = 0;
+            $scope.updateTitle("Scholarship Application");
             $scope.data = {
-                accepted: false,
                 index: 0,
-                accept: function(){
-                    this.accepted = true;
-                    this.index = 1;
+                next: function(){
+                    $scope.data.index++;
                 }
             };
+
             $scope.user = {
-                first:"",
-                middle:"",
-                last:"",
-                address:"",
-                city:"",
-                state:"",
-                postalCode:"",
-                phone:"",
-                email:"",
-                gpa:"",
+                first:null,
+                middle:null,
+                last:null,
+                address:null,
+                city:null,
+                state:null,
+                postalCode:null,
+                phone:null,
+                email:null,
+                gpa:null,
                 classes: {
-                    nine:"",
-                    ten:"",
-                    eleven:"",
-                    twelve:""
+                    nine:null,
+                    ten:null,
+                    eleven:null,
+                    twelve:null
                 },
                 schoolActivities: [
                     {
-                        name  :   "",
-                        om    :   "",
-                        hours :   "",
-                        cb9   :   false,
-                        cb10  :   false,
-                        cb11  :   false,
-                        cb12  :   false
+                        name     :   null,
+                        position :   null,
+                        hours    :   null,
+                        cb9      :   false,
+                        cb10     :   false,
+                        cb11     :   false,
+                        cb12     :   false
                     }
                 ],
                 communityActivities: [
                     {
-                        name: "",
-                        om: "",
-                        hours: "",
-                        cb9: false,
-                        cb10: false,
-                        cb11: false,
-                        cb12: false
+                        name     :   null,
+                        position :   null,
+                        hours    :   null,
+                        cb9      :   false,
+                        cb10     :   false,
+                        cb11     :   false,
+                        cb12     :   false
                     }
                 ],
                 honors: [
                     {
-                        name: "",
+                        name: null,
                         cb9: false,
                         cb10: false,
                         cb11: false,
@@ -65,25 +64,25 @@
                 ],
                 jobs: [
                     {
-                        name: "",
-                        hours: "",
-                        months: "",
+                        name: null,
+                        hours: null,
+                        months: null,
                         cb9: false,
                         cb10: false,
                         cb11: false,
                         cb12: false
                     }
                 ],
-                essay:""
+                essay:null
             };
             $scope.changeSchoolActivity = function(num){
                 var oldLength = this.user.schoolActivities.length;
                 if (num > oldLength){
                     for (var i = 0; i < (num - oldLength); i++){
                         this.user.schoolActivities.push({
-                            name: "",
-                            om: "",
-                            hours: "",
+                            name: null,
+                            om: null,
+                            hours: null,
                             cb9: false,
                             cb10: false,
                             cb11: false,
@@ -101,9 +100,9 @@
                 if (num > oldLength){
                     for (var i = 0; i < (num - oldLength); i++){
                         this.user.communityActivities.push({
-                            name: "",
-                            om: "",
-                            hours: "",
+                            name: null,
+                            om: null,
+                            hours: null,
                             cb9: false,
                             cb10: false,
                             cb11: false,
@@ -121,7 +120,7 @@
                 if (num > oldLength){
                     for (var i = 0; i < (num - oldLength); i++){
                         this.user.honors.push({
-                            name: "",
+                            name: null,
                             cb9: false,
                             cb10: false,
                             cb11: false,
@@ -139,9 +138,9 @@
                 if (num > oldLength){
                     for (var i = 0; i < (num - oldLength); i++){
                         this.user.jobs.push({
-                            name: "",
-                            hours: "",
-                            months: "",
+                            name: null,
+                            hours: null,
+                            months: null,
                             cb9: false,
                             cb10: false,
                             cb11: false,

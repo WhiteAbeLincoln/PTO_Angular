@@ -4,7 +4,7 @@
                 <md-tab label="Join">
                     <div layout="row" layout-sm="column" layout-align="center center">
                         <div>
-                            <h2>Join the Centerville High School PTO!</h2>
+                            <h2 class="md-headline">Join the Centerville High School PTO!</h2>
 
                             <p>Joining helps support teachers, students, and parents:</p>
                             <ul>
@@ -21,7 +21,7 @@
                                 <li>ELK NEWS daily email service</li>
                             </ul>
                         </div>
-                        <md-button class="md-raised md-primary" type="button" ng-click="data.accept()">Join</md-button>
+                        <md-button class="md-raised md-primary" type="button" ng-click="data.next()">Join</md-button>
                     </div>
                 </md-tab>
                 <md-tab label="You">
@@ -97,7 +97,7 @@
                         <ng-form name="studentForm">
                             <div ng-repeat="student in user.students">
                                 <ng-form name="innerForm">
-                                    <h3 class="md-primary">Student {{$index+1}}</h3>
+                                    <h3 class="md-subhead">Student {{$index+1}}</h3>
 
                                     <div layout layout-sm="column">
                                         <md-input-container flex>
