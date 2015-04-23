@@ -10,11 +10,11 @@
                 accepted: false,
                 index: 0,
                 accept: function(){
-                    $scope.$apply(this.accepted = true);
-                    this.index = 1;
+                    //$scope.$apply($scope.data.accepted = true);
+                    $scope.data.index = 1;
                 },
                 next: function(){
-                    this.index++;
+                    $scope.data.index++;
                 }
             };
             $scope.user = {
@@ -35,7 +35,7 @@
             };
             $scope.payment = {
                 number:null,
-                exp_date:null,
+                exp_date: null,
                 cvv2:null,
                 first:null,
                 last:null,
@@ -72,14 +72,31 @@
                 $scope.postData.payment = $scope.payment;
                 $scope.member = new Member($scope.postData);
 
-                //$log.debug($scope.postData);
-
                 //sends the post data to the server.
-                $scope.member.$save(function(data, headers){
+                console.log($scope.member);
+               $scope.member.$save(function(data, headers){
                     console.log(data);
                     console.log(headers("Location"));
                     //$window.location.href = '/';
-            });
+                });
+
+
         }
-    }]);
+    }])
+        //checks to make sure the provided date is older than the current date
+        .directive('expiredValidator', function(){
+            return {
+                restrict: 'A',
+                require: 'ngModel',
+                link: function(scope, el, attr, ngModelCtrl){
+                    ngModelCtrl.$validators.expired = function(modelVal) {
+                        if (modelVal !== null && modelVal !== '') {
+                            return moment(modelVal, 'MM/YY').toDate() > new Date();
+                        } else {
+                            return true;
+                        }
+                    }
+                }
+            }
+        })
 })();

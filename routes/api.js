@@ -204,10 +204,12 @@ router.post('/members',
                 return db.members.students.insert([data[0].insertId, student.first, student.last, student.grade, student.unit]);
             })).then(function(val){
                 var payment = req.body.payment;
-                return db.members.payments.createCharge(payment);
+                if (payment.amount !== 0)        //for instances when member chooses not to pay
+                    return db.members.payments.createCharge(payment);
             }).then(function(card){
                 var payment = req.body.payment;
-                return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
+                if (payment.amount !== 0)
+                    return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
             }).then(function(){
                 res.status(201).location('api/members/' + data[0].insertId);
                 res.send();
@@ -215,7 +217,7 @@ router.post('/members',
         }).catch(function(err){
             if (err.message){
                 res.status(400).send(err.message);
-                console.log(err);
+                console.log(err.stack);
             }
         });
     }
