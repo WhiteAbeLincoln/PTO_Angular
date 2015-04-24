@@ -3,8 +3,12 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('MembershipCtrl', ['$scope', '$window', '$log', '$http', 'Member', function($scope, $window, $log, $http, Member){
+        .controller('MembershipCtrl', ['$scope', '$window', 'Member', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', function($scope, $window, Member, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS){
             $scope.updateTitle("Membership Application");
+            $scope.changeArray = ChangeArray;
+            $scope.regexs = REGEX_VALIDATORS;
+            $scope.states = COMMON_OBJECTS.usStates;
+
             $scope.data = {
                 index: 0,
                 next: function(){
@@ -36,24 +40,11 @@
                 amount: 0.00
             };
 
-            $scope.changeStudents = function(num){
-                var oldLength = $scope.user.students.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        $scope.user.students.push({
-                            first: null,
-                            last: null,
-                            grade: null,
-                            unit: null
-                        });
-                    }
-                    $scope.data.index = 1;
-                    $scope.data.index = 2;
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        $scope.user.students.pop();
-                    }
-                }
+            $scope.studentObj = {
+                first: null,
+                last: null,
+                grade: null,
+                unit: null
             };
 
             $scope.newMember = function(isValid) {

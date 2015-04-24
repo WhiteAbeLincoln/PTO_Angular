@@ -64,8 +64,9 @@
                                 </div>
                             </md-input-container>
                             <md-input-container flex>
-                                <label>State</label>
-                                <input name="state" ng-model="user.state" type="text" required>
+                                <md-select name="state" placeholder="State" ng-model="user.state" required>
+                                    <md-option ng-value="state.abbreviation" ng-repeat="state in states">{{state.name}}</md-option>
+                                </md-select>
 
                                 <div ng-messages="youForm.state.$error" ng-if="youForm.$dirty">
                                     <div ng-message="required">Required</div>
@@ -73,12 +74,12 @@
                             </md-input-container>
                             <md-input-container flex>
                                 <label>Zip Code</label>
-                                <input name="zip" ng-model="user.postalCode" type="text" ng-pattern="/(\d{5}[-]\d{4})|(^\d{5}$)/"
+                                <input name="zip" ng-model="user.postalCode" type="text" ng-pattern="regexs.zipCode"
                                        required>
 
                                 <div ng-messages="youForm.zip.$error" ng-if="youForm.$dirty">
                                     <div ng-message="required">Required</div>
-                                    <div ng-message="pattern">Valid zip code: 12345 or 12345-6789</div>
+                                    <div ng-message="pattern">Invalid zip code</div>
                                 </div>
                             </md-input-container>
                         </div>
@@ -91,7 +92,7 @@
                         <div>
                             <label>Add a Student</label>
                             <md-slider md-discrete ng-model="numStudents"
-                                       ng-change="changeStudents(numStudents)"
+                                       ng-change="changeArray(numStudents, user.students, studentObj)"
                                        step="1" min="1" max="7" aria-label="Student count"></md-slider>
                         </div>
                         <ng-form name="studentForm">
@@ -120,10 +121,10 @@
                                     <div layout layout-sm="column" layout-align="space-around center">
                                         <md-input-container>
                                             <md-select name="grade" placeholder="Grade" ng-model="student.grade" required>
-                                                <md-option value="9">Freshmen</md-option>
-                                                <md-option value="10">Sophomore</md-option>
-                                                <md-option value="11">Junior</md-option>
-                                                <md-option value="12">Senior</md-option>
+                                                <md-option ng-value="9">Freshmen</md-option>
+                                                <md-option ng-value="10">Sophomore</md-option>
+                                                <md-option ng-value="11">Junior</md-option>
+                                                <md-option ng-value="12">Senior</md-option>
                                             </md-select>
                                             <div ng-messages="innerForm.grade.$error" ng-if="innerForm.$dirty">
                                                 <div ng-message="required">Required</div>
@@ -131,9 +132,9 @@
                                         </md-input-container>
                                         <md-input-container>
                                             <md-select name="unit" placeholder="Unit" ng-model="student.unit" required>
-                                                <md-option value="E">East</md-option>
-                                                <md-option value="S">South</md-option>
-                                                <md-option value="W">West</md-option>
+                                                <md-option ng-value="E">East</md-option>
+                                                <md-option ng-value="S">South</md-option>
+                                                <md-option ng-value="W">West</md-option>
                                             </md-select>
                                             <div ng-messages="innerForm.unit.$error" ng-if="innerForm.$dirty">
                                                 <div ng-message="required">Required</div>
@@ -148,7 +149,7 @@
                     <md-button type="button" ng-disabled="studentForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
                 </md-tab>
                 <md-tab label="Donate">
-                        <ng-form name="paymentForm" layout-margin layout="column" layout-align-gt-sm="space-around center">
+                        <ng-form name="paymentForm" layout-margin layout="column">
                             <div>
                                 <div layout="column" layout-align="center center">
                                     <h3 ng-model="payment.amount">{{ payment.amount | currency }}</h3>
@@ -179,9 +180,7 @@
                                         <label for="cc-number">Number</label>
                                         <input name="cardnumber" id="cc-number" ng-model="payment.number"
                                                ng-required="payment.amount > 0" inputmode="numeric"
-                                               ng-pattern="/^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$/">
-                                        <!-- pattern from developers.google.com -->
-
+                                               ng-pattern="regexs.cardNumber">
                                         <div ng-messages="paymentForm.cardnumber.$error">
                                             <div ng-message="required">Required</div>
                                             <div ng-message="pattern">Invalid credit card number</div>
@@ -190,7 +189,7 @@
                                     <md-input-container flex>
                                         <label for="cc-exp">MM/YY</label>
                                         <input name="ccExp" id="cc-exp" ng-model="payment.exp_date"
-                                               ng-pattern="/^\d{2}\/\d{2}$/" ng-required="payment.amount > 0"
+                                               ng-pattern="regexs.cardExp" ng-required="payment.amount > 0"
                                                 expired-validator>
 
                                         <div ng-messages="paymentForm.ccExp.$error" role="alert">
@@ -199,7 +198,7 @@
                                             <div ng-message="expired">Date is too old</div>
                                         </div>
                                     </md-input-container>
-                                    <md-input-container flex>
+                                    <md-input-container flex="15">
                                         <label for="cc-csc">CVC</label>
                                         <input name="cvc" id="cc-csc" ng-model="payment.cvv2" ng-pattern="/^\d{3}$/"
                                                ng-required="payment.amount > 0" inputmode="numeric" size="3" maxlength="3">
@@ -211,7 +210,7 @@
                                     </md-input-container>
                                 </div>
                             </div>
-                            <div layout-align="center">
+                            <div layout="row" layout-align="center">
                                 <md-button class="md-primary md-raised" type="submit"
                                            ng-disabled="userForm.$invalid || paymentForm.$invalid"
                                            ng-click="newMember(userForm.$valid)">Submit</md-button>

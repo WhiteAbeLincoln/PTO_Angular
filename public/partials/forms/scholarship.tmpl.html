@@ -52,19 +52,30 @@
                             </div>
                         </md-input-container>
                         <md-input-container flex>
+                            <md-select name="state" placeholder="State" ng-model="user.state" required>
+                                <md-option ng-value="state.abbreviation" ng-repeat="state in states">{{state.name}}</md-option>
+                            </md-select>
+
+                            <div ng-messages="youForm.state.$error" ng-if="youForm.$dirty">
+                                <div ng-message="required">Required</div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container flex>
                             <label>Zip Code</label>
-                            <input name="zip" ng-model="user.postalCode" required>
+                            <input name="zip" ng-model="user.postalCode" ng-pattern="regexs.zipCode" required>
                             <div ng-messages="youForm.zip.$error" ng-if="youForm.$dirty">
                                 <div ng-message="required">Required</div>
+                                <div ng-message="pattern">Invalid zip code</div>
                             </div>
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>Phone Number</label>
-                            <input name="phone" type='tel' ng-model="user.phone" required>
+                            <input name="phone" type='tel' ng-model="user.phone" required ng-pattern="regexs.phone">
                             <div ng-messages="youForm.phone.$error" ng-if="youForm.$dirty">
                                 <div ng-message="required">Required</div>
+                                <div ng-message="pattern">Invalid phone</div>
                             </div>
                         </md-input-container>
                         <md-input-container flex>
@@ -72,13 +83,14 @@
                             <input name="email" type='email' ng-model="user.email" required>
                             <div ng-messages="youForm.email.$error" ng-if="youForm.$dirty">
                                 <div ng-message="required">Required</div>
+                                <div ng-message="email">Invalid email</div>
                             </div>
                         </md-input-container>
                     </div>
                 </ng-form>
                 <md-button type="button" ng-disabled="youForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
             </md-tab>
-			<md-tab label="Academics" >
+			<md-tab label="Academics">
                 <ng-form name="academicForm" layout-margin layout="column">
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
@@ -86,82 +98,87 @@
                             <input name="gpa" ng-model="user.gpa" inputmode="numeric" type="number" step="0.01" max="5.5" required>
                             <div ng-messages="academicForm.gpa.$error" ng-if="academicForm.$dirty">
                                 <div ng-message="required">Required</div>
+                                <div ng-message="max">GPA is too large</div>
                             </div>
                         </md-input-container>
 					</div>
                     <div>
-                        <h3 class="md-subhead">Honors Classes:</h3>
+                        <h3 class="md-title">Honors Classes:</h3>
                         <!-- Ideally this would be a mdSelect or mdChip of available classes, but I dont have a list of those -->
                         <!-- having strict input like that would allow comparing and parsing this data, rather than just storing it -->
-                        <small class="md-caption">separate multiple classes with commas (,)</small>
+                        <small class="md-caption">separate multiple classes with semicolons (;)</small>
                     </div>
                     <div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>9th Grade</label>
-                            <input ng-model="user.nine">
+                            <input ng-model="user.classes.nine">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>10th Grade</label>
-                            <input ng-model="user.ten">
+                            <input ng-model="user.classes.ten">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>11th Grade</label>
-                            <input ng-model="user.eleven">
+                            <input ng-model="user.classes.eleven">
                         </md-input-container>
                     </div>
 					<div layout="row" layout-sm="column">
                         <md-input-container flex>
                             <label>12th Grade</label>
-                            <input ng-model="user.twelve">
+                            <input ng-model="user.classes.twelve">
                         </md-input-container>
                     </div>
                 </ng-form>
                 <md-button type="button" ng-disabled="academicForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
             </md-tab>
-            <md-tab label="Activities" >
+            <md-tab label="Activities">
                 <div layout-margin>
-                    <div>
-                        <h2 class="md-title">Add School Activity</h2>
-                        <md-slider md-discrete ng-model="numSchool"
-                                  ng-change="changeSchoolActivity(numSchool)"
-                                  step="1" min="1" max="10" aria-label="School Activity count"></md-slider>
-                    </div>
                     <ng-form name="activityForm">
-                        <div ng-repeat="activity in user.schoolActivities">
-                            <ng-form name="innerForm">
-                                <h3 class="md-subhead">Activity {{$index+1}}</h3>
-                                <div layout layout-sm="column">
-                                   <md-input-container flex>
-                                       <label>Activity Name</label>
-                                       <input name="aName" ng-model="activity.name" required>
-                                       <div ng-messages="innerForm.aName.$error" ng-if="innerForm.$dirty">
-                                           <div ng-message="required">Required</div>
-                                       </div>
-                                   </md-input-container>
-                                   <md-input-container flex>
-                                       <label>Hours per Month</label>
-                                       <input name="hours" type='number' ng-model="activity.hours" required>
-                                       <div ng-messages="innerForm.hours.$error" ng-if="innerForm.$dirty">
-                                           <div ng-message="required">Required</div>
-                                       </div>
-                                   </md-input-container>
-                                </div>
-                                <div layout layout-sm="column" layout-align-gt-sm="space-around center">
-                                    <md-input-container>
-                                        <md-select name="position" placeholder="Position" ng-model="activity.position" required>
-                                            <md-option value="o">Officer</md-option>
-                                            <md-option value="m">Member</md-option>
-                                        </md-select>
-                                        <div ng-messages="innerForm.position.$error" ng-if="innerForm.$dirty">
-                                            <div ng-message="required">Required</div>
-                                        </div>
-                                    </md-input-container>
-                                    <md-input-container layout="row" layout-align="space-around center">
-                                            <md-checkbox name="cb9" aria-label="9th Grade" ng-model="activity.cb9" class="md-primary" required>
+                        <div>
+                            <h2 class="md-title">Add School Activity</h2>
+                            <md-slider md-discrete ng-model="numSchool"
+                                      ng-change="changeArray(numSchool, user.schoolActivities, activityObj)"
+                                      step="1" min="1" max="10" aria-label="School Activity count"></md-slider>
+                        </div>
+
+                        <ng-form name="schoolForm">
+                            <div ng-repeat="activity in user.schoolActivities">
+                                <ng-form name="innerForm">
+                                    <h3 class="md-subhead">Activity {{$index+1}}</h3>
+
+                                    <div layout layout-sm="column">
+                                        <md-input-container flex-gt-md="66" flex>
+                                            <label>Activity Name</label>
+                                            <input name="aName" ng-model="activity.name" required>
+                                            <div ng-messages="innerForm.aName.$error" ng-if="innerForm.$dirty">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Hours per Month</label>
+                                            <input name="hours" type='number' ng-model="activity.hours" required>
+                                            <div ng-messages="innerForm.hours.$error" ng-if="innerForm.$dirty">
+                                                <div ng-message="required">Required</div>
+                                                <div ng-message="number">Not a number</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div layout layout-sm="column" layout-align-gt-sm="space-around center">
+                                        <md-input-container>
+                                            <md-select name="position" placeholder="Position" ng-model="activity.position" required>
+                                                <md-option value="officer">Officer</md-option>
+                                                <md-option value="member">Member</md-option>
+                                            </md-select>
+                                            <div ng-messages="innerForm.position.$error" ng-if="innerForm.$dirty">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                        <md-input-container layout="row" layout-align="space-around center">
+                                            <md-checkbox name="cb9" aria-label="9th Grade" ng-model="activity.cb9" class="md-primary">
                                                 9th
                                             </md-checkbox>
                                             <md-checkbox name="cb10" aria-label="10th Grade" ng-model="activity.cb10" class="md-primary">
@@ -173,138 +190,191 @@
                                             <md-checkbox name="cb12" aria-label="12th Grade" ng-model="activity.cb12" class="md-primary">
                                                 12th
                                             </md-checkbox>
-                                        <div ng-messages="innerForm.cb9.$error" ng-if="innerForm.$dirty">
-                                            <div ng-message="required">Required</div>
-                                        </div>
-                                    </md-input-container>
-                                </div>
-                            </ng-form>
+                                        </md-input-container>
+                                    </div>
+                                </ng-form>
+                            </div>
+                        </ng-form>
+                        <div>
+                            <h2 class="md-title">Add Community Activity</h2>
+                            <md-slider md-discrete ng-model="numC"
+                                      ng-change="changeArray(numC, user.communityActivities, activityObj)"
+                                      step="1" min="1" max="10" aria-label="Community Activity count"></md-slider>
                         </div>
+
+                        <ng-form name="communityForm">
+                            <div ng-repeat="activity in user.communityActivities">
+                                <ng-form name="innerForm">
+                                    <h3 class="md-subhead">Activity {{$index+1}}</h3>
+                                    <div layout layout-sm="column">
+                                       <md-input-container flex-gt-md="66" flex>
+                                           <label>Activity Name</label>
+                                           <input name="aName" ng-model="activity.name" required>
+                                           <div ng-messages="innerForm.aName.$error" ng-if="innerForm.$dirty">
+                                               <div ng-message="required">Required</div>
+                                           </div>
+                                       </md-input-container>
+                                       <md-input-container flex>
+                                           <label>Hours per Month</label>
+                                           <input name="hours" type='number' ng-model="activity.hours" required>
+                                           <div ng-messages="innerForm.hours.$error" ng-if="innerForm.$dirty">
+                                               <div ng-message="required">Required</div>
+                                               <div ng-message="number">Not a number</div>
+                                           </div>
+                                       </md-input-container>
+                                    </div>
+                                    <div layout layout-sm="column" layout-align-gt-sm="space-around center">
+                                        <md-input-container>
+                                            <md-select name="position" placeholder="Position" ng-model="activity.position" required>
+                                                <md-option value="officer">Officer</md-option>
+                                                <md-option value="member">Member</md-option>
+                                            </md-select>
+                                            <div ng-messages="innerForm.position.$error" ng-if="innerForm.$dirty">
+                                                <div ng-message="required">Required</div>
+                                            </div>
+                                        </md-input-container>
+                                        <md-input-container layout="row" layout-align="space-around center">
+                                            <md-checkbox name="cb9" aria-label="9th Grade" ng-model="activity.cb9" class="md-primary">
+                                                9th
+                                            </md-checkbox>
+                                            <md-checkbox name="cb10" aria-label="10th Grade" ng-model="activity.cb10" class="md-primary">
+                                                10th
+                                            </md-checkbox>
+                                            <md-checkbox name="cb11" aria-label="11th Grade" ng-model="activity.cb11" class="md-primary">
+                                                11th
+                                            </md-checkbox>
+                                            <md-checkbox name="cb12" aria-label="12th Grade" ng-model="activity.cb12" class="md-primary">
+                                                12th
+                                            </md-checkbox>
+                                        </md-input-container>
+                                    </div>
+                                </ng-form>
+                            </div>
+                        </ng-form>
+                        <md-button type="button" ng-disabled="activityForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
                     </ng-form>
-					<div>
-                        <h2 class="md-title">Add Community Activity</h2>
-                        <md-slider md-discrete ng-model="numC"
-                                  ng-change="changeCommunityActivity(numC)"
-                                  step="1" min="1" max="10"></md-slider>
-                    </div>
-                    <div ng-repeat="activity in user.communityActivities">
-                        <h3 class="md-subhead">Activity {{$index+1}}</h3>
-                        <div layout layout-sm="column">
-                           <md-input-container flex>
-                               <label>Activity Name</label>
-                               <input ng-model="activity.name">
-                           </md-input-container>
-						   <md-input-container flex>
-                               <label>Hours per Month</label>
-                               <input ng-model="activity.hours">
-                           </md-input-container>
-                        </div>
-                        <div layout layout-sm="column">
-                            <md-input-container>
-                                <md-select name="position" placeholder="Position" ng-model="activity.position" required>
-                                    <md-option value="o">Officer</md-option>
-                                    <md-option value="m">Member</md-option>
-                                </md-select>
-                            </md-input-container>
-							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="CommunityActivities.cb9" class="md-primary">
-								<label>9th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="10th Grade" ng-model="CommunityActivities.cb10" class="md-primary">
-								<label>10th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="11th Grade" ng-model="CommunityActivities.cb11" class="md-primary">
-								<label>11th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="12th Grade" ng-model="CommunityActivities.cb12" class="md-primary">
-								<label>12th</label>
-							</md-checkbox>
-                        </div>
-                    </div>
                 </div>
             </md-tab>
             <md-tab label="Honors/Awards" >
                 <div layout-margin>
                     <div>
-                        <label><strong>Add a Honor/Award</strong></label>
+                        <h2 class="md-title">Add Honor/Award</h2>
                         <md-slider md-discrete ng-model="numH"
-                                  ng-change="changeHonors(numH)"
-                                  step="1" min="1" max="10"></md-slider>
+                                  ng-change="changeArray(numH, user.honors, honorsObj)"
+                                  step="1" min="1" max="10" aria-label="Honors count"></md-slider>
                     </div>
-                    <div ng-repeat="activities in user.Honors">
-                        <h3 class="md-primary">Honor/Award {{$index+1}}</h3>
-                        <div layout layout-sm="column">
-                           <md-input-container flex>
-                               <label>Name</label>
-                               <input ng-model="Honors.name">
-                           </md-input-container>
-							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Honors.cb9" class="md-primary">
-								<label>9th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="10th Grade" ng-model="Honors.cb10" class="md-primary">
-								<label>10th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="11th Grade" ng-model="Honors.cb11" class="md-primary">
-								<label>11th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="12th Grade" ng-model="Honors.cb12" class="md-primary">
-								<label>12th</label>
-							</md-checkbox>
+                    <ng-form name="honorsForm">
+                        <div ng-repeat="honor in user.honors">
+                            <ng-form name="innerForm">
+                                <h3 class="md-subhead">Honor {{$index+1}}</h3>
+                                <div layout layout-sm="column">
+                                    <md-input-container flex>
+                                        <label>Name</label>
+                                        <input name="name" ng-model="honor.name" required>
+                                        <div ng-messages="innerForm.name.$error" ng-if="innerForm.name.$touched">
+                                            <div ng-message="required">Required</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container layout="row" layout-align="space-around center">
+                                        <md-checkbox aria-label="9th Grade" ng-model="honor.cb9" class="md-primary">
+                                            9th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="10th Grade" ng-model="honor.cb10" class="md-primary">
+                                            10th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="11th Grade" ng-model="honor.cb11" class="md-primary">
+                                            11th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="12th Grade" ng-model="honor.cb12" class="md-primary">
+                                            12th
+                                        </md-checkbox>
+                                    </md-input-container>
+                                </div>
+                            </ng-form>
                         </div>
-                    </div>
+                    </ng-form>
+                    <md-button type="button" ng-disabled="honorsForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
                 </div>
             </md-tab>
-			<md-tab label="Employment" >
+			<md-tab label="Employment">
                 <div layout-margin>
                     <div>
-                        <label><strong>Add a Job</strong></label>
+                        <h2 class="md-title">Add Job</h2>
                         <md-slider md-discrete ng-model="numJ"
-                                  ng-change="changeJob(numJ)"
-                                  step="1" min="1" max="10"></md-slider>
+                                  ng-change="changeArray(numJ, user.jobs, jobObj)"
+                                  step="1" min="1" max="10" aria-label="Job count"></md-slider>
                     </div>
-                    <div ng-repeat="activities in user.Jobs">
-                        <h3 class="md-primary">Job {{$index+1}}</h3>
-                        <div layout layout-sm="column">
-                           <md-input-container flex>
-                               <label>Name</label>
-                               <input ng-model="Jobs.name">
-                           </md-input-container>
-						   <md-input-container flex>
-                               <label>Hours per Month</label>
-                               <input ng-model="Jobs.hours">
-                           </md-input-container>
-						</div>
-						<div layout layout-sm="column">
-							<md-input-container flex>
-                               <label>Months per Year</label>
-                               <input ng-model="Jobs.months">
-                            </md-input-container>
-							<md-checkbox md-no-ink aria-label="9th Grade" ng-model="Jobs.cb9" class="md-primary">
-								<label>9th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="10th Grade" ng-model="Jobs.cb10" class="md-primary">
-								<label>10th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="11th Grade" ng-model="Jobs.cb11" class="md-primary">
-								<label>11th</label>
-							</md-checkbox>
-							<md-checkbox md-no-ink aria-label="12th Grade" ng-model="Jobs.cb12" class="md-primary">
-								<label>12th</label>
-							</md-checkbox>
+                    <ng-form name="jobForm">
+                        <div ng-repeat="job in user.jobs">
+                            <ng-form name="innerForm">
+                                <h3 class="md-primary">Job {{$index+1}}</h3>
+                                <div layout layout-sm="column">
+                                   <md-input-container flex>
+                                       <label>Job name</label>
+                                       <input name="name" ng-model="job.name" required>
+                                       <div ng-messages="innerForm.name.$error" ng-if="innerForm.$dirty">
+                                           <div ng-message="required">Required</div>
+                                       </div>
+                                   </md-input-container>
+                                </div>
+                                <div layout layout-sm="column">
+                                    <md-input-container flex>
+                                        <label>Hours per Month</label>
+                                        <input name="hours" ng-model="job.hours" type="number" required>
+                                        <div ng-messages="innerForm.hours.$error" ng-if="innerForm.$dirty">
+                                            <div ng-message="required">Required</div>
+                                            <div ng-message="number">Not a number</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                       <label>Months per Year</label>
+                                       <input name="months" ng-model="job.months" type="number" max="12" required>
+                                        <div ng-messages="innerForm.months.$error" ng-if="innerForm.$dirty">
+                                            <div ng-message="required">Required</div>
+                                            <div ng-message="number">Not a number</div>
+                                            <div ng-message="max">12 months in a year</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container layout="row" layout-align="space-around center">
+                                        <md-checkbox aria-label="9th Grade" ng-model="job.cb9" class="md-primary">
+                                            9th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="10th Grade" ng-model="job.cb10" class="md-primary">
+                                            10th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="11th Grade" ng-model="job.cb11" class="md-primary">
+                                            11th
+                                        </md-checkbox>
+                                        <md-checkbox aria-label="12th Grade" ng-model="job.cb12" class="md-primary">
+                                            12th
+                                        </md-checkbox>
+                                    </md-input-container>
+                                </div>
+                            </ng-form>
                         </div>
-                    </div>
+                    </ng-form>
+                    <md-button type="button" ng-disabled="jobForm.$invalid" class="form-next" ng-click="data.next()">Next</md-button>
                 </div>
             </md-tab>
-			<md-tab label="Essay" >
+			<md-tab label="Essay">
                 <div layout-margin>
-						<p>Please answer the following question. The activity can be, but is not required to be, school related.</p>
-						<p>What has been your most important extracurricular activity, your most important contribution to it, and what has your participation in it meant to you as an individual?</p>
-                    <md-input-container flex>
-						<label>Essay</label>
-						<textarea ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
-					</md-input-container>
-                </div>
-				<div layout-align="center center" flex layout-fill>
-                    <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid" ng-click="newScholar()">Submit</md-button>
+                    <ng-form name="essayForm">
+                        <h2 class="md-title">Essay</h2>
+                        <p>Please answer the following question. The activity can be, but is not required to be, school related.</p>
+                        <p>What has been your most important extracurricular activity, your most important contribution to it, and what has your participation in it meant to you as an individual?</p>
+                        <md-input-container flex>
+                            <label>Essay</label>
+                            <textarea name="essay" ng-model="user.essay" minlength="1000" md-maxlength="5500" required></textarea>
+                            <div ng-messages="essayForm.essay.$error" ng-if="essayForm.essay.$touched || essayForm.essay.$dirty">
+                                <div ng-message="required">Required</div>
+                                <div ng-message="minlength">Minimum character count of 1000</div>
+                                <div ng-message="md-maxlength">Maximum character count of 5500</div>
+                            </div>
+                        </md-input-container>
+                        <div layout="row" layout-align="center center" flex>
+                            <md-button class="md-primary md-raised" type="submit" ng-disabled="userForm.$invalid" ng-click="newScholar(userForm.$valid)">Submit</md-button>
+                        </div>
+                    </ng-form>
                 </div>
             </md-tab>
        </md-tabs>

@@ -3,10 +3,12 @@
  */
 (function() {
     angular.module('myApp.controllers')
-        .controller('ScholarshipCtrl', ['$scope', '$log', '$http', 'Scholar', function($scope, $log, $http, Scholar){
-            $scope
-
+        .controller('ScholarshipCtrl', ['$scope', 'Scholar', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', function($scope, Scholar, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS){
             $scope.updateTitle("Scholarship Application");
+
+            $scope.regexs = REGEX_VALIDATORS;
+            $scope.states = COMMON_OBJECTS.usStates;
+
             $scope.data = {
                 index: 0,
                 next: function(){
@@ -75,97 +77,51 @@
                 ],
                 essay:null
             };
-            $scope.changeSchoolActivity = function(num){
-                var oldLength = this.user.schoolActivities.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        this.user.schoolActivities.push({
-                            name: null,
-                            om: null,
-                            hours: null,
-                            cb9: false,
-                            cb10: false,
-                            cb11: false,
-                            cb12: false
-                        });
-                    }
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        this.user.schoolActivities.pop();
-                    }
-                }
+
+            $scope.activityObj = {
+                name: null,
+                position: null,
+                hours: null,
+                cb9: false,
+                cb10: false,
+                cb11: false,
+                cb12: false
             };
-            $scope.changeCommunityActivity = function(num){
-                var oldLength = this.user.communityActivities.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        this.user.communityActivities.push({
-                            name: null,
-                            om: null,
-                            hours: null,
-                            cb9: false,
-                            cb10: false,
-                            cb11: false,
-                            cb12: false
-                        });
-                    }
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        this.user.communityActivities.pop();
-                    }
-                }
+
+            $scope.honorsObj = {
+                name: null,
+                cb9: false,
+                cb10: false,
+                cb11: false,
+                cb12: false
             };
-            $scope.changeHonors = function(num){
-                var oldLength = this.user.honors.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        this.user.honors.push({
-                            name: null,
-                            cb9: false,
-                            cb10: false,
-                            cb11: false,
-                            cb12: false
-                        });
-                    }
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        this.user.honors.pop();
-                    }
-                }
+
+            $scope.jobObj = {
+                name: null,
+                hours: null,
+                months: null,
+                cb9: false,
+                cb10: false,
+                cb11: false,
+                cb12: false
             };
-            $scope.changeJob = function(num){
-                var oldLength = this.user.jobs.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        this.user.jobs.push({
-                            name: null,
-                            hours: null,
-                            months: null,
-                            cb9: false,
-                            cb10: false,
-                            cb11: false,
-                            cb12: false
-                        });
-                    }
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        this.user.jobs.pop();
-                    }
-                }
-            };
+
+            $scope.changeArray = ChangeArray;
 
             $scope.newScholar = function() {
                 $scope.postData = {};
 
-                $scope.user.phone = $scope.user.phone.replace(/[() +-]/g, "");
+                //removes phone separator characters. phone now looks like 11234567890
+                //allows for easy comparison in database
+                $scope.user.phone = $scope.user.phone.replace(/[() +-.]/g, "");
 
                 $scope.postData.user = $scope.user;
                 $scope.scholar = new Scholar($scope.postData);
 
-                $log.debug($scope.postData);
+                console.log($scope.postData);
 
                 //sends the post data to the server.
-                $scope.scholar.$save();
+                //$scope.scholar.$save();
             }
     }]);
 
