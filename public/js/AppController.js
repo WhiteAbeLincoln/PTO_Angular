@@ -150,6 +150,9 @@ angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
             }
 
             //$log.debug($scope.menu.sections);
+    }])
+    .controller('HomeCtrl', ['$scope', '$timeout', function($scope, $timeout){
+        $timeout(function () { twttr.widgets.load(); }, 50);
     }]);
 	
 })();

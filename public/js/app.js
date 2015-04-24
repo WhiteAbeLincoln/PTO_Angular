@@ -11,6 +11,7 @@
                 $routeProvider
                     .when('/', {
                         templateUrl: 'partials/home.tmpl.html',
+                        controller: 'HomeCtrl',
                         restricted: false
                     })
                     .when('/forms/:tmpl', {

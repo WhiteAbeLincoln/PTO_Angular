@@ -18,10 +18,15 @@
             <tr>
                 <th><md-checkbox md-no-ink ng-model="$allChecked" ng-change="checkAll($allChecked)" aria-label="Select All"></md-checkbox></th>
                 <th ng-repeat="header in headers" ng-click="sort($index)" ng-mouseenter="setHover($index)" ng-mouseleave="clearHover()">
-                    <md-icon md-svg-icon="navigation:arrow_up" ng-style="hoverStyle.shouldStyle($index)" ng-if="(sortedColumn.index == $index && sortedColumn.order == '+') || hoverStyle.isHovered($index)"></md-icon>
-                    <md-icon md-svg-icon="navigation:arrow_down" ng-if="sortedColumn.index == $index && sortedColumn.order == '-'"></md-icon>
-                    <md-tooltip ng-if="header.description">{{header.description}}</md-tooltip>
-                    {{header.title}}</th>
+                    <div layout="row" layout-align="space-around">
+                        <div> 
+                            <md-icon md-svg-icon="navigation:arrow_up" ng-style="hoverStyle.shouldStyle($index)" ng-if="(sortedColumn.index == $index && sortedColumn.order == '+') || hoverStyle.isHovered($index)"></md-icon>
+                            <md-icon md-svg-icon="navigation:arrow_down" ng-if="sortedColumn.index == $index && sortedColumn.order == '-'"></md-icon>
+                        </div>
+                        <md-tooltip ng-if="header.description">{{header.description}}</md-tooltip>
+                        {{header.title}}
+                    </div>
+                </th>
             </tr>
             </thead>
             <tbody>
