@@ -2,6 +2,7 @@ var express = require('express');
 var moment = require('moment');
 var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
+var json2csv = require('json2csv');
 var Q = require('q');
 var myCrypt = require('./utility/crypto.js');
 var router = express.Router();
@@ -44,16 +45,28 @@ router.get('/downloads/', function(req, res){
     });
 });
 
-router.get('/downloads/:id/', function (req, res) {
+router.get('/downloads/:id', function (req, res) {
     db.downloads.query([req.params.id]).then(function(data){
         var download = data[0][0];
 
-        if (req.query.json){
+        if (req.query.mode == "json"){
             delete data[0][0].filePath;
             res.send(data[0]);
+        } else if (req.query.mode == "view") {
+            var options = {
+                root: __dirname + '/../',
+                dotfiles: 'deny'
+            };
+            res.sendFile(download.filePath, options, function(err) {
+                if (err) {
+                    console.log(err);
+                    res.status(err.status).end();
+                } else  {
+                    console.log("Sent: ", download.filePath);
+                }
+            });
         } else {
             var filename = download.name + '.' + mime.extension(download.mimeType);
-            console.log(filename);
             res.download(download.filePath, sanitize(filename), function(err){
                 if (err){
                     console.log(err);
@@ -223,18 +236,56 @@ router.post('/members',
     }
 );
 
-router.get('/members/:id', expressJwt({secret: mySecret}),
+router.get('/members/:id',
     function (req, res) {
         db.members.query([req.params.id]).then(function(data){
-            res.json(data[0])
+            if (req.query.mode == "csv") {
+                console.log(data[0]);
+                json2csv({
+                    data: data[0],
+                    fields: [
+                        'membershipId',
+                        'lastName',
+                        'firstName',
+                        'address',
+                        'city',
+                        'state',
+                        'zipCode',
+                        'studentIds'
+                    ]}, function(err, csv) {
+                    if (err) console.log(err);
+                    res.type('text/csv').send(csv);
+                });
+            } else {
+                res.json(data[0])
+            }
         }).catch(function(err){
             console.log(err);
         })
     });
 
-router.get('/members', expressJwt({secret: mySecret}), function(req, res) {
+router.get('/members', function(req, res) {
     db.members.queryAll().then(function(data){
-        res.json(data[0]);
+        if (req.query.mode == "csv") {
+            var json = data[0];
+            json2csv({
+                data: json,
+                fields: [
+                    'membershipId',
+                    'lastName',
+                    'firstName',
+                    'address',
+                    'city',
+                    'state',
+                    'zipCode',
+                    'studentIds'
+                ]}, function(err, csv) {
+                if (err) console.log(err);
+                res.type('text/csv').send(csv);
+            });
+        } else {
+            res.json(data[0]);
+        }
     }).catch(function(err){
         console.log(err);
     });
