@@ -348,6 +348,19 @@ router.get('/member-students/:id', expressJwt({secret: mySecret}), function(req,
     })
 });
 
+/* POST scholarship form */
+router.post('/scholarships',
+    function (req, res) {
+
+    }
+);
+
+router.get('/scholarships', expressJwt({secret: mySecret}),
+    function (req, res) {
+
+    }
+);
+
 router.post('/admin/login', function(req, res){
 
     db.admin.query([req.body.username]).then(function(data){
@@ -384,6 +397,27 @@ router.get('/admin/me', function(req, res){
     res.send(req.user);
 });
 
+router.get('/admin/user/:name', function(req, res){
+    db.admin.query([req.params.name]).then(function(data){
+        var user = data[0][0];
+
+        var profile = {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            username: user.username,
+            type: user.type,
+            id: user.adminId,
+            registrationDate: user.registrationDate
+        };
+
+        res.json(profile);
+    }).catch(function(err){
+        console.log(err);
+        res.sendStatus(err.status);
+    })
+});
+
 
 router.post('/admin/register', function(req, res){
     myCrypt.createSalt(512).then(function(data){
@@ -409,6 +443,11 @@ router.post('/scholars',
     }
 );
 
+router.get('/error/forbidden', function(req, res, next){
+    var err = new Error('Forbidden');
+    err.status = 403;
+    next(err);
+});
 
 function combineActivities(jsonpack) {
     return jsonpack.communityActivities.map(function (activity) {

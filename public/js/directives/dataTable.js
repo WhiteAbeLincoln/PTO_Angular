@@ -142,7 +142,6 @@
                 };
 
                 $scope.previousPageDisabled = function() {
-                    console.log($scope.currentPage);
                     if ($scope.currentPage === 0)
                         $scope.previousStyle = {color:'#CCC'};
                     else

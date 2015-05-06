@@ -25,7 +25,7 @@
             }
 
             function test(){
-                $http.get('/api/admin/members/'+1).success(function success(res){
+                $http.get('/api/admin/members/'+43).success(function success(res){
                     $scope.debug.test = res;
                 }).error(function(data, status, headers, config){
                     //alert(JSON.stringify(data)+status);

@@ -25,7 +25,6 @@
             };
 
             authService.logout = function(){
-                console.log('GoGoRangers');
                 Session.destroy();
                 $window.location.reload();
             };
@@ -38,11 +37,12 @@
                 if (!angular.isArray(roles)) {
                     roles = [roles];
                 }
-                return $http.get('/api/admin/user/'+ Session.user.id)
+
+                return $http.get('/api/admin/user/'+ Session.user().username)
                     .then(function(res){
-                        return roles.indexOf(res.role) !== -1;
-                    }).error(function(data, status, headers, config){
-                        if (status === 401){
+                        return roles.indexOf(res.data.type) !== -1;
+                    }).catch(function(data){
+                        if (data.status === 401){
                             return false;
                         }
                     });

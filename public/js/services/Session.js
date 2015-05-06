@@ -14,7 +14,7 @@
                 AuthTokenFactory.dropToken('user');
             };
             this.user = function() {
-                return AuthTokenFactory.getToken('user');
+                return JSON.parse(AuthTokenFactory.getToken('user'));
             }
         }])
 })();

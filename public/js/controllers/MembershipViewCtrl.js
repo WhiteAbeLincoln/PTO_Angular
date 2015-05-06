@@ -3,6 +3,7 @@
  */
 angular.module('myApp.controllers')
     .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', '$mdToast', function($scope, Member, Student, $mdToast){
+        $scope.updateTitle('PTO Members');
         $scope.members = Member.query();
         $scope.students = Student.query();
         $scope.data = {};

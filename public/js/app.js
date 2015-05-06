@@ -23,7 +23,7 @@
                     .when('/admin', {
                         templateUrl: 'partials/admin/index.tmpl.html',
                         controller: 'AdminCtrl',
-                        restricted: true
+                        restricted: ['admin']
                     })
                     .when('/admin/login', {
                         templateUrl: 'partials/admin/login.tmpl.html',
@@ -33,7 +33,15 @@
                     .when('/admin/forms/membership',{
                         templateUrl: 'partials/admin/forms/membership.tmpl.html',
                         controller: 'MembershipViewCtrl',
-                        restricted: true
+                        restricted: ['admin']
+                    })
+                    .when('/admin/forms/scholarship',{
+                        templateUrl: 'partials/admin/forms/membership.tmpl.html',
+                        restricted: ['scholarship']
+                    })
+                    .when('/admin/forms/service',{
+                        templateUrl: 'partials/admin/forms/membership.tmpl.html',
+                        restricted: ['scholarship']
                     })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',
@@ -88,15 +96,24 @@
                     "default": 'retro'
                 };
             }])
-        .run(['$rootScope', '$location', '$route', 'Session', function($rootScope, $location, $route, Session){
+        .run(['$rootScope', '$location', '$route', 'Session', 'AuthService', function($rootScope, $location, $route, Session, AuthService){
             $rootScope.$on('$locationChangeStart', function(event, next, current) {
-                if (!Session.user()) {
+                var altPath = '/' + $location.path().split("/")[1] + '/:tmpl';
+                var nextRoute = $route.routes[$location.path()] || $route.routes[altPath] || $route.routes['/news/:year/:month/:day/:name'];
+                var currentPath = current.split('#')[1];
 
-                    var altPath = '/' + $location.path().split("/")[1] + '/:tmpl';
-                    var nextRoute = $route.routes[$location.path()] || $route.routes[altPath] || $route.routes['/news/:year/:month/:day/:name'];
-                    var currentPath = current.split('#')[1];
+                if (!Session.user()) {
                     if (nextRoute.restricted && nextRoute.restricted !== currentPath){
                         $location.path('/admin/login');
+                    }
+                } else {
+                    if (nextRoute.restricted){
+                        AuthService.isAuthorized(nextRoute.restricted).then(function(state){
+                            if (!state) {
+                                nextRoute.templateUrl = 'partials/error/forbidden.tmpl.html';
+                                $route.reload();
+                            }
+                        });
                     }
                 }
             })
