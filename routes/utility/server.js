@@ -255,9 +255,9 @@ function Server() {
     this.scholarship = {
         insert: Q.nbind(db.query, db,
             "INSERT INTO Scholarships "
-            + "(lastName, firstName, middleName, homeAddress, city, zipCode, phoneNumber, emailAddress, essay, gpa) "
+            + "(lastName, firstName, middleName, homeAddress, city, state, zipCode, phoneNumber, emailAddress, essay, gpa) "
             + "VALUES "
-            + "(?,?,?,?,?,?,?,?,?,?)"),
+            + "(?,?,?,?,?,?,?,?,?,?,?)"),
         query: function () {
         },
 

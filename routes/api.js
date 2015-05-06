@@ -4,7 +4,6 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var json2csv = require('json2csv');
 var Q = require('q');
-var myCrypt = require('./utility/crypto.js');
 var router = express.Router();
 var Server = require('./utility/server.js');
 var mime = require('mime');
@@ -201,107 +200,9 @@ router.get('/downloadTypes', function(req, res){
     });
 });
 
-/* POST membership form */
-router.post('/members',
-    function (req, res) {
-        var user = req.body.user;
-        db.members.insert(
-            [user.first, user.last, user.address,
-            user.city, user.state, user.postalCode]
-        ).then(function(data){
-            return Q.all(user.students.map(function(student){
-                return db.members.students.insert([data[0].insertId, student.first, student.last, student.grade, student.unit]);
-            })).then(function(val){
-                var payment = req.body.payment;
-                if (payment.amount !== 0)        //for instances when member chooses not to pay
-                    return db.members.payments.createCharge(payment);
-            }).then(function(card){
-                var payment = req.body.payment;
-                if (payment.amount !== 0)
-                    return db.members.payments.insert([data[0].insertId, card.id, payment.first, payment.last, payment.amount])
-            }).then(function(){
-                res.status(201).location('api/members/' + data[0].insertId);
-                res.send();
-            });
-        }).catch(function(err){
-            if (err.message){
-                res.status(400).send(err.message);
-                console.log(err.stack);
-            }
-        });
-    }
-);
+router.use('/members', require('./api/members.js'));
 
-router.get('/members/:id',
-    function (req, res) {
-        db.members.query([req.params.id]).then(function(data){
-            if (req.query.mode == "csv") {
-                console.log(data[0]);
-                json2csv({
-                    data: data[0],
-                    fields: [
-                        'id',
-                        'lastName',
-                        'firstName',
-                        'address',
-                        'city',
-                        'state',
-                        'zipCode',
-                        'studentIds'
-                    ]}, function(err, csv) {
-                    if (err) console.log(err);
-                    res.attachment('export.csv').send(csv);
-                });
-            } else {
-                res.json(data[0]);
-            }
-        }).catch(function(err){
-            console.log(err);
-        });
-    });
-
-router.get('/members', function(req, res) {
-    var ids = [];
-    if (req.query["ids"]){
-        ids = req.query["ids"].split(',');
-    }
-    
-    db.members.queryAll().then(function(data){
-        var newFiltered = data[0].filter(function(el){
-            		for (var i=0; i < ids.length; i++) {
-            			if (el.id == ids[i]){
-            				return true;
-            			}
-            		}
-                    //if ids is an array of length 0, always returns true, resulting in the original array;
-            		return !ids.length;
-            	});
-        
-        if (req.query.mode == "csv") {
-            json2csv({
-                data: newFiltered,
-                fields: [
-                    'id',
-                    'lastName',
-                    'firstName',
-                    'address',
-                    'city',
-                    'state',
-                    'zipCode',
-                    'studentIds'
-                ]}, function(err, csv) {
-                if (err) console.log(err);
-                res.attachment('export.csv').send(csv);
-            });
-        } else {
-            res.json(newFiltered);
-        }
-    }).catch(function(err){
-        console.log(err);
-    });
-});
-
-router.get('/member-students', function(req, res){
+router.get('/member-students', expressJwt({secret: mySecret}), function(req, res){
     var ids = [];
     if (req.query["ids"]){
         ids = req.query["ids"].split(',');
@@ -348,107 +249,9 @@ router.get('/member-students/:id', expressJwt({secret: mySecret}), function(req,
     })
 });
 
-/* POST scholarship form */
-router.post('/scholarships',
-    function (req, res) {
+router.use('/scholarships', require('./api/scholarships.js'));
 
-    }
-);
-
-router.get('/scholarships', expressJwt({secret: mySecret}),
-    function (req, res) {
-
-    }
-);
-
-router.post('/admin/login', function(req, res){
-
-    db.admin.query([req.body.username]).then(function(data){
-        if (data[0].length == 0){       //if there is no user with that username
-            res.status(401).send('Incorrect username or password');
-            return;
-        }
-        var user = data[0][0];
-
-        return myCrypt.pbkdf2(req.body.password, user.salt).then(function(key){
-            if (user.password === key.toString('base64')){            //correct password
-                var profile = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    username: user.username,
-                    type: user.type,
-                    id: user.adminId,
-                    registrationDate: user.registrationDate
-                };
-                var token = jwt.sign(profile, mySecret);
-
-                res.json({token:token, user: profile});
-            } else {
-                res.status(401).send('Incorrect password or username');
-            }
-        });
-    }).catch(function(err){
-        console.log(err);
-    });
-});
-
-router.get('/admin/me', function(req, res){
-    res.send(req.user);
-});
-
-router.get('/admin/user/:name', function(req, res){
-    db.admin.query([req.params.name]).then(function(data){
-        var user = data[0][0];
-
-        var profile = {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            username: user.username,
-            type: user.type,
-            id: user.adminId,
-            registrationDate: user.registrationDate
-        };
-
-        res.json(profile);
-    }).catch(function(err){
-        console.log(err);
-        res.sendStatus(err.status);
-    })
-});
-
-
-router.post('/admin/register', function(req, res){
-    myCrypt.createSalt(512).then(function(data){
-        var salt = data.toString('base64');
-        return myCrypt.pbkdf2(req.body.password, salt)
-            .then(function(key){
-                return db.admin.create([
-                    req.body.firstName, req.body.lastName,      req.body.email, req.body.type,
-                    req.body.username,  key.toString('base64'), salt,           moment().format("YYYY-MM-DD HH:mm:ss")
-                ]);
-
-            });
-    }).then(function(data){
-        //console.log(data);
-        res.json(req.body);
-    }).catch(function(err){
-        if (err) console.log(err);
-    })
-});
-
-router.post('/scholars',
-    function (req, res) {
-        console.log('post to api/scholars');
-    }
-);
-
-router.get('/error/forbidden', function(req, res, next){
-    var err = new Error('Forbidden');
-    err.status = 403;
-    next(err);
-});
+router.use('/admin', require('./api/admin.js'));
 
 function combineActivities(jsonpack) {
     return jsonpack.communityActivities.map(function (activity) {

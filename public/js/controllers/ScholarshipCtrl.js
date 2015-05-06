@@ -121,7 +121,7 @@
                 console.log($scope.postData);
 
                 //sends the post data to the server.
-                //$scope.scholar.$save();
+                $scope.scholar.$save();
             }
     }]);
 

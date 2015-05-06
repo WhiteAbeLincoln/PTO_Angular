@@ -121,10 +121,10 @@
                                     <div layout layout-sm="column" layout-align="space-around center">
                                         <md-input-container>
                                             <md-select name="grade" placeholder="Grade" ng-model="student.grade" required>
-                                                <md-option ng-value="9">Freshmen</md-option>
-                                                <md-option ng-value="10">Sophomore</md-option>
-                                                <md-option ng-value="11">Junior</md-option>
-                                                <md-option ng-value="12">Senior</md-option>
+                                                <md-option value="9">Freshmen</md-option>
+                                                <md-option value="10">Sophomore</md-option>
+                                                <md-option value="11">Junior</md-option>
+                                                <md-option value="12">Senior</md-option>
                                             </md-select>
                                             <div ng-messages="innerForm.grade.$error" ng-if="innerForm.$dirty">
                                                 <div ng-message="required">Required</div>
@@ -132,9 +132,9 @@
                                         </md-input-container>
                                         <md-input-container>
                                             <md-select name="unit" placeholder="Unit" ng-model="student.unit" required>
-                                                <md-option ng-value="E">East</md-option>
-                                                <md-option ng-value="S">South</md-option>
-                                                <md-option ng-value="W">West</md-option>
+                                                <md-option value="E">East</md-option>
+                                                <md-option value="S">South</md-option>
+                                                <md-option value="W">West</md-option>
                                             </md-select>
                                             <div ng-messages="innerForm.unit.$error" ng-if="innerForm.$dirty">
                                                 <div ng-message="required">Required</div>
