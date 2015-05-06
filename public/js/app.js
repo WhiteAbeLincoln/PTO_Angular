@@ -2,7 +2,7 @@
  * Created by abe on 1/7/15.
  */
 (function () {
-    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar', 'smart-table'])
+    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
@@ -23,12 +23,17 @@
                     .when('/admin', {
                         templateUrl: 'partials/admin/index.tmpl.html',
                         controller: 'AdminCtrl',
-                        restricted: ['admin']
+                        restricted: ['admin', 'scholarship']
                     })
                     .when('/admin/login', {
                         templateUrl: 'partials/admin/login.tmpl.html',
                         controller: 'LoginCtrl',
                         restricted: false
+                    })
+                    .when('/admin/register',{
+                        templateUrl: 'partials/admin/register.tmpl.html',
+                        controller: 'AdminRegisterCtrl',
+                        restricted: ['admin']
                     })
                     .when('/admin/forms/membership',{
                         templateUrl: 'partials/admin/forms/membership.tmpl.html',

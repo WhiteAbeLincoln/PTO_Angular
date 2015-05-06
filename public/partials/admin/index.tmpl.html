@@ -1,5 +1,5 @@
 <div class="md-whiteframe-z1" layout-margin layout-padding>
-    <h1>{{currentUser.username}}</h1>
+    <h1 class="md-display-1">{{currentUser.username}}</h1>
     <div layout="row" layout-sm='column' layout-align="start center">
         <div style="padding:10px">
             <img gravatar-src="currentUser.email">
@@ -25,5 +25,8 @@
             </tr>
         </table>
     </div>
-    <md-button class='md-primary md-raised' ng-click="logout()">Logout</md-button>
+    <div layout="row">
+        <md-button class='md-primary md-raised' ng-click="logout()">Logout</md-button>
+        <md-button class='md-accent' ng-href="#/admin/register" ng-if="currentUser.type == 'admin'">Register User</md-button>
+    </div>
 </div>

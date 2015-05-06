@@ -1,0 +1,71 @@
+<script type="text/javascript-lazy" src="/js/lib/zxcvbn-async.js"></script>
+<div class="md-whiteframe-z1 small-form" layout-margin layout-padding>
+    <h1 class="md-display-2">Register</h1>
+    <form name="registerForm" novalidate>
+        <div layout="row">
+            <md-input-container>
+                <label>First</label>
+                <input name="first" type="text" ng-model="user.firstName" required/>
+                <div ng-messages="registerForm.first.$error" ng-if="registerForm.$dirty">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Last</label>
+                <input name="last" type="text" ng-model="user.lastName" required/>
+                <div ng-messages="registerForm.last.$error" ng-if="registerForm.$dirty">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+
+        </div>
+        <div layout="row" flex>
+            <md-input-container flex>
+                <label>Email</label>
+                <input name="email" type="email" ng-model="user.email" required/>
+                <div ng-messages="registerForm.email.$error" ng-if="registerForm.$dirty">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <md-select name="type" ng-model="user.type" placeholder="type" required>
+                    <md-option value="admin">Admin</md-option>
+                    <md-option value="scholarship">Scholarship</md-option>
+                </md-select>
+                <div ng-messages="registerForm.type.$error" ng-if="registerForm.$dirty">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+        </div>
+        <md-input-container>
+            <label>Username</label>
+            <input name="username" type="text" ng-model="user.username" value="{{user.email}}" required/>
+            <div ng-messages="registerForm.username.$error" ng-if="registerForm.$dirty">
+                <div ng-message="required">Required</div>
+            </div>
+        </md-input-container>
+        <md-input-container>
+            <label>Password</label>
+            <input name="password" type="password" ng-model="user.password" ng-change="pwChange(user.password)" required/>
+            <div ng-messages="registerForm.password.$error" ng-if="registerForm.$dirty">
+                <div ng-message="required">Required</div>
+            </div>
+            <div ng-messages="strengthError" ng-if="!registerForm.password.$error.required">
+                <div ng-message="strength">Weak Password</div>
+            </div>
+        </md-input-container>
+        <div ng-style="pwStyle" ng-if="user.password"></div>
+        <md-input-container>
+            <label>Confirm Password</label>
+            <input name="confirm" type="password" ng-model="user.confirm" diff-validator required/>
+            <div ng-messages="registerForm.confirm.$error" ng-if="registerForm.$dirty">
+                <div ng-message="required">Required</div>
+                <div ng-message="diff">Different Password</div>
+            </div>
+        </md-input-container>
+
+        <pre>{{registerForm.$invalid | json}}</pre>
+
+        <md-button type="submit" ng-disabled="registerForm.$invalid" ng-click="submit()">Submit</md-button>
+    </form>
+</div>

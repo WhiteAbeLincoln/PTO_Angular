@@ -431,7 +431,8 @@ router.post('/admin/register', function(req, res){
 
             });
     }).then(function(data){
-        console.log(data);
+        //console.log(data);
+        res.json(req.body);
     }).catch(function(err){
         if (err) console.log(err);
     })
