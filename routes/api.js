@@ -84,10 +84,6 @@ router.get('/downloads/:id', function (req, res) {
     });
 });
 
-router.put('/downloads/:id', expressJwt({secret: mySecret}), function (req, res, next) {
-    console.log('updating a download');
-});
-
 router.delete('/downloads/:id', expressJwt({secret: mySecret}), function(req, res){
     db.downloads.query([req.params.id]).then(function(data){
         var download = data[0][0];
@@ -226,7 +222,7 @@ router.post('/members',
             }).then(function(){
                 res.status(201).location('api/members/' + data[0].insertId);
                 res.send();
-            })
+            });
         }).catch(function(err){
             if (err.message){
                 res.status(400).send(err.message);
@@ -244,7 +240,7 @@ router.get('/members/:id',
                 json2csv({
                     data: data[0],
                     fields: [
-                        'membershipId',
+                        'id',
                         'lastName',
                         'firstName',
                         'address',
@@ -254,24 +250,38 @@ router.get('/members/:id',
                         'studentIds'
                     ]}, function(err, csv) {
                     if (err) console.log(err);
-                    res.type('text/csv').send(csv);
+                    res.attachment('export.csv').send(csv);
                 });
             } else {
-                res.json(data[0])
+                res.json(data[0]);
             }
         }).catch(function(err){
             console.log(err);
-        })
+        });
     });
 
 router.get('/members', function(req, res) {
+    var ids = [];
+    if (req.query["ids"]){
+        ids = req.query["ids"].split(',');
+    }
+    
     db.members.queryAll().then(function(data){
+        var newFiltered = data[0].filter(function(el){
+            		for (var i=0; i < ids.length; i++) {
+            			if (el.id == ids[i]){
+            				return true;
+            			}
+            		}
+                    //if ids is an array of length 0, always returns true, resulting in the original array;
+            		return !ids.length;
+            	});
+        
         if (req.query.mode == "csv") {
-            var json = data[0];
             json2csv({
-                data: json,
+                data: newFiltered,
                 fields: [
-                    'membershipId',
+                    'id',
                     'lastName',
                     'firstName',
                     'address',
@@ -281,26 +291,57 @@ router.get('/members', function(req, res) {
                     'studentIds'
                 ]}, function(err, csv) {
                 if (err) console.log(err);
-                res.type('text/csv').send(csv);
+                res.attachment('export.csv').send(csv);
             });
         } else {
-            res.json(data[0]);
+            res.json(newFiltered);
         }
     }).catch(function(err){
         console.log(err);
     });
 });
 
-router.get('/member-students/:id', expressJwt({secret: mySecret}), function(req, res){
-    db.members.students.query([req.params.id]).then(function(data){
-        res.json(data[0])
+router.get('/member-students', function(req, res){
+    var ids = [];
+    if (req.query["ids"]){
+        ids = req.query["ids"].split(',');
+    }
+
+    db.members.students.queryAll().then(function(data){
+        var newFiltered = data[0].filter(function(el){
+            for (var i=0; i < ids.length; i++) {
+                if (el.id == ids[i]){
+                    return true;
+                }
+            }
+            //if ids is an array of length 0, always returns true, resulting in the original array;
+            return !ids.length;
+        });
+
+        if (req.query.mode == "csv") {
+            json2csv({
+                data: newFiltered,
+                fields: [
+                    'id',
+                    'lastName',
+                    'firstName',
+                    'grade',
+                    'unit',
+                    'parentId'
+                ]}, function(err, csv) {
+                if (err) console.log(err);
+                res.attachment('export.csv').send(csv);
+            });
+        } else {
+            res.json(newFiltered);
+        }
     }).catch(function(err){
         console.log(err);
     })
 });
 
-router.get('/member-students/', expressJwt({secret: mySecret}), function(req, res){
-    db.members.students.queryAll().then(function(data){
+router.get('/member-students/:id', expressJwt({secret: mySecret}), function(req, res){
+    db.members.students.query([req.params.id]).then(function(data){
         res.json(data[0])
     }).catch(function(err){
         console.log(err);

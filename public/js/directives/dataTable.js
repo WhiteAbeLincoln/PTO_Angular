@@ -20,12 +20,14 @@
             controller: ['$scope', '$filter', function($scope, $filter) {
                 $scope.checkAll = function(check) {
                     if (check) {
-                        $scope.filteredArr.forEach(function (row) {
+                        updateFilter();
+                        $scope.allFilter.forEach(function (row) {
                             row.$checked = true;
                             pushItem(row);
-                        })
+                        });
                     } else {
-                        $scope.filteredArr.forEach(function (row) {
+                        updateFilter();
+                        $scope.allFilter.forEach(function (row) {
                             row.$checked = false;
                             popItem(row);
                         });
@@ -40,15 +42,11 @@
 
                 this.deleteSelected = function(timeout){
                     var toDelete = $scope.data.filter(function(val){
-                        if (val.$checked){
-                            return val;
-                        }
+                        return val.$checked;
                     });
 
                     $scope.data = $scope.data.filter(function(val){
-                        if (!val.$checked){
-                            return val;
-                        }
+                        return !val.$checked;
                     });
 
 
@@ -56,6 +54,7 @@
                 };
 
                 $scope.selected = [];
+                $scope.pageAllSelected = [];
                 $scope.viewLimit = 10;
                 $scope.currentPage = 0;
                 $scope.sortedColumn = {};
@@ -116,6 +115,8 @@
                 $scope.prevPage = function() {
                     if ($scope.currentPage > 0) {
                         $scope.currentPage--;
+                        updateFilter();
+                        updateAllChecked();
                     }
                 };
 
@@ -126,15 +127,33 @@
                 $scope.nextPage = function() {
                     if ($scope.currentPage < $scope.pageCount()) {
                         $scope.currentPage++;
+                        updateFilter();
+                        updateAllChecked();
                     }
                 };
 
+                $scope.nextPageDisabled = function() {
+                    if ($scope.currentPage === $scope.pageCount())
+                        $scope.nextStyle = {color:'#CCC'};
+                    else
+                        $scope.nextStyle = '';
+
+                    return $scope.currentPage === $scope.pageCount();
+                };
+
+                $scope.previousPageDisabled = function() {
+                    console.log($scope.currentPage);
+                    if ($scope.currentPage === 0)
+                        $scope.previousStyle = {color:'#CCC'};
+                    else
+                        $scope.previousStyle = '';
+                    return $scope.currentPage === 0;
+                };
+
                 $scope.getRange = function(){
-                    $scope.filteredArr = $filter('limitTo')(
-                      $filter('offset')($scope.data, $scope.currentPage*$scope.viewLimit),
-                      $scope.viewLimit);
-                    var firstEl = $scope.filteredArr[0];
-                    var lastEl = $scope.filteredArr[$scope.filteredArr.length -1];
+                    updateFilter();
+                    var firstEl = $scope.rangeFilter[0];
+                    var lastEl = $scope.rangeFilter[$scope.rangeFilter.length -1];
 
                     var first = $scope.data.indexOf(firstEl)+1;
                     var last = $scope.data.indexOf(lastEl)+1;
@@ -142,9 +161,11 @@
                     return first + '-' + last;
                 };
 
-                $scope.nextPageDisabled = function() {
-                    return $scope.currentPage === $scope.pageCount();
-                };
+                function updateAllChecked(){
+                    $scope.$allChecked = $scope.allFilter.every(function (row) {
+                        return row.$checked
+                    });
+                }
 
                 $scope.$watchCollection('data', function(newData, oldData){
                    if (newData !== oldData){
@@ -167,11 +188,7 @@
                         popItem(item);
                     }
 
-                    if ($scope.selected.length == $scope.data.length){
-                        $scope.$allChecked = true;
-                    } else {
-                        $scope.$allChecked = false;
-                    }
+                    updateAllChecked();
                 };
 
                 function pushItem(item){
@@ -181,10 +198,24 @@
                 }
 
                 function popItem(item){
-
                     if ($scope.selected.indexOf(item) !== -1){
                         $scope.selected.splice($scope.selected.indexOf(item), 1);
                     }
+                }
+
+                function updateFilter() {
+                    $scope.rangeFilter = $filter('limitTo')(
+                        $filter('offset')($scope.data, $scope.currentPage*$scope.viewLimit),
+                        $scope.viewLimit);
+
+                    $scope.allFilter =
+                            $filter('limitTo')(
+                                $filter('offset')(
+                                    $filter('orderBy')(
+                                        $filter('filter')($scope.data, $scope.searchFilter),
+                                    $scope.sortedColumn.predicate),
+                                $scope.currentPage*$scope.viewLimit),
+                            $scope.viewLimit);
                 }
 
                 $scope.customHeader = false;
@@ -200,9 +231,7 @@
         .directive('mdtTableHeader', function(){
             return {
                 restrict: 'E',
-                transclude: 'true',
                 require: '^mdtDataTable',
-                template: '<div ng-transclude></div>',
                 link: function(scope, element, attr, ctrl){
                     ctrl.setHeader(true);
                 }

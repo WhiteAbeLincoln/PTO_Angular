@@ -4,9 +4,9 @@
             <h2 class="md-title">{{title}}</h2>
             <span ng-if="search" flex></span>
             <div layout="row" ng-if="search" layout-align="end center">
-                <md-button aria-label="Search table" class="md-icon-button" ng-click="toggleSearch()" ng-if="!doSearch"><md-icon md-svg-icon="action:search"></md-icon></md-button>
+                <md-button aria-label="Search table" class="md-icon-button" ng-click="toggleSearch()" ng-if="!doSearch"><md-icon md-svg-icon="content:filter_list"></md-icon></md-button>
                 <md-input-container ng-if="doSearch" style="padding-bottom: 0;">
-                    <label for="dtSearch">Search</label><input id="dtSearch" type="search" ng-model="searchFilter.$" ng-blur="toggleSearch()"/>
+                    <label for="dtSearch">Filter</label><input id="dtSearch" type="search" ng-model="searchFilter.$" ng-blur="toggleSearch()"/>
                 </md-input-container>
             </div>
         </div>
@@ -47,8 +47,8 @@
             </md-select>
             <p class="md-caption" style="padding-right: 32px;">{{getRange()}} of {{data.length}}</p>
             <div layout="row">
-                <md-button class="md-icon-button" aria-label="Previous Page" ng-disabled="currentPage === 0" ng-click="prevPage()"><md-icon md-svg-icon="navigation:chevron_left"></md-icon></md-button>
-                <md-button class="md-icon-button" aria-label="Next Page" ng-click="nextPage()" ng-disabled="nextPageDisabled()"><md-icon md-svg-icon="navigation:chevron_right"></md-icon></md-button>
+                <md-button class="md-icon-button" aria-label="Previous Page" ng-disabled="previousPageDisabled()" ng-click="prevPage()"><md-icon md-svg-icon="navigation:chevron_left" ng-style="previousStyle"></md-icon></md-button>
+                <md-button class="md-icon-button" aria-label="Next Page" ng-click="nextPage()" ng-disabled="nextPageDisabled()"><md-icon md-svg-icon="navigation:chevron_right" ng-style="nextStyle"></md-icon></md-button>
             </div>
         </div>
     </md-card-footer>

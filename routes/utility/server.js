@@ -57,22 +57,22 @@ function Server() {
          * @returns {Mysql} A promise containing data and server information
          */
         query: Q.nbind(db.query, db,
-            "SELECT Members.membershipId, Members.lastName, Members.firstName, "
+            "SELECT Members.id, Members.lastName, Members.firstName, "
             + "Members.address, Members.city, Members.state, Members.zipCode, "
-            + "GROUP_CONCAT(DISTINCT Students.studentId ORDER BY Students.studentId SEPARATOR ',') as studentIds "
+            + "GROUP_CONCAT(DISTINCT Students.id ORDER BY Students.id SEPARATOR ',') as studentIds "
             + "FROM `Members` "
             + "JOIN `M_Students` AS Students "
-            + "ON Members.membershipId = Students.parentId "
-            + "WHERE Members.membershipId = ? "
-            + "GROUP BY Members.membershipId"),
+            + "ON Members.id = Students.parentId "
+            + "WHERE Members.id = ? "
+            + "GROUP BY Members.id"),
         queryAll: Q.nbind(db.query, db,
-            "SELECT Members.membershipId, Members.lastName, Members.firstName, "
+            "SELECT Members.id, Members.lastName, Members.firstName, "
             + "Members.address, Members.city, Members.state, Members.zipCode, "
-            + "GROUP_CONCAT(DISTINCT Students.studentId ORDER BY Students.studentId SEPARATOR ',') as studentIds "
+            + "GROUP_CONCAT(DISTINCT Students.id ORDER BY Students.id SEPARATOR ',') as studentIds "
             + "FROM `Members` "
             + "JOIN `M_Students` AS Students "
-            + "ON Members.membershipId = Students.parentId "
-            + "GROUP BY Members.membershipId"),
+            + "ON Members.id = Students.parentId "
+            + "GROUP BY Members.id"),
         students: {
 
             /**
@@ -86,11 +86,11 @@ function Server() {
                 + "VALUES "
                 + "(?,?,?,?,?)"),
             query: Q.nbind(db.query, db,
-                "SELECT Students.studentId, Students.firstName, Students.lastName, "
+                "SELECT Students.id, Students.firstName, Students.lastName, "
                 + "Students.grade, Students.unit, Students.parentId "
-                + "FROM `M_Students` AS Students WHERE Students.studentId = ?"),
+                + "FROM `M_Students` AS Students WHERE Students.id = ?"),
             queryAll: Q.nbind(db.query, db,
-                "SELECT Students.studentId, Students.firstName, Students.lastName, "
+                "SELECT Students.id, Students.firstName, Students.lastName, "
                 + "Students.grade, Students.unit, Students.parentId "
                 + "FROM `M_Students` AS Students")
         },

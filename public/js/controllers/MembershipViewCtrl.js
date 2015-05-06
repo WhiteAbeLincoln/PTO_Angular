@@ -27,6 +27,16 @@ angular.module('myApp.controllers')
             {title:'Parent Id', description:"id of parent member"}
         ];
 
+        $scope.exportSelected = function(data, apiUrl){
+            var ids = [];
+            data.forEach(function(el){
+                if (el.$checked){
+                    ids.push(el.id);
+                }
+            });
+
+            window.open('/api/'+apiUrl+'?mode=csv&ids='+ids.join(','), '_blank', '');
+        };
 
         $scope.addRandomItem = function addRandomItem() {
             $scope.members.push(generateRandomItem());
@@ -65,7 +75,7 @@ angular.module('myApp.controllers')
             var linked = "1,2,3,4";
 
             return {
-                membershipId: 2,
+                id: 2,
                 firstName: firstname,
                 lastName: lastname,
                 address: address,
