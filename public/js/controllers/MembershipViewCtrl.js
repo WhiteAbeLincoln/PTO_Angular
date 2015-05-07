@@ -2,7 +2,7 @@
  * Created by 31160 on 4/16/2015.
  */
 angular.module('myApp.controllers')
-    .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', '$mdToast', function($scope, Member, Student, $mdToast){
+    .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', '$mdToast', '$http', 'FileDownload', function($scope, Member, Student, $mdToast, $http, FileDownload){
         $scope.updateTitle('PTO Members');
         $scope.members = Member.query();
         $scope.students = Student.query();
@@ -36,7 +36,13 @@ angular.module('myApp.controllers')
                 }
             });
 
-            window.open('/api/'+apiUrl+'?mode=csv&ids='+ids.join(','), '_blank', '');
+            $http.get('/api/'+apiUrl+'?mode=csv&ids='+ids.join(',')).then(function(data){
+                console.log(data);
+                FileDownload('export.csv', 'text/csv', data.data);
+            }).catch(function(err){
+                console.log(err);
+            });
+
         };
 
         $scope.addRandomItem = function addRandomItem() {

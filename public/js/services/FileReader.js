@@ -48,5 +48,28 @@
             return {
                 readAsDataUrl: readAsDataURL
             }
-        }]);
+        }])
+        .factory('FileDownload', function(){
+            //downloads a file from memory by creating a link with a data uri, clicking, and removing it
+            /**
+             * Downloads a file from memory
+             * @param filename the desired filename
+             * @param mime the mime type
+             * @param text content of the downloaded file
+             */
+            function download(filename, mime, text) {
+                var pom = document.createElement('a');
+                pom.setAttribute('href', 'data:' + mime + ';charset=utf-8,' + encodeURIComponent(text));
+                pom.setAttribute('download', filename);
+
+                pom.style.display = 'none';
+                document.body.appendChild(pom);
+
+                pom.click();
+
+                document.body.removeChild(pom);
+            }
+
+            return download;
+        })
 })();
