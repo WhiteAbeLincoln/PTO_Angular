@@ -117,55 +117,55 @@ select, option:disabled {
 
 
 /* mdtDataTable (migrate to real mdDataTable when that comes) */
-.md-data-table {
+.mdt-data-table {
     border-collapse: collapse;
 }
-.md-data-table thead {
-    font-size: 1.2rem;
+.mdt-data-table thead {
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
 }
-.md-data-table thead th {
+.mdt-data-table thead th {
     border-bottom: 1px solid #E3E3E3;
     font-weight: 500;
     height: 48px;
     text-align: left;
 }
-.md-data-table thead th:not(.dt-checkbox):not(:last-child) {
+.mdt-data-table thead th:not(.dt-checkbox):not(:last-child) {
     padding-right: 56px;
 }
-.md-data-table thead th:first-child {
+.mdt-data-table thead th:first-child {
     padding-left: 24px;
 }
-.md-data-table thead th:last-child {
+.mdt-data-table thead th:last-child {
     padding-right: 24px;
 }
-.md-data-table tbody {
+.mdt-data-table tbody {
     font-weight: normal;
-    font-size: 1.3rem;
+    font-size: 13px;
     color: rgba(0, 0, 0, 0.87);
 }
-.md-data-table tbody tr {
+.mdt-data-table tbody tr {
     height: 48px;
 }
-.md-data-table tbody tr:not(:last-child) {
+.mdt-data-table tbody tr:not(:last-child) {
     border-bottom: 1px solid #E3E3E3;
 }
-.md-data-table tbody tr:hover {
+.mdt-data-table tbody tr:hover {
     background-color: #EEEEEE;
 }
-.md-data-table tbody tr.dt-checked {
+.mdt-data-table tbody tr.dt-checked {
     background-color: #E0E0E0;
 }
-.md-data-table tbody tr td {
+.mdt-data-table tbody tr td {
     padding-right: 24px;
 }
-.md-data-table tbody tr td:not(.dt-checkbox):not(:last-child) {
+.mdt-data-table tbody tr td:not(.dt-checkbox):not(:last-child) {
     padding-right: 56px;
 }
-.md-data-table tbody tr td:first-child {
+.mdt-data-table tbody tr td:first-child {
     padding-left: 24px;
 }
-.md-data-table tbody tr td.dt-number-column {
+.mdt-data-table tbody tr td.dt-number-column {
     text-align: right;
 }
 

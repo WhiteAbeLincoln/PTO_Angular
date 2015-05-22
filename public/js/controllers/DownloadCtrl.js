@@ -80,12 +80,23 @@
 
             };
 
-            $scope.getDownload = function(id, name) {
-                //bit hacky, but it works
-                if ($scope.user) {
-                    $scope.deleteDownload(id, name);
-                    return;
+            $scope.downloadAction = function(id, name){
+              if ($scope.user){
+                  $scope.deleteDownload(id, name);
+              } else {
+                  $scope.getDownload(id, name);
+              }
+            };
+
+            $scope.getIcon = function(){
+                if ($scope.user){
+                    return {icon:"content:clear", label:"Delete File", css:"md-warn"}
+                } else {
+                    return {icon:"file:file_download", label:"Download File", css:""}
                 }
+            };
+
+            $scope.getDownload = function(id, name) {
                 $window.location = 'api/downloads/'+id;
             };
 

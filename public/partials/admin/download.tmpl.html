@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create Download" flex="50" flex-sm="80">
+<md-dialog aria-label="Create Download" flex="50" flex-sm="80" layout-margin layout-padding>
     <md-content class="sticky-container">
         <md-subheader class="md-sticky-no-effect">Create Download</md-subheader>
         <form name='dlForm'>
@@ -52,8 +52,8 @@
                 </div>
             </div>
         </form>
-        <!--<pre ng-bind="download | json" style="overflow: auto;"></pre>
-        <pre ng-bind="debug | json" style="overflow: auto;"></pre>-->
+        <pre ng-bind="download | json" style="overflow: auto;"></pre>
+        <pre ng-bind="debug | json" style="overflow: auto;"></pre>
     </md-content>
     <div class="md-actions" layout="row">
         <md-button class="md-warn md-button-small" ng-click="cancel('canceled')">Cancel</md-button>

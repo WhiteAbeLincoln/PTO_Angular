@@ -6,8 +6,10 @@
         <img class="md-card-image" ng-src="{{article.image}}">
         <md-card-content>
             <h2 class="md-headline">{{article.title}}</h2>
-            <small class="md-caption">{{ article.month }}/{{ article.day }}/{{ article.year }}</small>
         </md-card-content>
+        <div class="md-actions" layout="row" layout-align="end center">
+            <small class="md-caption">{{ article.month }}/{{ article.day }}/{{ article.year }}</small>
+        </div>
     </md-card>
     <md-button class="md-fab md-fab-bottom-right" style="position:fixed" ng-if="user" ng-click="createDownload($event)"
                aria-label="Add Download">

@@ -116,6 +116,14 @@
                 },
                 icon: 'image'
             },
+            zip: {
+                style: {
+                  color: '#C19553',
+                  height: '48px',
+                  width: '48px'
+                },
+                icon:'zip'
+            },
             file: {
                 style: {
                     color: '#333',

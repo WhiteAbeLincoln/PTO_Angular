@@ -42,12 +42,10 @@
                 for (var i =0; i < $scope.types.length; i++){
                     var type = $scope.types[i];
                     if (type.value == text.toLowerCase()){
-                        console.log('true');
                         $scope.download.type = type.display;
                         $scope.download.newType = false;
                         break;
                     } else {
-                        console.log('false');
                         $scope.download.newType = true;
                     }
                 }
@@ -59,10 +57,10 @@
             };
 
             $scope.fileChange = function(){
-                console.log(document.getElementById('fileInput').files);
                 $scope.$apply(function(){
                     for (var i = 0; i < document.getElementById('fileInput').files.length; i++){
                         $scope.download.files.push(document.getElementById('fileInput').files[i]);
+                        console.log($scope.download.files);
                     }
                 });
 
@@ -72,13 +70,13 @@
                         if (!$scope.download.files[filenum].data) {
                             FileReader.readAsDataUrl(file, $scope).then(function (result) {
                                 $scope.download.files[filenum].data = result;
+                                $scope.download.files[filenum] = copyFile($scope.download.files[filenum]);
                                 if (filenum + 1 < $scope.download.files.length) {
                                     uploadFile(filenum + 1);
                                 }
                             }).catch(function (err) {
                                 console.log(err);
                             }).finally(null, function (progress) {
-                                console.log(filenum + " : " + progress + "%");
 
                                 if (!$scope.pgress[filenum]) {
                                     $scope.pgress.push(0);
@@ -97,6 +95,18 @@
                 })(0);
 
             };
+
+
+            // for some reason (possibly due to getter, setter) File specific properties get removed when I send the file, so I copy them into a new object here
+            function copyFile(file) {
+                var type = file.type;
+                var name = file.name;
+                var size = file.size;
+                var lastModified = file.lastModified;
+                var data = file.data;
+
+                return {type: type, name: name, size: size, lastModified: lastModified, data: data};
+            }
 
             $scope.removeFile = function(index){
                 $scope.download.files.splice(index, 1);

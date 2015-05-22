@@ -35,7 +35,7 @@
                     day:'12'
                 },
                 {
-                    image: 'https://www.aivanet.com/wp-content/uploads/2014/11/image_new12.jpg',
+                    
                     title:'Sizing Microsoft Azure and Amazon AWS Revenue',
                     description:'A short Description of the article',
                     urlSlug: 'material-2-test',

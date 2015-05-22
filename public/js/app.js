@@ -2,7 +2,7 @@
  * Created by abe on 1/7/15.
  */
 (function () {
-    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'myApp.controllers', 'ui.gravatar'])
+    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute','ngResource', 'ngMessages', 'myApp.controllers'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
@@ -84,6 +84,7 @@
                     .iconSet('navigation', 'img/icons/navigation-icons.svg')
                     .icon('navigation:arrow_up', 'img/icons/arrow-up.svg')
                     .icon('navigation:arrow_down', 'img/icons/arrow-down.svg')
+                    .icon('file:zip', 'img/icons/file-zip-box.svg')
                     .icon('file:document', 'img/icons/file-document-box.svg')
                     .icon('file:excel', 'img/icons/file-excel-box.svg')
                     .icon('file:image', 'img/icons/file-image-box.svg')

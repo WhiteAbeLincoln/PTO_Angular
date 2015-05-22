@@ -1,5 +1,5 @@
 (function(){
-angular.module('myApp.controllers', ['ngResource', 'ngMessages'])
+angular.module('myApp.controllers', ['ui.gravatar'])
 
     .factory('Member', ['$resource', function($resource){
            return $resource('/api/members/:id');

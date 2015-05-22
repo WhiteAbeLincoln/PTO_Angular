@@ -2,10 +2,10 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-55fa76a
+ * v0.9.4-master-2ecd9dd
  */
-(function() {
-'use strict';
+(function( window, angular, undefined ){
+"use strict";
 
 /**
  * @ngdoc module
@@ -106,4 +106,5 @@ function MdProgressCircularDirective($mdConstant, $mdTheming) {
   }
 }
 MdProgressCircularDirective.$inject = ["$mdConstant", "$mdTheming"];
-})();
+
+})(window, window.angular);
