@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.4-master-2ecd9dd
+ * v0.9.8-rc1-master-b2c568c
  */
 goog.provide('ng.material.components.swipe');
 goog.require('ng.material.core');
@@ -55,7 +55,7 @@ function getDirective(name) {
     DirectiveFactory.$inject = ["$parse"];
   return DirectiveFactory;
 
-  /* @ngInject */
+  /* ngInject */
   function DirectiveFactory($parse) {
       return { restrict: 'A', link: postLink };
       function postLink(scope, element, attr) {

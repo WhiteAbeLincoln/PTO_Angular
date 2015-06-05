@@ -5,7 +5,7 @@ var mySecret = 'd20042648ef8387611f9700ae50ee4dd05a3fc2410d9029a76a6e17d7873ef31
 var myCrypt = require('../utility/crypto.js');
 var Server = require('../utility/server.js');
 var moment = require('moment');
-var db = new Server();
+var db = new Server('admin');
 
 router.post('/login', function(req, res){
 

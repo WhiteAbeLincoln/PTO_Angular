@@ -1,0 +1,10 @@
+<div layout="column" layout-align="center center">
+    <mdt-data-table mdt-title="Scholarships"
+                    mdt-headers="scholarshipHeaders"
+                    mdt-data="scholarships"
+                    mdt-props="['id', 'lastName', 'firstName', 'middleName', 'address', 'city', 'state', 'zipCode', 'phoneNumber', 'email', 'gpa', 'activityIds', 'classIds', 'employmentIds', 'honorsIds']"
+                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-search="true">
+        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(members, '')">Export Selected</md-button></mdt-select-actions>
+    </mdt-data-table>
+</div>

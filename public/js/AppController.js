@@ -5,28 +5,12 @@ angular.module('myApp.controllers', ['ui.gravatar'])
            return $resource('/api/members/:id');
     }])
 
-    .factory('Student', ['$resource', function($resource){
-        return $resource('/api/member-students/:id');
-    }])
-
 	.factory('Scholar', ['$resource', function($resource){
-           return $resource('/api/scholars/:id');
-    }])
-	
-	.factory('Service', ['$resource', function($resource){
-           return $resource('/api/service/:id');
-    }])
-	
-	.factory('Board', ['$resource', function($resource){
-           return $resource('/api/board/:id');
+           return $resource('/api/scholarships/:id');
     }])
 
     .factory('Download', ['$resource', function($resource){
         return $resource('/api/downloads/:id');
-    }])
-
-    .factory('Volunteer', ['$resource', function($resource){
-        return $resource('/api/volunteer/:id');
     }])
 
     .controller('AppCtrl',

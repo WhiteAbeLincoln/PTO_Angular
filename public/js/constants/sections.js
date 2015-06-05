@@ -22,16 +22,6 @@ angular.module('myApp')
                         name: 'Scholarship Application',
                         url: '/forms/scholarship',
                         type: 'link'
-                    },
-                    {
-                        name: 'Service Scholarship Application',
-                        url: '/forms/service',
-                        type: 'link'
-                    },
-                    {
-                        name: 'Board Membership',
-                        url: '/forms/board',
-                        type: 'link'
                     }
                 ]
             },
@@ -80,16 +70,6 @@ angular.module('myApp')
                     {
                         name: 'Scholarship Application',
                         url: '/admin/forms/scholarship',
-                        type: 'link'
-                    },
-                    {
-                        name: 'Service Scholarship Application',
-                        url: '/admin/forms/service',
-                        type: 'link'
-                    },
-                    {
-                        name: 'Board Membership',
-                        url: '/admin/forms/board',
                         type: 'link'
                     },
                     {

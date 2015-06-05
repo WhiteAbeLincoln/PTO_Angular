@@ -1,12 +1,11 @@
 <div layout="column" layout-align="center center">
-    <md-button ng-click="addRandomItem()">Add Test Member</md-button>
     <mdt-data-table mdt-title="Members"
                     mdt-headers="memberHeaders"
                     mdt-data="members"
                     mdt-props="['id', 'lastName', 'firstName', 'address', 'city', 'state', 'zipCode', 'studentIds']"
                     mdt-on-delete="deleteSelected(deleted)"
                     mdt-search="true">
-        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(members, 'members')">Export Selected</md-button></mdt-select-actions>
+        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(members, '')">Export Selected</md-button></mdt-select-actions>
     </mdt-data-table>
 
     <mdt-data-table mdt-title="Students"
@@ -15,6 +14,15 @@
                     mdt-props="['id', 'lastName', 'firstName', 'grade', 'unit', 'parentId']"
                     mdt-on-delete="deleteSelected(deleted)"
                     mdt-search="true">
-        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(students, 'member-students')">Export Selected</md-button></mdt-select-actions>
+        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(students, 'students')">Export Selected</md-button></mdt-select-actions>
+    </mdt-data-table>
+
+    <mdt-data-table mdt-title="Payments"
+                    mdt-headers="paymentHeaders"
+                    mdt-data="payments"
+                    mdt-props="['id', 'charge', 'nameFirst', 'nameLast', 'amount', 'memberId']"
+                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-search="true">
+        <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(payments, 'payments')">Export Selected</md-button></mdt-select-actions>
     </mdt-data-table>
 </div>

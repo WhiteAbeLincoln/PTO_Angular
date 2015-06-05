@@ -13,29 +13,31 @@
         <div ng-transclude></div>
     </md-card-header>
     <md-card-content>
-        <table class="mdt-data-table">
-            <thead>
-            <tr>
-                <th><md-checkbox md-no-ink ng-model="$allChecked" ng-change="checkAll($allChecked)" aria-label="Select All"></md-checkbox></th>
-                <th ng-repeat="header in headers" ng-click="sort($index)" ng-mouseenter="setHover($index)" ng-mouseleave="clearHover()">
-                    <div layout="row" layout-align="space-around">
-                        <div> 
-                            <md-icon md-svg-icon="navigation:arrow_up" ng-style="hoverStyle.shouldStyle($index)" ng-if="(sortedColumn.index == $index && sortedColumn.order == '+') || hoverStyle.isHovered($index)"></md-icon>
-                            <md-icon md-svg-icon="navigation:arrow_down" ng-if="sortedColumn.index == $index && sortedColumn.order == '-'"></md-icon>
+        <div class="mdt-data-table-wrapper">
+            <table class="mdt-data-table">
+                <thead>
+                <tr>
+                    <th><md-checkbox md-no-ink ng-model="$allChecked" ng-change="checkAll($allChecked)" aria-label="Select All"></md-checkbox></th>
+                    <th ng-repeat="header in headers" ng-click="sort($index)" ng-mouseenter="setHover($index)" ng-mouseleave="clearHover()">
+                        <div layout="row" layout-align="space-around">
+                            <div>
+                                <md-icon md-svg-icon="navigation:arrow_up" ng-style="hoverStyle.shouldStyle($index)" ng-if="(sortedColumn.index == $index && sortedColumn.order == '+') || hoverStyle.isHovered($index)"></md-icon>
+                                <md-icon md-svg-icon="navigation:arrow_down" ng-if="sortedColumn.index == $index && sortedColumn.order == '-'"></md-icon>
+                            </div>
+                            <md-tooltip ng-if="header.description">{{header.description}}</md-tooltip>
+                            {{header.title}}
                         </div>
-                        <md-tooltip ng-if="header.description">{{header.description}}</md-tooltip>
-                        {{header.title}}
-                    </div>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="row in data | filter: searchFilter | orderBy:sortedColumn.predicate | offset: currentPage*viewLimit | limitTo: viewLimit" ng-class="{'dt-checked': row.$checked}">
-                <td><md-checkbox md-no-ink ng-model='row.$checked' ng-change="checkItem(row.$checked, row)" aria-label="Select Row"></md-checkbox></td>
-                <td ng-repeat="prop in properties">{{ row[prop] }}</td>
-            </tr>
-            </tbody>
-        </table>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="row in data | filter: searchFilter | orderBy:sortedColumn.predicate | offset: currentPage*viewLimit | limitTo: viewLimit" ng-class="{'dt-checked': row.$checked}">
+                    <td><md-checkbox md-no-ink ng-model='row.$checked' ng-change="checkItem(row.$checked, row)" aria-label="Select Row"></md-checkbox></td>
+                    <td ng-repeat="prop in properties">{{ row[prop] }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </md-card-content>
     <md-card-footer layout="row" layout-align="end center">
             <p class="md-caption" style="padding-right: 40px;">Rows per page: </p>
@@ -50,6 +52,5 @@
                 <md-button class="md-icon-button" aria-label="Previous Page" ng-disabled="previousPageDisabled()" ng-click="prevPage()"><md-icon md-svg-icon="navigation:chevron_left" ng-style="previousStyle"></md-icon></md-button>
                 <md-button class="md-icon-button" aria-label="Next Page" ng-click="nextPage()" ng-disabled="nextPageDisabled()"><md-icon md-svg-icon="navigation:chevron_right" ng-style="nextStyle"></md-icon></md-button>
             </div>
-        </div>
     </md-card-footer>
 </md-card>

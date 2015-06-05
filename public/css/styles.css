@@ -117,12 +117,16 @@ select, option:disabled {
 
 
 /* mdtDataTable (migrate to real mdDataTable when that comes) */
+mdt-data-table {
+    max-width: 100%;
+}
 .mdt-data-table {
     border-collapse: collapse;
 }
 .mdt-data-table thead {
     font-size: 12px;
     color: rgba(0, 0, 0, 0.54);
+    white-space: nowrap;
 }
 .mdt-data-table thead th {
     border-bottom: 1px solid #E3E3E3;
@@ -167,6 +171,11 @@ select, option:disabled {
 }
 .mdt-data-table tbody tr td.dt-number-column {
     text-align: right;
+}
+.mdt-data-table-wrapper {
+    max-width: 100%;
+    overflow-x: auto;
+    display: block;
 }
 
 /* My mdCard extensions */

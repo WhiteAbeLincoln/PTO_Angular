@@ -41,7 +41,8 @@
                         restricted: ['admin']
                     })
                     .when('/admin/forms/scholarship',{
-                        templateUrl: 'partials/admin/forms/membership.tmpl.html',
+                        templateUrl: 'partials/admin/forms/scholarship.tmpl.html',
+                        controller: 'ScholarshipViewCtrl',
                         restricted: ['scholarship']
                     })
                     .when('/admin/forms/service',{

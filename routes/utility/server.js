@@ -7,7 +7,7 @@ var stripe = require('stripe')("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
  * New mysql server instance
  * @constructor
  */
-function Server() {
+function Server(module) {
     var db = mysql.createConnection({
         host: process.env.PTOMYSQL || 'localhost',
         port: '3306',
@@ -18,11 +18,11 @@ function Server() {
 
     db.connect(function (error) {
         if (error) {
-            console.log("Could not connect to the SQL database");
+            console.log("Could not connect to the SQL database: " + module);
             console.log(error);
             //throw error;
         } else {
-            console.log("Connected to Database");
+            console.log("Connected to Database: " + module);
         }
     });
 
@@ -138,7 +138,12 @@ function Server() {
                 + "(?,?,?,?,?)"),
 
             query: function () {
-            }
+            },
+
+            queryAll: Q.nbind(db.query, db,
+                "SELECT Payments.id, Payments.charge, Payments.nameFirst, "
+                +   "Payments.nameLast, Payments.amount, Payments.memberId "
+                +   "FROM `M_Payments` AS Payments")
         }
     };
 
@@ -260,6 +265,21 @@ function Server() {
             + "(?,?,?,?,?,?,?,?,?,?,?)"),
         query: function () {
         },
+
+        queryAll: Q.nbind(db.query, db,
+            "SELECT Scholarships.id, Scholarships.lastName, Scholarships.firstName, Scholarships.middleName, "
+            +   "Scholarships.homeAddress as address, Scholarships.city, Scholarships.state, Scholarships.zipCode, "
+            +   "Scholarships.phoneNumber, Scholarships.emailAddress as email, Scholarships.gpa, Scholarships.essay, "
+            +   "GROUP_CONCAT(DISTINCT Activites.id ORDER BY Activites.id SEPARATOR ',') as activityIds, "
+            +   "GROUP_CONCAT(DISTINCT Classes.id ORDER BY Classes.id SEPARATOR ',') as classIds, "
+            +   "GROUP_CONCAT(DISTINCT Employment.id ORDER BY Employment.id SEPARATOR ',') as employmentIds, "
+            +   "GROUP_CONCAT(DISTINCT Honors.id ORDER BY Honors.id SEPARATOR ',') as honorsIds "
+            +   "FROM `Scholarships` "
+            +   "JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
+            +   "JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
+            +   "JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
+            +   "JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
+            +   "GROUP BY Scholarships.id"),
 
         activities: {
             insert: Q.nbind(db.query, db,

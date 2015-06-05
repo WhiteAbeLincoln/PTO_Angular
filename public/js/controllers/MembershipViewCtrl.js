@@ -2,11 +2,11 @@
  * Created by 31160 on 4/16/2015.
  */
 angular.module('myApp.controllers')
-    .controller('MembershipViewCtrl', ['$scope', 'Member', 'Student', '$mdToast', '$http', 'FileDownload', function($scope, Member, Student, $mdToast, $http, FileDownload){
+    .controller('MembershipViewCtrl', ['$scope', 'Member', '$mdToast', '$http', 'FileDownload', function($scope, Member, $mdToast, $http, FileDownload){
         $scope.updateTitle('PTO Members');
         $scope.members = Member.query();
-        $scope.students = Student.query();
-        $scope.data = {};
+        $scope.students = Member.query({sub: 'students'});
+        $scope.payments = Member.query({sub: 'payments'});
 
         $scope.memberHeaders = [
             {title:'Membership Id'},
@@ -28,7 +28,16 @@ angular.module('myApp.controllers')
             {title:'Parent Id', description:"id of parent member"}
         ];
 
-        $scope.exportSelected = function(data, apiUrl){
+        $scope.paymentHeaders = [
+            {title:'Payment Id'},
+            {title:'Stripe Charge'},
+            {title:'First Name'},
+            {title:'Last Name'},
+            {title:'Amount'},
+            {title:'Parent Id', description:"id of parent member"}
+        ];
+
+        $scope.exportSelected = function(data, apiUrl) {
             var ids = [];
             data.forEach(function(el){
                 if (el.$checked){
@@ -36,7 +45,13 @@ angular.module('myApp.controllers')
                 }
             });
 
-            $http.get('/api/'+apiUrl+'?mode=csv&ids='+ids.join(',')).then(function(data){
+            if (apiUrl.length){
+                apiUrl = '?sub='+apiUrl+'&';
+            } else {
+                apiUrl = '?'
+            }
+
+            $http.get('/api/members'+apiUrl+'mode=csv&ids='+ids.join(',')).then(function(data){
                 console.log(data);
                 FileDownload('export.csv', 'text/csv', data.data);
             }).catch(function(err){
@@ -45,19 +60,8 @@ angular.module('myApp.controllers')
 
         };
 
-        $scope.addRandomItem = function addRandomItem() {
-            $scope.members.push(generateRandomItem());
-        };
-
-        $scope.deleteSelected = function(deletedItems){
+        $scope.deleteSelected = function(deletedItems) {
             var message = deletedItems.length == 1 ? '1 Row Deleted' : deletedItems.length + ' Rows Deleted';
-
-            var backup = [];
-            angular.copy($scope.data, backup);
-            backup = backup.filter(function(val){
-                if (val.$checked) delete val.$checked;
-                return val;
-            });
 
             var toast = $mdToast.simple()
                 .content(message)
@@ -68,28 +72,7 @@ angular.module('myApp.controllers')
 
             $mdToast.show(toast).then(function(){
                 $scope.members = Member.query();
-                $scope.students = Student.query();
+                $scope.students = Member.query({sub:'students'});
             });
         };
-
-        function generateRandomItem() {
-            var firstname = "Abe";
-            var lastname = "White";
-            var address = "123 Abc Rd";
-            var city = "Centerville";
-            var state = "OH";
-            var zip = "45459";
-            var linked = "1,2,3,4";
-
-            return {
-                id: 2,
-                firstName: firstname,
-                lastName: lastname,
-                address: address,
-                city: city,
-                state: state,
-                zipCode: zip,
-                studentIds: linked
-            }
-        }
     }]);
