@@ -16,7 +16,7 @@
     </span>
 </md-button>
 
-<ul ng-show="isOpen()" class="menu-toggle-list" id="nav-menu-{{section.name | nospace}}">
+<ul class="menu-toggle-list" id="nav-menu-{{section.name | nospace}}">
     <li ng-repeat="page in section.pages">
         <menu-link section="page"></menu-link>
     </li>

@@ -24,7 +24,6 @@
                 },
 
                 selectPage: function (section, page) {
-                    page && page.url && $location.path(page.url);
                     self.currentSection = section;
                     self.currentPage = page;
                     //$log.debug('current page: '+ self.currentPage.name);

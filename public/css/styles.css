@@ -38,15 +38,18 @@ select, option:disabled {
 .menu li {
     margin: 0;
 }
+.menu > li:nth-child(1) {
+    border-top: none;
+}
 .menu > li {    /* matches all li that are immediate children of .menu class */
-    border-top: 1px solid rgba(0,0,0, 0.12);
+    border-bottom: 1px solid rgba(0,0,0, 0.12);
 }
 
 .menu .md-button {
     border-radius: 0;
     color: inherit;
     cursor: pointer;
-    font-weight: 400;
+    display: block;
     line-height: 40px;
     margin:0;
     max-height: 40px;
@@ -65,13 +68,13 @@ select, option:disabled {
     color: #607D8B; /* primary accent color blue-grey*/
 }
 .menu-heading {
-    color: #888;
     display: block;
-    line-height: 40px;
+    line-height: 32px;
     margin: 0;
-    padding: 0 16px;
+    padding: 8px 16px 0;
     text-align: left;
     width: 100%;
+    color: #888;
 }
 .menu li.parentActive,
 .menu li.parentActive .menu-toggle-list {
@@ -84,20 +87,21 @@ select, option:disabled {
     position: relative;
     z-index: 1;
     -webkit-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-    -webkit-transition-property: max-height;
+    -webkit-transition-property: height;
     -moz-transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-    -moz-transition-property: max-height;
+    -moz-transition-property: height;
     transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
-    transition-property: max-height;
+    transition-property: height;
 }
 .menu-toggle-list.ng-hide {
-    max-height: 0;
+    height: 0;
 }
 .menu .menu-toggle-list a.md-button {
     display: block;
-    font-weight: 400;
     padding: 0 16px 0 32px;
     text-transform: none;
+    text-rendering: optimizeLegibility;
+    font-weight: 500;
 }
 .md-button-toggle .md-toggle-icon {
     display: block;

@@ -77,17 +77,18 @@ angular.module('myApp.controllers', ['ui.gravatar'])
             this.isOpen = isOpen;               //used in menuToggle directive toggle() function (app.js line 151)
             this.isSelected = isSelected;
             this.toggleOpen = toggleOpen;       //used in menuToggle directive toggle() function (app.js line 154)
+            this.autoFocusContent = false;
 
-            var mainContent = document.querySelector("[role='main']"); // for ARIA
+            var mainContentArea = document.querySelector("[role='main']"); // for ARIA
 
             //INTERNAL METHODS
 
             function closeMenu() {
-                $mdSidenav('left').close();
+                $timeout(function() { $mdSidenav('left').close(); });
             }
 
             function openMenu(){
-                $mdSidenav('left').open();
+                $timeout(function() { $mdSidenav('left').open(); });
             }
 
             function path(){
@@ -102,7 +103,19 @@ angular.module('myApp.controllers', ['ui.gravatar'])
                 //closes the menu when a page is opened (like android)
             function openPage(){
                 $scope.closeMenu();
-                mainContent.focus();
+
+                if (self.autoFocusContent) {
+                    focusMainContent();
+                    self.autoFocusContent = false;
+                }
+            }
+
+            function focusMainContent($event) {
+                if ($event) { $event.preventDefault(); }
+
+                $timeout(function() {
+                    mainContentArea.focus();
+                }, 90);
             }
 
             function isSelected(page){
