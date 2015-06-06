@@ -39,28 +39,31 @@ router.post('/',
     }
 );
 
-router.get('/:id', expressJwt({secret: mySecret}),
+router.get('/:id',
     function (req, res) {
         db.members.query([req.params.id]).then(function(data){
-            if (req.query.mode == "csv") {
-                console.log(data[0]);
-                json2csv({
-                    data: data[0],
-                    fields: [
-                        'id',
-                        'lastName',
-                        'firstName',
-                        'address',
-                        'city',
-                        'state',
-                        'zipCode',
-                        'studentIds'
-                    ]}, function(err, csv) {
-                    if (err) console.log(err);
-                    res.attachment('export.csv').send(csv);
-                });
-            } else {
-                res.json(data[0]);
+            switch (req.query.mode) {
+                case "csv":
+                    json2csv({
+                        data: data[0],
+                        fields: [
+                            'id',
+                            'lastName',
+                            'firstName',
+                            'address',
+                            'city',
+                            'state',
+                            'zipCode',
+                            'studentIds'
+                        ]},
+                        function(err, csv) {
+                            if (err) console.log(err);
+                            res.attachment('export.csv').send(csv);
+                        }
+                    );
+                    break;
+                default:
+                    res.json(data[0]);
             }
         }).catch(function(err){
             console.log(err);
@@ -105,13 +108,15 @@ router.get('/', function(req, res) {
             return !ids.length;
         });
 
-        if (req.query.mode == "csv") {
-            json2csv({ data: newFiltered, fields: fields }, function(err, csv) {
-                if (err) console.log(err);
-                res.attachment('export.csv').send(csv);
-            });
-        } else {
-            res.json(newFiltered);
+        switch (req.query.mode) {
+            case "csv":
+                json2csv({ data: newFiltered, fields: fields }, function(err, csv) {
+                    if (err) console.log(err);
+                    res.attachment('export.csv').send(csv);
+                });
+                break;
+            default:
+                res.json(newFiltered);
         }
     }).catch(function(err){
         console.log(err);

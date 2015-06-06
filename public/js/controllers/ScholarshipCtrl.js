@@ -28,10 +28,10 @@
                 email:null,
                 gpa:null,
                 classes: {
-                    nine:null,
-                    ten:null,
-                    eleven:null,
-                    twelve:null
+                    nine:"",
+                    ten:"",
+                    eleven:"",
+                    twelve:""
                 },
                 schoolActivities: [
                     {

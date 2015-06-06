@@ -27,7 +27,7 @@
         </h1>
     </md-toolbar>
 
-    <md-content flex layout="column">
+    <md-content flex layout="column" role="navigation">
         <ul class="menu">
             <li ng-repeat="section in menu.sections" class="parent-list-item"
                 ng-class="{'parentActive' : isSectionSelected(section)}">
@@ -46,22 +46,8 @@
         </ul>
         <span flex></span> <!-- span to fill the gap -->
         <div layout="column">
-            <div layout="row" layout-align="space-around center" layout-fill flex>
-                <md-button class="md-icon-button" aria-label="Twitter"
-                           ng-click="social('https://twitter.com/intent/follow?screen_name=WhiteAbelincoln')">
-                    <md-tooltip md-direction="top">Follow on Twitter</md-tooltip>
-                    <md-icon md-svg-icon="social:twitter" style="width: 32px; height: 32px;"></md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Google+"
-                           ng-click="social('https://plus.google.com/+AbeWhiteLincoln')">
-                    <md-tooltip md-direction="top">Follow on Google+</md-tooltip>
-                    <md-icon md-svg-icon="social:google_plus" style="width: 32px; height: 32px;"></md-icon>
-                </md-button>
-                <md-button class="md-icon-button" aria-label="Facebook"
-                           ng-click="social('https://www.facebook.com/abelincoln.white')">
-                    <md-tooltip md-direction="top">Follow on Facebook</md-tooltip>
-                    <md-icon md-svg-icon="social:facebook" style="width: 32px; height: 32px;"></md-icon>
-                </md-button>
+            <div layout="row" layout-align="center center">
+                <img ng-click="href('https://www.centerville.k12.oh.us/CHS')" src="img/chslogo.png" style="width: 50%; height: 50%; cursor: pointer;">
             </div>
             <div layout="column" layout-align="center center">
                 <md-button class="md-accent" hide show-gt-sm ng-click="toggleHidden()">Toggle Nav Lock</md-button>

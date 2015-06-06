@@ -260,11 +260,24 @@ function Server(module) {
     this.scholarship = {
         insert: Q.nbind(db.query, db,
             "INSERT INTO Scholarships "
-            + "(lastName, firstName, middleName, homeAddress, city, state, zipCode, phoneNumber, emailAddress, essay, gpa) "
+            + "(firstName, lastName, middleName, homeAddress, city, state, zipCode, phoneNumber, emailAddress, essay, gpa, date) "
             + "VALUES "
-            + "(?,?,?,?,?,?,?,?,?,?,?)"),
-        query: function () {
-        },
+            + "(?,?,?,?,?,?,?,?,?,?,?,?)"),
+        query: Q.nbind(db.query, db,
+            "SELECT Scholarships.id, Scholarships.lastName, Scholarships.firstName, Scholarships.middleName, "
+            +   "Scholarships.homeAddress as address, Scholarships.city, Scholarships.state, Scholarships.zipCode, "
+            +   "Scholarships.phoneNumber, Scholarships.emailAddress as email, Scholarships.gpa, Scholarships.essay, "
+            +   "GROUP_CONCAT(DISTINCT Activites.id ORDER BY Activites.id SEPARATOR ',') as activityIds, "
+            +   "GROUP_CONCAT(DISTINCT Classes.id ORDER BY Classes.id SEPARATOR ',') as classIds, "
+            +   "GROUP_CONCAT(DISTINCT Employment.id ORDER BY Employment.id SEPARATOR ',') as employmentIds, "
+            +   "GROUP_CONCAT(DISTINCT Honors.id ORDER BY Honors.id SEPARATOR ',') as honorsIds "
+            +   "FROM `Scholarships` "
+            +   "JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
+            +   "JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
+            +   "JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
+            +   "JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
+            +   "WHERE Scholarships.id = ? "
+            +   "GROUP BY Scholarships.id"),
 
         queryAll: Q.nbind(db.query, db,
             "SELECT Scholarships.id, Scholarships.lastName, Scholarships.firstName, Scholarships.middleName, "
@@ -287,8 +300,9 @@ function Server(module) {
                 + "(applicationId, activityName, hours, nine, ten, eleven, twelve, position, activityType) "
                 + "VALUES "
                 + "(?,?,?,?,?,?,?,?,?)"),
-            query: function () {
-            }
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM S_Activities "
+                + "WHERE applicationId = ?")
         },
         classes: {
             insert: Q.nbind(db.query, db,
@@ -296,8 +310,9 @@ function Server(module) {
                 + "(applicationId, nine, ten, eleven, twelve) "
                 + "VALUES "
                 + "(?,?,?,?,?)"),
-            query: function () {
-            }
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM S_Classes "
+                + "WHERE applicationId = ?")
         },
         employment: {
             insert: Q.nbind(db.query, db,
@@ -305,8 +320,9 @@ function Server(module) {
                 + "(applicationId, jobName, hours, months, nine, ten, eleven, twelve) "
                 + "VALUES "
                 + "(?,?,?,?,?,?,?,?)"),
-            query: function () {
-            }
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM S_Employment "
+                + "WHERE applicationId = ?")
         },
         honors: {
             insert: Q.nbind(db.query, db,
@@ -314,8 +330,9 @@ function Server(module) {
                 + "(applicationId, honorName, nine, ten, eleven, twelve) "
                 + "VALUES "
                 + "(?,?,?,?,?,?)"),
-            query: function () {
-            }
+            query: Q.nbind(db.query, db,
+                "SELECT * FROM S_Honors "
+                + "WHERE applicationId = ?")
         }
     };
 }

@@ -14,8 +14,8 @@ angular.module('myApp.controllers', ['ui.gravatar'])
     }])
 
     .controller('AppCtrl',
-    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'AuthService', 'Session',
-        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, AuthService, Session) {
+    ['$scope', '$rootScope', '$mdSidenav', '$log', '$location', 'menu', 'SECTIONS', 'AuthService', 'Session', '$timeout',
+        function($scope, $rootScope, $mdSidenav, $log, $location, menu, SECTIONS, AuthService, Session, $timeout) {
             $scope.updateTitle = function(title) {
                 $scope.pageTitle = title + " - Centerville PTO";
             };
@@ -29,7 +29,7 @@ angular.module('myApp.controllers', ['ui.gravatar'])
                 } else {
                     $scope.hiddenStyle = '';
                 }
-
+                focusMainContent();
             };
 
             $scope.menu = menu;
@@ -41,7 +41,7 @@ angular.module('myApp.controllers', ['ui.gravatar'])
             $scope.closeMenu = closeMenu;
             $scope.isSectionSelected = isSectionSelected;
 
-            $scope.social = function (url){
+            $scope.href = function (url){
                 window.location.href = url;
             };
 
