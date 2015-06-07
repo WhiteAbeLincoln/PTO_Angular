@@ -51,16 +51,26 @@
         }])
         .factory('FileDownload', function(){
             //downloads a file from memory by creating a link with a data uri, clicking, and removing it
-            /**
-             * Downloads a file from memory
-             * @param filename the desired filename
-             * @param mime the mime type
-             * @param text content of the downloaded file
-             */
-            function download(filename, mime, text) {
+            var gOpts = null;
+            var gMime, gData, gFilename;
+
+
+
+            function download() {
                 var pom = document.createElement('a');
-                pom.setAttribute('href', 'data:' + mime + ';charset=utf-8,' + encodeURIComponent(text));
-                pom.setAttribute('download', filename);
+                var data;
+                var charset = 'charset=utf-8';
+
+                if (gOpts.type == 'arraybuffer') {
+                    data = gData;
+                    charset += ';base64';
+                } else {
+                    data = encodeURIComponent(gData)
+                }
+
+                pom.setAttribute('href', 'data:' + gMime + ';' + charset + ',' + data);
+                console.log(pom.getAttribute('href'));
+                pom.setAttribute('download', gFilename);
 
                 pom.style.display = 'none';
                 document.body.appendChild(pom);
@@ -68,8 +78,37 @@
                 pom.click();
 
                 document.body.removeChild(pom);
+
             }
 
-            return download;
+            function atob(buffer){
+                var binary = '';
+                var bytes = new Uint8Array( buffer );
+                var len = bytes.byteLength;
+                for (var i = 0; i < len; i++) {
+                    binary += String.fromCharCode( bytes[ i ] );
+                }
+                return window.btoa( binary );
+            }
+
+            /**
+             * Downloads a file from memory
+             * @param data content of the downloaded file
+             * @param options option object (required keys mime, filename)
+             */
+            function constructor(data, options) {
+                gOpts = options;
+                if (options.type == 'arraybuffer') {
+                    gData = atob(data);
+                } else {
+                    gData = data;
+                }
+                gMime = options.mime;
+                gFilename = options.filename;
+
+                download();
+            }
+
+            return constructor;
         })
 })();

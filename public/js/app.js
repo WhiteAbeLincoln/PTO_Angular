@@ -2,12 +2,13 @@
  * Created by abe on 1/7/15.
  */
 (function () {
-    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute','ngResource', 'ngMessages', 'myApp.controllers'])
-        .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider', 'gravatarServiceProvider',
-            function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider, gravatarSP) {
+    var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'ngResource', 'ngMessages', 'myApp.controllers'])
+        .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider',
+            function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider) {
                 $httpProvider.interceptors.push('ErrorInterceptor');
                 $httpProvider.interceptors.push('AuthInterceptor');
 
+                //TODO: Load these from an editable file to allow for easy page addition, management w/o server restart
                 $routeProvider
                     .when('/', {
                         templateUrl: 'partials/home.tmpl.html',
@@ -98,10 +99,6 @@
                     .icon('social:google_plus', 'img/icons/social-google_plus.svg')
                     .icon('social:twitter', 'img/icons/social-twitter.svg');
 
-                gravatarSP.defaults = {
-                    size: 150,
-                    "default": 'retro'
-                };
             }])
         .run(['$rootScope', '$location', '$route', 'Session', 'AuthService', function($rootScope, $location, $route, Session, AuthService){
             $rootScope.$on('$locationChangeStart', function(event, next, current) {

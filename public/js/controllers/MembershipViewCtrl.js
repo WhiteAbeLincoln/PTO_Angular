@@ -53,7 +53,7 @@ angular.module('myApp.controllers')
 
             $http.get('/api/members'+apiUrl+'mode=csv&ids='+ids.join(',')).then(function(data){
                 console.log(data);
-                FileDownload('export.csv', 'text/csv', data.data);
+                FileDownload(data.data, {filename: 'export.csv', mime: 'text/csv'});
             }).catch(function(err){
                 console.log(err);
             });

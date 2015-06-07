@@ -26,6 +26,10 @@
                 $location.url(url);
             };
 
+            $scope.createArticle = function($event) {
+
+            };
+
 
             $scope.articles = [
                 {

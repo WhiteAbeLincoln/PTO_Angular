@@ -1,5 +1,20 @@
 (function(){
-angular.module('myApp.controllers', ['ui.gravatar'])
+angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
+    .config(['markedProvider', 'gravatarServiceProvider', function(markedProvider, gravatarSP) {
+        markedProvider.setOptions(
+            {
+                gfm: true,
+                tables: true,
+                sanitize: true,
+                breaks: true
+            }
+        );
+
+        gravatarSP.defaults = {
+            size: 150,
+            "default": 'retro'
+        };
+    }])
 
     .factory('Member', ['$resource', function($resource){
            return $resource('/api/members/:id');
