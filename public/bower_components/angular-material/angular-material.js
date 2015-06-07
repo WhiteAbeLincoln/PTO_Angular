@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.8-rc1-master-b2c568c
+ * v0.9.8-rc1-master-434a509
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -13244,10 +13244,11 @@ angular
  */
 function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $mdTabInkRipple,
                            $mdUtil, $animate) {
-  var ctrl     = this,
-      locked   = false,
-      elements = getElements(),
-      queue    = [];
+  var ctrl      = this,
+      locked    = false,
+      elements  = getElements(),
+      queue     = [],
+      destroyed = false;
 
   ctrl.scope = $scope;
   ctrl.parent = $scope.$parent;
@@ -13293,6 +13294,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
   }
 
   function cleanup () {
+    destroyed = true;
     angular.element($window).off('resize', handleWindowResize);
     angular.element(elements.paging).off('DOMSubtreeModified', ctrl.updateInkBarStyles);
   }
@@ -13416,7 +13418,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
     refreshIndex();
     //-- when removing a tab, if the selected index did not change, we have to manually trigger the
     //   tab select/deselect events
-    if ($scope.selectedIndex === selectedIndex) {
+    if ($scope.selectedIndex === selectedIndex && !destroyed) {
       tab.scope.deselect();
       ctrl.tabs[$scope.selectedIndex] && ctrl.tabs[$scope.selectedIndex].scope.select();
     }
@@ -13431,6 +13433,7 @@ function MdTabsController ($scope, $element, $window, $timeout, $mdConstant, $md
           isActive: function () { return this.getIndex() === $scope.selectedIndex; },
           isLeft:   function () { return this.getIndex() < $scope.selectedIndex; },
           isRight:  function () { return this.getIndex() > $scope.selectedIndex; },
+          shouldRender: function () { return !$scope.noDisconnect || this.isActive(); },
           hasFocus: function () { return !ctrl.lastClick && ctrl.hasFocus && this.getIndex() === ctrl.focusIndex; },
           id:       $mdUtil.nextUid()
         },
@@ -13814,9 +13817,7 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
               md-swipe-left="swipeContent && $mdTabsCtrl.incrementSelectedIndex(1)"\
               md-swipe-right="swipeContent && $mdTabsCtrl.incrementSelectedIndex(-1)"\
               ng-if="$mdTabsCtrl.hasContent"\
-              ng-repeat="(index, tab) in $mdTabsCtrl.tabs" \
-              md-template="tab.template"\
-              md-scope="tab.parent"\
+              ng-repeat="(index, tab) in $mdTabsCtrl.tabs"\
               md-connected-if="tab.isActive()"\
               ng-class="{\
                 \'md-no-transition\': $mdTabsCtrl.lastSelectedIndex == null,\
@@ -13824,7 +13825,12 @@ function MdTabs ($mdTheming, $mdUtil, $compile) {
                 \'md-left\':          tab.isLeft(),\
                 \'md-right\':         tab.isRight(),\
                 \'md-no-scroll\':     dynamicHeight\
-              }"></md-tab-content>\
+              }">\
+            <div\
+                md-template="tab.template"\
+                md-scope="tab.parent"\
+                ng-if="tab.shouldRender()"></div>\
+          </md-tab-content>\
         </md-tabs-content-wrapper>\
       ';
     },

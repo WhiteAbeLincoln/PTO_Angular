@@ -10,11 +10,6 @@ a:hover, a:focus {
     text-decoration: underline;
 }
 
-/* fixes for select placeholder */
-select, option:disabled {
-    color: rgba(0,0,0,0.26);
-}
-
 /* thanks to the material angularjs docs, and html5 boilerplate */
 /* hides text from visual users, but is visible to screenreaders and accesibility devices */
 .visuallyhidden {
