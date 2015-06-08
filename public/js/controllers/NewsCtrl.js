@@ -3,7 +3,7 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('NewsCtrl', ['$scope', '$mdMedia', '$location', function($scope, $mdMedia, $location){
+        .controller('NewsCtrl', ['$scope', '$mdMedia', '$location', '$mdDialog', 'Article', function($scope, $mdMedia, $location, $mdDialog, Article){
             $scope.updateTitle("News");
             $scope.$watch(function(){return $mdMedia('gt-sm')},
                 function(larger){
@@ -25,11 +25,6 @@
                 console.log(url);
                 $location.url(url);
             };
-
-            $scope.createArticle = function($event) {
-
-            };
-
 
             $scope.articles = [
                 {

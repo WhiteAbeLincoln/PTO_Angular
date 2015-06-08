@@ -16,6 +16,10 @@ angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
         };
     }])
 
+    .factory('Article', ['$resource', function($resource) {
+        return $resource('/api/articles/:id');
+    }])
+
     .factory('Member', ['$resource', function($resource){
            return $resource('/api/members/:id');
     }])

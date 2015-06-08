@@ -50,6 +50,11 @@
                         templateUrl: 'partials/admin/forms/membership.tmpl.html',
                         restricted: ['scholarship']
                     })
+                    .when('/admin/new-article', {
+                        templateUrl: 'partials/admin/news.tmpl.html',
+                        controller: 'CreateArticleCtrl',
+                        restricted: ['news', 'admin']
+                    })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',
                         controller: 'DownloadCtrl',
