@@ -77,7 +77,7 @@ router.post('/',
     }
 );
 
-router.get('/', function (req, res) {
+router.get('/', expressJwt({secret: mySecret}), function (req, res) {
     var ids = [];
     var fields = ['id','lastName','firstName', 'middleName', 'address', 'city','state','zipCode',
         'phoneNumber', 'email', 'gpa', 'activityIds', 'classIds', 'employmentIds', 'honorsIds'];
@@ -140,7 +140,7 @@ router.get('/', function (req, res) {
 
 });
 
-router.get('/:id', function (req, res) {
+router.get('/:id', expressJwt({secret: mySecret}), function (req, res) {
     db.scholarship.query([req.params.id]).then(
         function(data) {
             switch (req.query.mode) {
@@ -148,12 +148,10 @@ router.get('/:id', function (req, res) {
                     console.log('scholarship csv');
                     break;
                 case "docx":
-                    console.log('scholarship docx');
                     exportAsWord(data[0], req.params.id, function(docx, name) {
                         var headerString = 'attachment; filename="' + name + '.docx"';
                         res.set("Content-Disposition", headerString);
                         res.type('docx');
-                        console.log('got docx, attempting stream');
                         docx.generate(res);
                     });
                     break;
@@ -173,7 +171,6 @@ function exportAsWord(app, id, callback) {
         var application = app[0];
 
         var paragraphs = application.essay.split('\n');
-        console.log(paragraphs.length);
 
         var name = application.lastName + ', '
             + application.firstName + ' '
@@ -193,7 +190,6 @@ function exportAsWord(app, id, callback) {
 
         docx.createP().addText("Phone: " + application.phoneNumber);
         docx.createP().addText("Email: " + application.email);
-        console.log('wrote title page');
         docx.putPageBreak();
 
         // ACADEMIC INFORMATION
@@ -207,7 +203,6 @@ function exportAsWord(app, id, callback) {
             docx.createP().addText("11th: " + activities.classes[0].eleven);
             docx.createP().addText("12th: " + activities.classes[0].twelve);
         }
-        console.log('wrote academic page');
         docx.putPageBreak();
 
         // ACTIVITIES
@@ -222,12 +217,10 @@ function exportAsWord(app, id, callback) {
         // School
         docx.createP().addText("School-Related Activities", {bold: true, font_size: 14});
         addActivityTable(schoolActivities);
-        console.log('wrote school page');
 
         // Community
         docx.createP().addText("Community Activities", {bold: true, font_size: 14});
         addActivityTable(communityActivities);
-        console.log('wrote community page');
 
         // Honors
         docx.createP().addText("Honors/Awards", {bold: true, font_size: 14});
@@ -247,7 +240,6 @@ function exportAsWord(app, id, callback) {
                 +   (honors[i].twelve ? "12, " : "")
             );
         }
-        console.log('wrote honors page');
 
         // Paid Employment
         docx.createP().addText("Paid Employment", {bold: true, font_size: 14});
@@ -274,7 +266,6 @@ function exportAsWord(app, id, callback) {
                 +   (jobs[i].twelve ? "12, " : "")
             );
         }
-        console.log('wrote employment page');
 
         docx.putPageBreak();
 
@@ -284,7 +275,6 @@ function exportAsWord(app, id, callback) {
             var pObj = docx.createP();
             pObj.addText(paragraphs[i].toString());
         }
-        console.log('wrote essay page');
 
         var filename = application.lastName + "_" + application.firstName + "_" + application.middleName;
         callback(docx, filename);

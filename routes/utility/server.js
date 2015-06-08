@@ -272,10 +272,10 @@ function Server(module) {
             +   "GROUP_CONCAT(DISTINCT Employment.id ORDER BY Employment.id SEPARATOR ',') as employmentIds, "
             +   "GROUP_CONCAT(DISTINCT Honors.id ORDER BY Honors.id SEPARATOR ',') as honorsIds "
             +   "FROM `Scholarships` "
-            +   "JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
-            +   "JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
-            +   "JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
-            +   "JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
+            +   "LEFT JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
+            +   "LEFT JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
+            +   "LEFT JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
+            +   "LEFT JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
             +   "WHERE Scholarships.id = ? "
             +   "GROUP BY Scholarships.id"),
 
@@ -288,10 +288,10 @@ function Server(module) {
             +   "GROUP_CONCAT(DISTINCT Employment.id ORDER BY Employment.id SEPARATOR ',') as employmentIds, "
             +   "GROUP_CONCAT(DISTINCT Honors.id ORDER BY Honors.id SEPARATOR ',') as honorsIds "
             +   "FROM `Scholarships` "
-            +   "JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
-            +   "JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
-            +   "JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
-            +   "JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
+            +   "LEFT JOIN `S_Activities` AS Activites ON Scholarships.id = Activites.applicationId "
+            +   "LEFT JOIN `S_Classes` AS Classes ON Scholarships.id = Classes.applicationId "
+            +   "LEFT JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
+            +   "LEFT JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
             +   "GROUP BY Scholarships.id"),
 
         activities: {

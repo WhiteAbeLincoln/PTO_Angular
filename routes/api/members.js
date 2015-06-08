@@ -39,7 +39,7 @@ router.post('/',
     }
 );
 
-router.get('/:id',
+router.get('/:id', expressJwt({secret: mySecret}),
     function (req, res) {
         db.members.query([req.params.id]).then(function(data){
             switch (req.query.mode) {
@@ -70,7 +70,7 @@ router.get('/:id',
         });
     });
 
-router.get('/', function(req, res) {
+router.get('/', expressJwt({secret: mySecret}), function(req, res) {
     var ids = [];
     var fields = ['id','lastName','firstName','address',
                     'city','state','zipCode','studentIds'];

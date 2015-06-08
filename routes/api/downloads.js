@@ -75,7 +75,7 @@ var db = new Server('downloads');
         });
     });
 
-    router.delete('/:id', function (req, res) {
+    router.delete('/:id', expressJwt({secret: mySecret}), function (req, res) {
         db.downloads.query([req.params.id]).then(function(data){
             var download = data[0][0];
 
@@ -92,7 +92,7 @@ var db = new Server('downloads');
         });
     });
 
-    router.post('/', expressJwt({secret: mySecret}) ,
+    router.post('/', expressJwt({secret: mySecret}),
         function (req, res) {
             var path = 'files/downloads/';
             var body = req.body;

@@ -8,6 +8,8 @@
             $scope.updateTitle('PTO Scholarships');
             $scope.scholarships = Scholar.query();
 
+            console.log($scope.scholarships);
+
             $scope.scholarshipHeaders = [
                 {title: 'Scholarship Id'},
                 {title: 'Last Name'},
