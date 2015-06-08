@@ -88,9 +88,6 @@ a:hover, a:focus {
     transition: 0.75s cubic-bezier(0.35, 0, 0.25, 1);
     transition-property: height;
 }
-.menu-toggle-list.ng-hide {
-    height: 0;
-}
 .menu .menu-toggle-list a.md-button {
     display: block;
     padding: 0 16px 0 32px;
@@ -111,6 +108,14 @@ a:hover, a:focus {
 .md-button-toggle .md-toggle-icon.toggled {
     transform: rotate(0deg);
     -webkit-transform: rotate(0deg);
+}
+
+.no-transition {
+  -webkit-transition: none !important;
+  -moz-transition:    none !important;
+  -ms-transition:     none !important;
+  -o-transition:      none !important;
+  transition:         none !important;
 }
 /* End Docs Menu */
 
