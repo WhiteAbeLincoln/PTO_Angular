@@ -31,7 +31,7 @@ var db = new Server('downloads');
             }
             res.json(types);
         }).catch(function(error){
-            console.log(error);
+            console.error(error);
         });
     });
 
@@ -49,7 +49,7 @@ var db = new Server('downloads');
                 };
                 res.sendFile(download.filePath, options, function(err) {
                     if (err) {
-                        console.log(err);
+                        console.error(err);
                         res.status(err.status).end();
                     } else  {
                         console.log("Sent: ", download.filePath);
@@ -59,7 +59,7 @@ var db = new Server('downloads');
                 var filename = download.name + '.' + mime.extension(download.mimeType);
                 res.download(download.filePath, sanitize(filename), function(err){
                     if (err){
-                        console.log(err);
+                        console.error(err);
                         res.status(err.status).end();
                     } else {
                         console.log('downloaded '+ filename +' with id '+ req.params.id);
@@ -80,7 +80,7 @@ var db = new Server('downloads');
             var download = data[0][0];
 
             fs.unlink(download.filePath, function(err){                                             //deletes the file from the filesystem
-                if (err) console.log(err);
+                if (err) console.error(err);
             });
 
 
@@ -88,7 +88,7 @@ var db = new Server('downloads');
         }).then(function(data){
             res.status(204).send();
         }).catch(function(err){
-            console.log(err);
+            console.error(err);
         });
     });
 
@@ -139,7 +139,7 @@ var db = new Server('downloads');
                     return insertDownload(id, now, body, filename, res);                            //then inserts the download info to the database
 
                 }).catch(function (err) {
-                    console.log(err);
+                    console.error(err);
                 })
             } else {                                                                                //otherwise
                 db.downloads.types.query([body.type]).then(function (data) {                        //gets the download type id from the database
@@ -147,7 +147,7 @@ var db = new Server('downloads');
 
                     return insertDownload(id, now, body, filename, res);
                 }).catch(function (err) {
-                    console.log(err);
+                    console.error(err);
                 })
             }
         });
@@ -192,7 +192,7 @@ function writeFile(filename, data, path){
     filename = path + sanitize(filename);
 
     fs.writeFile(filename, data, 'base64', function (err) {
-        if (err) console.log(err);
+        if (err) console.error(err);
     });
 
     return filename;

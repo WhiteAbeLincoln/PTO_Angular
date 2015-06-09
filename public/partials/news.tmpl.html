@@ -2,7 +2,7 @@
     <h1 class="md-display-1">News</h1>
 </div>
 <div layout="row" layout-sm="column" layout-wrap>
-    <md-card ng-repeat="article in articles" ng-click="readArticle(article)" ng-style="cardStyle">
+    <md-card ng-repeat="article in articles" ng-click="readArticle(article)" ng-style="cardStyle" style="cursor: pointer">
         <img class="md-card-image" ng-src="{{ article.pictureUrl }}">
         <md-card-content>
             <h2 class="md-headline" ng-style="titleStyle">{{article.title}}</h2>

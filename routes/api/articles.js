@@ -7,7 +7,7 @@ var mySecret = 'd20042648ef8387611f9700ae50ee4dd05a3fc2410d9029a76a6e17d7873ef31
 var Server = require('../utility/server.js');
 var db = new Server('articles');
 
-router.post('/', function(req, res, next) {
+router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
     var article = req.body;
     var now = moment().format("YYYY-MM-DD");
     var datetime = moment().format("YYYY-MM-DD HH:mm:ss");
