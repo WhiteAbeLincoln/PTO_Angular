@@ -3,16 +3,16 @@
 </div>
 <div layout="row" layout-sm="column" layout-wrap>
     <md-card ng-repeat="article in articles" ng-click="readArticle(article)" ng-style="cardStyle">
-        <img class="md-card-image" ng-src="{{article.image}}">
+        <img class="md-card-image" ng-src="{{ article.pictureUrl }}">
         <md-card-content>
             <h2 class="md-headline" ng-style="titleStyle">{{article.title}}</h2>
-            <p class='md-body-1' ng-hide='article.image'>{{article.description}}</p>
+            <p class='md-body-1' ng-hide='article.pictureUrl'>{{article.description}}</p>
         </md-card-content>
-        <md-card-footer ng-style="footerStyle" layout="row">
+        <md-card-footer  layout="row">
             <img style='width: 50px; height: 50px; border: 1px solid black' src='nosrc'>
             <div layout='column'>
-                <small class='md-body-1'>{{article.author}}</small>
-                <small class="md-caption">{{ article.month }}/{{ article.day }}/{{ article.year }}</small>
+                <small class='md-body-1'>{{ article.author }}</small>
+                <small class="md-caption">{{ article.datetime | date:'MMMM d, yyyy hh:mm a' }}</small>
             </div>
         </md-card-footer>
     </md-card>

@@ -14,19 +14,19 @@
                 </md-input-container>
                 <md-input-container>
                     <label>Author</label>
-                    <input type="text" name="author" ng-model="article.author">
+                    <input type="text" name="author" ng-model="article.author" required>
                 </md-input-container>
             </div>
             <md-input-container>
                 <label>Description</label>
-                <input type="text" name="description" ng-model="article.desc">
+                <input type="text" name="description" ng-model="article.description">
             </md-input-container>
             <md-tabs md-dynamic-height md-border-bottom md-center-tabs>
                 <md-tab label="Write">
                     <md-input-container>
                         <label>Article</label>
-                        <textarea name="text" ng-model="article.text" minlength="10" md-maxlength="1000000" ng-trim="false" required></textarea>
-                        <div ng-messages="articleForm.text.$error"  ng-if="articleForm.text.$touched || articleForm.text.$dirty">
+                        <textarea name="body" ng-model="article.body" minlength="10" md-maxlength="1000000" ng-trim="false" required></textarea>
+                        <div ng-messages="articleForm.body.$error"  ng-if="articleForm.body.$touched || articleForm.body.$dirty">
                             <div ng-message="required">Required</div>
                             <div ng-message="minlength">Minimum character count of 10</div>
                             <div ng-message="md-maxlength">Maximum character count of 1000000</div>
@@ -34,8 +34,8 @@
                     </md-input-container>
                 </md-tab>
                 <md-tab label="Preview">
-                    <div marked="article.text"></div>
-                    <p ng-if="!article.text || article.text == ''">Nothing to preview</p>
+                    <div marked="article.body"></div>
+                    <p ng-if="!article.body || article.body == ''">Nothing to preview</p>
                 </md-tab>
             </md-tabs>
             <pre>{{article | json}}</pre>

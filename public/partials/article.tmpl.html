@@ -1,4 +1,14 @@
-<div layout="column" layout-align="space-around center" flex>
-    <h1 class="md-display-1">{{ params.name }}</h1>
+<div layout="row">
+    <span flex-md="10" flex-lg="15" flex-gt-lg="25"></span>
+    <article class="article" itemscope itemtype="http://schema.org/BlogPosting" flex>
+        <header layout="column" layout-align="space-around center" flex>
+            <h1 class="md-display-1" itemprop="headline">{{ article.title }}</h1>
+            <ul class="article-meta">
+                <li class="author"><p class="md-subhead">By <span itemprop="author">{{article.author}}</span></p></li>
+                <li class="published">on <time datetime="{{ article.datetime }}" itemprop="datePublished">{{article.datetime | date:'MMMM d, yyyy hh:mm a'}}</time></li>
+            </ul>
+        </header>
+        <div itemprop="articleBody" marked="article.body"></div>
+    </article>
+    <span flex-md="10" flex-lg="15" flex-gt-lg="25"></span>
 </div>
-<pre>{{ params | json }}</pre>

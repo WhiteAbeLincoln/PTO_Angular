@@ -49,7 +49,7 @@ router.get('/:date/:urlSlug', function(req, res, next) {
     var slug = req.params.urlSlug;
 
     db.articles.query([date, slug]).then(function(data) {
-        res.json(data[0]);
+        res.json(data[0][0]);
     }).catch(function(err) {
         return next(err);
     });
