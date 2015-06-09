@@ -1,8 +1,10 @@
 <script type="text/javascript-lazy" src="/js/lib/zxcvbn-async.js"></script>
-<div class="md-whiteframe-z1 small-form" layout-margin layout-padding>
-    <h1 class="md-display-2">Register</h1>
+<div layout-margin layout-padding>
+    <div layout="column" layout-align="space-around center" flex>
+        <h1 class="md-display-1">New User</h1>
+    </div>
     <form name="registerForm" novalidate>
-        <div layout="row">
+        <div layout="row" layout-sm="column">
             <md-input-container>
                 <label>First</label>
                 <input name="first" type="text" ng-model="user.firstName" required/>
@@ -17,16 +19,15 @@
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
-
-        </div>
-        <div layout="row" flex>
-            <md-input-container flex>
+            <md-input-container>
                 <label>Email</label>
                 <input name="email" type="email" ng-model="user.email" required/>
                 <div ng-messages="registerForm.email.$error" ng-if="registerForm.$dirty">
                     <div ng-message="required">Required</div>
                 </div>
             </md-input-container>
+        </div>
+        <div layout="row">
             <md-input-container>
                 <md-select name="type" ng-model="user.type" placeholder="type" required>
                     <md-option value="admin">Admin</md-option>
@@ -63,8 +64,6 @@
                 <div ng-message="diff">Different Password</div>
             </div>
         </md-input-container>
-
-        <pre>{{registerForm.$invalid | json}}</pre>
 
         <md-button type="submit" ng-disabled="registerForm.$invalid" ng-click="submit()">Submit</md-button>
     </form>
