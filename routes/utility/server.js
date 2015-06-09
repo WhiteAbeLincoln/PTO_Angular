@@ -335,6 +335,19 @@ function Server(module) {
                 + "WHERE applicationId = ?")
         }
     };
+
+    this.articles = {
+        insert: Q.nbind(db.query, db,
+            "INSERT INTO Articles "
+            + "(title, author, date, datetime, description, body, urlSlug, pictureUrl) "
+            + "VALUES "
+            + "(?,?,?,?,?,?,?,?)"),
+        query: Q.nbind(db.query, db,
+            "SELECT * FROM Articles "
+            + "WHERE date = ? AND urlSlug = ?"),
+        queryAll: Q.nbind(db.query, db,
+            "SELECT * FROM Articles")
+    }
 }
 
 module.exports = Server;

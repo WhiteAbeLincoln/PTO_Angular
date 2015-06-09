@@ -28,5 +28,7 @@ router.use('/scholarships', require('./api/scholarships.js'));
 
 router.use('/admin', require('./api/admin.js'));
 
+router.use('/articles', require('./api/articles.js'));
+
 module.exports.secret = mySecret;
 module.exports.router = router;
