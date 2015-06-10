@@ -25,6 +25,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//TODO: add clustering to support multiple threads and higher load -- see http://rowanmanning.com/posts/node-cluster-and-express/
+
 app.use('/', routes);
 app.use('/api/admin/*', expressJwt({secret: mySecret}).unless({path:['/api/admin/login', '/api/admin/admin']}));
 app.use('/api', api);
