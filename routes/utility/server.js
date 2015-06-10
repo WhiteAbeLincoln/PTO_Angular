@@ -347,7 +347,24 @@ function Server(module) {
             + "WHERE date = ? AND urlSlug = ?"),
         queryAll: Q.nbind(db.query, db,
             "SELECT * FROM Articles")
-    }
+    };
+
+    this.calendar = {
+        insert: Q.nbind(db.query, db,
+            "INSERT INTO Calendar "
+            + "(name, date, contact) "
+            + "VALUES "
+            + "(?,?,?)"),
+        query: Q.nbind(db.query, db,
+            "SELECT * FROM Calendar "
+            + "WHERE id = ?"),
+        queryAll: Q.nbind(db.query, db,
+            "SELECT * FROM Calendar"),
+        delete: Q.nbind(db.query, db,
+            "DELETE FROM Calendar WHERE id = ?"),
+        deleteAll: Q.nbind(db.query, db,
+            "DELETE FROM Calendar")
+    };
 }
 
 module.exports = Server;

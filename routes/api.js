@@ -30,5 +30,7 @@ router.use('/admin', require('./api/admin.js'));
 
 router.use('/articles', require('./api/articles.js'));
 
+router.use('/calendar', require('./api/calendar.js'));
+
 module.exports.secret = mySecret;
 module.exports.router = router;

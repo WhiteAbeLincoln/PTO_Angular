@@ -245,6 +245,11 @@ button.form-next {
     margin:15px;
 }
 
+table.calendar-table td {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .user-details th, .user-details td {
     text-align: left;
 }

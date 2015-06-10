@@ -16,6 +16,10 @@ angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
         };
     }])
 
+    .factory('Calendar', ['$resource', function($resource) {
+        return $resource('/api/calendar/:id');
+    }])
+
     .factory('Article', ['$resource', function($resource) {
         return $resource('/api/articles/:date/:slug');
     }])

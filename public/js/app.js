@@ -46,14 +46,14 @@
                         controller: 'ScholarshipViewCtrl',
                         restricted: ['scholarship']
                     })
-                    .when('/admin/forms/service',{
-                        templateUrl: 'partials/admin/forms/membership.tmpl.html',
-                        restricted: ['scholarship']
-                    })
                     .when('/admin/new-article', {
                         templateUrl: 'partials/admin/news.tmpl.html',
                         controller: 'CreateArticleCtrl',
                         restricted: ['news', 'admin']
+                    })
+                    .when('/admin/calendar', {
+                        templateUrl: 'partials/admin/calendar.tmpl.html',
+                        controller: 'CalendarCtrl'
                     })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',

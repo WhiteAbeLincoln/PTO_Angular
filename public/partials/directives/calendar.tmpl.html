@@ -1,0 +1,21 @@
+<article class="md-whiteframe-z1" layout-margin layout-padding layout="column" layout-align="center center">
+    <header>
+        <h1 class="md-headline">PTO Calendar</h1>
+    </header>
+    <table class="calendar-table">
+        <thead>
+            <tr>
+                <th>Event Name</th>
+                <th>Event Date</th>
+                <th>Contact</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="event in calendar">
+                <td>{{event.name}}</td>
+                <td>{{event.date | date:'yyyy-MM-dd hh:mm:ss a'}}</td>
+                <td>{{event.contact}}</td>
+            </tr>
+        </tbody>
+    </table>
+</article>

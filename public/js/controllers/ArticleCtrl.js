@@ -4,7 +4,7 @@
 angular.module('myApp.controllers')
     .controller('ArticleCtrl', ['$scope', '$routeParams', 'Article', function($scope, $routeParams, Article) {
         $scope.urlDate =
-            moment($routeParams.year + '-' + $routeParams.month + '-' + $routeParams.day)
+            moment([$routeParams.year, $routeParams.month-1, $routeParams.day])
                 .format('YYYY-MM-DD');
 
         $scope.article = Article.get({slug: $routeParams.name, date: $scope.urlDate}, function() {

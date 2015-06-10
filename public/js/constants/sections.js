@@ -1,6 +1,7 @@
 /**
  * Created by abe on 3/7/15.
  */
+//TODO: Load from server, allowing for easy editing by admin
 angular.module('myApp')
     .constant('SECTIONS', {
         default: [
@@ -56,6 +57,11 @@ angular.module('myApp')
             {
                 name: 'Downloads',
                 url: '/downloads',
+                type: 'link'
+            },
+            {
+                name: 'Calendar',
+                url: '/admin/calendar',
                 type: 'link'
             },
             {
