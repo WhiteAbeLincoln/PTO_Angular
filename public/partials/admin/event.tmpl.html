@@ -18,6 +18,14 @@
                 </div>
             </md-input-container>
             <md-input-container>
+                <label>Name</label>
+                <input type="text" name="location" ng-model="calendar.location" required>
+
+                <div ng-messages="calendarForm.location.$error" ng-if="calendarForm.location.$touched || calendarForm.location.$dirty">
+                    <div ng-message="required">This is required</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
                 <label>Contact Information</label>
                 <input type="text" name="contact" ng-model="calendar.contact" required>
 

@@ -19,6 +19,7 @@
                 {title:'Event Id'},
                 {title:'Event Name'},
                 {title:'Event Date'},
+                {title:'Event Location'},
                 {title:'Contact'}
             ];
 

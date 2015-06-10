@@ -27,11 +27,6 @@ angular.module('myApp')
                 ]
             },
             {
-                name: 'Volunteer',
-                url: '/volunteer',
-                type: 'link'
-            },
-            {
                 name: 'Meet the Board',
                 url: '/about-board',
                 type: 'link'
@@ -39,6 +34,10 @@ angular.module('myApp')
             {
                 name: 'Downloads',
                 url: '/downloads',
+                type: 'link'
+            },{
+                name: 'Calendar',
+                url: '/calendar',
                 type: 'link'
             }
         ],
@@ -76,11 +75,6 @@ angular.module('myApp')
                     {
                         name: 'Scholarship Application',
                         url: '/admin/forms/scholarship',
-                        type: 'link'
-                    },
-                    {
-                        name: 'Volunteer',
-                        url: '/admin/forms/volunteer',
                         type: 'link'
                     }
                 ]

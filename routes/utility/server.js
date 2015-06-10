@@ -352,9 +352,9 @@ function Server(module) {
     this.calendar = {
         insert: Q.nbind(db.query, db,
             "INSERT INTO Calendar "
-            + "(name, date, contact) "
+            + "(name, date, location, contact) "
             + "VALUES "
-            + "(?,?,?)"),
+            + "(?,?,?,?)"),
         query: Q.nbind(db.query, db,
             "SELECT * FROM Calendar "
             + "WHERE id = ?"),

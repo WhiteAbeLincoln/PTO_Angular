@@ -60,12 +60,14 @@
                         controller: 'DownloadCtrl',
                         restricted: false
                     })
-                    .when('/about-board', {
-                        templateUrl: 'partials/about-board.tmpl.html',
+                    .when('/calendar', {
+                        templateUrl: 'partials/calendar.tmpl.html',
+                        controller: 'CalendarDirectiveCtrl',
                         restricted: false
                     })
-                    .when('/volunteer', {
-                        templateUrl: 'partials/volunteer.tmpl.html',
+                    .when('/about-board', {
+                        templateUrl: 'partials/about-board.tmpl.html',
+                        controller: 'BoardCtrl',
                         restricted: false
                     })
                     .when('/news', {

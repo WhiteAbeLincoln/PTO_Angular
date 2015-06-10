@@ -13,7 +13,7 @@ router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
     } catch (err) {
         return next(err);
     }
-    db.calendar.insert([req.body.name, date, req.body.contact]).then(function(data) {
+    db.calendar.insert([req.body.name, date, req.body.location, req.body.contact]).then(function(data) {
         res.status(201).location('api/calendar/' + data[0].insertId).send();
     }).catch(function(err) {
 
@@ -23,7 +23,7 @@ router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
 
 router.get('/', function(req, res, next) {
     var ids = [];
-    var fields = ['id','name','date','contact'];
+    var fields = ['id','name','date','location','contact'];
 
     if (req.query["ids"]) {
         ids = req.query["ids"].split(',');
@@ -66,6 +66,7 @@ router.get('/:id', function(req, res, next) {
                             'id',
                             'name',
                             'date',
+                            'location',
                             'contact'
                         ]},
                     function(err, csv) {
