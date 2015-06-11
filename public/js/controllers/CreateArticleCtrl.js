@@ -3,7 +3,7 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('CreateArticleCtrl', ['$scope', '$location', 'Article', 'ArticleService', '$mdDialog', function($scope, $location, Article, ArticleService, $mdDialog) {
+        .controller('CreateArticleCtrl', ['$scope', '$location', 'Article', 'ArticleService', function($scope, $location, Article, ArticleService) {
             $scope.updateTitle('New Article');
             $scope.theTitle = 'New Article';
             $scope.article = {};
@@ -37,20 +37,5 @@
                 }
             };
 
-            $scope.markdownDialog = function($event) {
-                console.log('dialog');
-                $mdDialog.show({
-                    controller: ["$scope", "$mdDialog", function($scope, $mdDialog) {
-                        $scope.hide = function() {
-                            $mdDialog.hide();
-                        }
-                    }],
-                    templateUrl: 'partials/markdown.tmpl.html',
-                    parent: angular.element(document.body),
-                    targetEvent: $event
-                 }).then(function(answer) {
-
-                 })
-            };
         }]);
 })();

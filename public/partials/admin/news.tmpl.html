@@ -22,7 +22,7 @@
         </md-input-container>
         <md-tabs md-dynamic-height md-border-bottom md-center-tabs>
             <md-tab label="Write">
-                <a href=""><small class="md-caption" ng-click="markdownDialog($event)" style="cursor: pointer">Markdown Cheatsheet</small></a>
+                <markdown-help></markdown-help>
                 <md-input-container>
                     <label>Article</label>
                     <textarea class="monospace" name="body" ng-model="article.body" minlength="10" md-maxlength="1000000" ng-trim="false" required></textarea>
