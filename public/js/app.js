@@ -51,6 +51,11 @@
                         controller: 'CreateArticleCtrl',
                         restricted: ['news', 'admin']
                     })
+                    .when('/admin/new-download', {
+                        templateUrl: 'partials/admin/download.tmpl.html',
+                        controller: 'CreateDownloadCtrl',
+                        restricted: ['admin']
+                    })
                     .when('/admin/calendar', {
                         templateUrl: 'partials/admin/calendar.tmpl.html',
                         controller: 'CalendarCtrl'

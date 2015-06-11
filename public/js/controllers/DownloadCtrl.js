@@ -3,42 +3,13 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdDialog', '$mdToast', '$timeout', '$window', function ($scope, Download, ICON_STYLES, $mdDialog, $mdToast, $timeout, $window) {
+        .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdToast', '$timeout', '$window', function ($scope, Download, ICON_STYLES, $mdToast, $timeout, $window) {
             $scope.updateTitle("Downloads");
             $scope.debug = {};
             $scope.user = $scope.currentUser;
 
             $scope.iconStyles = ICON_STYLES;
             $scope.dltypes = Download.get();
-
-            $scope.createDownload = function (ev){
-                var parentEl = angular.element(document.body);
-                $mdDialog.show({
-                    parent: parentEl,
-                    controller: 'CreateDownloadCtrl',
-                    templateUrl: 'partials/admin/download.tmpl.html',
-                    targetEvent: ev
-                }).then(function(answer){
-                    var dl = new Download(answer);
-                    dl.$save(function(data, headers){
-
-                        console.log(JSON.stringify(data));
-
-                        angular.forEach(data, function(value, key){
-                            console.log(JSON.stringify(value));
-                            if (angular.isDefined($scope.dltypes[key]) && angular.isDefined(value)){
-                                $scope.dltypes[key].push(value[0]);
-                            } else if (angular.isDefined(value)) {
-                                $scope.dltypes[key] = [];
-                                $scope.dltypes[key].push(value[0]);
-                            }
-
-                        });
-                    });
-                }, function(){
-
-                })
-            };
 
             /**
              * Delete a download from the database and filesystem

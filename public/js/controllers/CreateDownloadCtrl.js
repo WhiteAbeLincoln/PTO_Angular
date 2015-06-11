@@ -1,6 +1,6 @@
 (function(){
     angular.module('myApp.controllers')
-        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$mdDialog', '$http', function($scope, FileReader, $mdDialog, $http){
+        .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$http', 'Download', '$location', function($scope, FileReader, $http, Download, $location) {
             $scope.debug = {};
             $scope.debug.searchText = '';
             $scope.download = {};
@@ -108,18 +108,18 @@
                 return {type: type, name: name, size: size, lastModified: lastModified, data: data};
             }
 
-            $scope.removeFile = function(index){
+            $scope.removeFile = function(index) {
                 $scope.download.files.splice(index, 1);
                 $scope.pgress.splice(index, 1);
             };
 
-            $scope.cancel = function(){
-                $mdDialog.cancel();
-            };
-
-            $scope.submit = function(data){
+            $scope.submit = function() {
                 $scope.checkText($scope.debug.searchText);
-                $mdDialog.hide(data);
+
+                var dl = new Download($scope.download);
+                dl.$save(function(data, headers){
+                    $location.url('/downloads');
+                });
             }
 
         }]);
