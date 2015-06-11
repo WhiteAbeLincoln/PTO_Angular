@@ -29,6 +29,41 @@ a:hover, a:focus {
     color: rgb(132, 132, 132);
 }
 
+textarea.monospace {
+    font-family: Consolas, Menlo, Monaco, monospace;
+}
+
+.markdown-format {
+
+}
+
+.markdown-format pre {
+    padding: 8px 10px 8px;
+    margin: 10px 0;
+    border: 1px solid #DDD;
+
+    border-bottom-width: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+
+    border-radius: 3px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+
+    font-family: Consolas, Menlo, Monaco, monospace;
+    overflow: auto;
+    color: #666;
+}
+
+.markdown-format blockquote {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 50px;
+    padding-left: 15px;
+    border-left: 3px solid #ccc;
+}
+
 
 /* thanks to the material angularjs docs, and html5 boilerplate */
 /* hides text from visual users, but is visible to screenreaders and accesibility devices */

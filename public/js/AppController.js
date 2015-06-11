@@ -21,7 +21,9 @@ angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
     }])
 
     .factory('Article', ['$resource', function($resource) {
-        return $resource('/api/articles/:date/:slug');
+        return $resource('/api/articles/:date/:slug', {slug:'@urlSlug', date: '@date'}, {
+            'update': { method:'PUT' }
+        });
     }])
 
     .factory('Member', ['$resource', function($resource){

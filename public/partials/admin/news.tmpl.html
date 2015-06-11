@@ -1,49 +1,47 @@
 <div layout-margin layout-padding>
     <div layout="column" layout-align="space-around center" flex>
-        <h1 class="md-display-1">New Article</h1>
+        <h1 class="md-display-1">{{ theTitle }}</h1>
     </div>
     <form name="articleForm">
-        <md-dialog-content>
-            <div layout="row">
+        <div layout="row">
+            <md-input-container>
+                <label>Title</label>
+                <input type="text" name="title" ng-model="article.title" required>
+                <div ng-messages="articleForm.title.$error"  ng-if="articleForm.title.$touched || articleForm.title.$dirty">
+                    <div ng-message="required">Required</div>
+                </div>
+            </md-input-container>
+            <md-input-container>
+                <label>Author</label>
+                <input type="text" name="author" ng-model="article.author" required>
+            </md-input-container>
+        </div>
+        <md-input-container>
+            <label>Description</label>
+            <input type="text" name="description" ng-model="article.description">
+        </md-input-container>
+        <md-tabs md-dynamic-height md-border-bottom md-center-tabs>
+            <md-tab label="Write">
+                <a href=""><small class="md-caption" ng-click="markdownDialog($event)" style="cursor: pointer">Markdown Cheatsheet</small></a>
                 <md-input-container>
-                    <label>Title</label>
-                    <input type="text" name="title" ng-model="article.title" required>
-                    <div ng-messages="articleForm.title.$error"  ng-if="articleForm.title.$touched || articleForm.title.$dirty">
+                    <label>Article</label>
+                    <textarea class="monospace" name="body" ng-model="article.body" minlength="10" md-maxlength="1000000" ng-trim="false" required></textarea>
+                    <div ng-messages="articleForm.body.$error"  ng-if="articleForm.body.$touched || articleForm.body.$dirty">
                         <div ng-message="required">Required</div>
+                        <div ng-message="minlength">Minimum character count of 10</div>
+                        <div ng-message="md-maxlength">Maximum character count of 1000000</div>
                     </div>
                 </md-input-container>
-                <md-input-container>
-                    <label>Author</label>
-                    <input type="text" name="author" ng-model="article.author" required>
-                </md-input-container>
-            </div>
-            <md-input-container>
-                <label>Description</label>
-                <input type="text" name="description" ng-model="article.description">
-            </md-input-container>
-            <md-tabs md-dynamic-height md-border-bottom md-center-tabs>
-                <md-tab label="Write">
-                    <md-input-container>
-                        <label>Article</label>
-                        <textarea name="body" ng-model="article.body" minlength="10" md-maxlength="1000000" ng-trim="false" required></textarea>
-                        <div ng-messages="articleForm.body.$error"  ng-if="articleForm.body.$touched || articleForm.body.$dirty">
-                            <div ng-message="required">Required</div>
-                            <div ng-message="minlength">Minimum character count of 10</div>
-                            <div ng-message="md-maxlength">Maximum character count of 1000000</div>
-                        </div>
-                    </md-input-container>
-                </md-tab>
-                <md-tab label="Preview">
-                    <div marked="article.body"></div>
-                    <p ng-if="!article.body || article.body == ''">Nothing to preview</p>
-                </md-tab>
-            </md-tabs>
-            <pre>{{article | json}}</pre>
-        </md-dialog-content>
+            </md-tab>
+            <md-tab label="Preview">
+                <div class="markdown-format" marked="article.body"></div>
+                <p ng-if="!article.body || article.body == ''">Nothing to preview</p>
+            </md-tab>
+        </md-tabs>
     </form>
     <div class="md-actions" layout="row">
-        <md-button class="md-warn md-button-small" ng-click="cancel('canceled')">Cancel</md-button>
-        <md-button class="md-button-small" ng-disabled="articleForm.$invalid" ng-click="submit(download)">Submit
+        <md-button class="md-warn md-button-small" ng-click="cancel()">Cancel</md-button>
+        <md-button class="md-button-small" ng-disabled="articleForm.$invalid" ng-click="submit()">Submit
         </md-button>
     </div>
 </div>

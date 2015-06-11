@@ -346,7 +346,13 @@ function Server(module) {
             "SELECT * FROM Articles "
             + "WHERE date = ? AND urlSlug = ?"),
         queryAll: Q.nbind(db.query, db,
-            "SELECT * FROM Articles")
+            "SELECT * FROM Articles"),
+        update: Q.nbind(db.query, db,
+            "UPDATE Articles "
+            + "SET ? "
+            + "WHERE date = ? AND urlSlug = ?"),
+        delete: Q.nbind(db.query, db,
+            "DELETE FROM Articles WHERE date = ? AND urlSlug = ?")
     };
 
     this.calendar = {

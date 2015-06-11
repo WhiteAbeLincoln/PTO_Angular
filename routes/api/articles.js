@@ -13,8 +13,7 @@ router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
     var datetime = moment().format("YYYY-MM-DD HH:mm:ss");
 
     if (typeof(article.description) == 'undefined') {
-        var match = article.body.match(/(^[^#\n]+)/gm);                     // matches the first paragraph that isn't a header
-        article.description = match[0];
+        article.description = getDescription(article.body);
     }
 
     var urlSlug = getSlug(article.title);
@@ -25,7 +24,7 @@ router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
             article.title, article.author, now, datetime,
             article.description, article.body, urlSlug, null
         ]).then(function (data) {
-            res.status(201).location()
+            res.status(201).location('/api/articles/' + now + '/' + urlSlug).send();
         }).catch(function (err) {
             if (err.code == 'ER_DUP_ENTRY') {
                 iterations++;
@@ -39,7 +38,7 @@ router.post('/', expressJwt({secret: mySecret}), function(req, res, next) {
 
                 return insert(iterations);                                  // tries to insert with the new slug
             }
-            return next(err);
+            if (err) { return next(err) }
         });
     })(0);
 });
@@ -51,7 +50,7 @@ router.get('/:date/:urlSlug', function(req, res, next) {
     db.articles.query([date, slug]).then(function(data) {
         res.json(data[0][0]);
     }).catch(function(err) {
-        return next(err);
+        if (err) return next(err);
     });
 });
 
@@ -59,8 +58,53 @@ router.get('/', function(req, res, next) {
    db.articles.queryAll().then(function(data) {
        res.json(data[0]);
    }).catch(function(err) {
-       return next(err);
+       if (err) return next(err);
    });
 });
+
+router.put('/:date/:urlSlug', function(req, res, next) {
+    var date = moment(req.params.date).format('YYYY-MM-DD');
+    var slug = req.params.urlSlug;
+    var article = req.body;
+    var updateObj = {};
+    var validKeys = ["title", "author", "description", "body"];
+
+    if (typeof(req.body.description) == 'undefined') {
+        req.body.description = getDescription(req.body.body);
+    }
+
+    validKeys.forEach(function(key) {
+        if (article[key]) {
+            updateObj[key] = article[key];
+        }
+    });
+
+
+    db.articles.update([
+        updateObj,
+        date,
+        slug
+    ]).then(function(data) {
+        res.status(200).send("Updated " + data.affectedRows + " rows");
+    }).catch(function(err) {
+        if (err) return next(err);
+    })
+});
+
+router.delete('/:date/:urlSlug', function(req, res, next) {
+    var date = moment(req.params.date).format('YYYY-MM-DD');
+    var slug = req.params.urlSlug;
+
+    db.articles.delete([date, slug]).then(function(data) {
+        res.status(204).send();
+    }).catch(function(err) {
+        if (err) return next(err);
+    })
+});
+
+function getDescription(body) {
+    var match = body.match(/(^[^#\n]+)/gm);                     // matches the first paragraph that isn't a header
+    return match[0] || body;
+}
 
 module.exports = router;
