@@ -44,27 +44,16 @@
             <div ng-messages="registerForm.username.$error" ng-if="registerForm.$dirty">
                 <div ng-message="required">Required</div>
             </div>
-        </md-input-container>
-        <md-input-container>
-            <label>Password</label>
-            <input name="password" type="password" ng-model="user.password" ng-change="pwChange(user.password)" required/>
-            <div ng-messages="registerForm.password.$error" ng-if="registerForm.$dirty">
-                <div ng-message="required">Required</div>
-            </div>
-            <div ng-messages="strengthError" ng-if="!registerForm.password.$error.required">
-                <div ng-message="strength">Weak Password</div>
-            </div>
-        </md-input-container>
-        <div ng-style="pwStyle" ng-if="user.password"></div>
-        <md-input-container>
-            <label>Confirm Password</label>
-            <input name="confirm" type="password" ng-model="user.confirm" diff-validator required/>
-            <div ng-messages="registerForm.confirm.$error" ng-if="registerForm.$dirty">
-                <div ng-message="required">Required</div>
-                <div ng-message="diff">Different Password</div>
+            <div ng-messages="userError" ng-if="!registerForm.username.$error.required">
+                <div ng-message="user">Username already Exists</div>
             </div>
         </md-input-container>
 
-        <md-button type="submit" ng-disabled="registerForm.$invalid" ng-click="submit()">Submit</md-button>
+        <password pw="user.password" error="error"></password>
+
+        <pre>{{user | json}}</pre>
+
+        <md-button class="md-warn" type="button" ng-href="#/admin">Cancel</md-button>
+        <md-button type="submit" ng-disabled="registerForm.$invalid || userError.user" ng-click="submit()">Submit</md-button>
     </form>
 </div>

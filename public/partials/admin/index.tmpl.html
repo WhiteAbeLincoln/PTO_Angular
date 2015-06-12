@@ -1,32 +1,60 @@
 <div class="md-whiteframe-z1" layout-margin layout-padding>
     <h1 class="md-display-1">{{currentUser.username}}</h1>
-    <div layout="row" layout-sm='column' layout-align="start center">
-        <div style="padding:10px">
-            <img gravatar-src="currentUser.email">
+    <div ng-if="!edit">
+        <div layout="row" layout-sm='column' layout-align="start center">
+            <div style="padding:10px">
+                <img gravatar-src="currentUser.email">
+            </div>
+            <table class="user-details">
+                <tr>
+                    <th>Account Type:</th>
+                    <td>{{currentUser.type}}</td>
+                </tr>
+                <tr>
+                    <th>Account Age:</th>
+                    <td>
+                        {{accountAge}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Real Name:</th>
+                    <td>{{ currentUser.firstName + ' ' + currentUser.lastName }}</td>
+                </tr>
+                <tr>
+                    <th>Email:</th>
+                    <td>{{ currentUser.email }}</td>
+                </tr>
+            </table>
         </div>
-        <table class="user-details">
-            <tr>
-                <th>Account Type:</th>
-                <td>{{currentUser.type}}</td>
-            </tr>
-            <tr>
-                <th>Account Age:</th>
-                <td>
-                    {{accountAge}}
-                </td>
-            </tr>
-            <tr>
-                <th>Real Name:</th>
-                <td>{{ currentUser.firstName + ' ' + currentUser.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Email:</th>
-                <td>{{ currentUser.email }}</td>
-            </tr>
-        </table>
+        <div layout="row">
+            <md-button class='md-primary md-raised' ng-click="logout()">Logout</md-button>
+            <md-button class='md-accent' ng-href="#/admin/register" ng-if="currentUser.type == 'admin'">Register User</md-button>
+            <md-button class="md-accent" ng-click="setEdit()">Edit Profile</md-button>
+        </div>
     </div>
-    <div layout="row">
-        <md-button class='md-primary md-raised' ng-click="logout()">Logout</md-button>
-        <md-button class='md-accent' ng-href="#/admin/register" ng-if="currentUser.type == 'admin'">Register User</md-button>
-    </div>
+    <form name="editForm" ng-if="edit" flex layout="column" novalidate>
+        <div layout="row">
+            <md-button type="button" class="md-button-small" ng-click="changePassword($event)">Change Password</md-button>
+            <md-button type="button" class="md-warn md-button-small" ng-click="deleteAccount($event)">Delete Account</md-button>
+        </div>
+        <md-input-container>
+            <label>First Name</label>
+            <input name="first" type="text" ng-model="user.firstName">
+        </md-input-container>
+        <md-input-container>
+            <label>Last Name</label>
+            <input name="last" type="text" ng-model="user.lastName">
+        </md-input-container>
+        <md-input-container>
+            <label>Email</label>
+            <input name="email" type="email" ng-model="user.email">
+            <div ng-messages="editForm.email.$error" ng-if="editForm.$dirty">
+                <div ng-message="email">Invalid email</div>
+            </div>
+        </md-input-container>
+        <div>
+            <md-button class="md-warn" ng-click="cancel()">Cancel</md-button>
+            <md-button class="md-primary" ng-click="submit()" ng-disabled="editForm.$invalid || isEmpty(putObj)">Submit</md-button>
+        </div>
+    </form>
 </div>

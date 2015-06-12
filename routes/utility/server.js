@@ -254,6 +254,13 @@ function Server(module) {
         query: Q.nbind(db.query, db,
             "SELECT * "
             + "FROM Admins "
+            + "WHERE username = ?"),
+        update: Q.nbind(db.query, db,
+            "UPDATE Admins "
+            + "SET ? "
+            + "WHERE username = ?"),
+        delete: Q.nbind(db.query, db,
+            "DELETE FROM Admins "
             + "WHERE username = ?")
     };
 

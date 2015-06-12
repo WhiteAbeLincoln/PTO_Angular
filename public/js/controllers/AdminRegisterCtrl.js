@@ -14,38 +14,20 @@
                 'username':null,
                 'password':null
             };
+            $scope.userError = {};
 
-            $scope.debug = {user: $scope.currentUser};
-            $scope.strengthError = {};
-
-            $scope.pwChange = function(password){
-                $scope.nbvcxz = zxcvbn(password);
-
-                $scope.pwStyle = {'background-color':'#f44336', 'width': (($scope.nbvcxz.score+1) / 5) * 100 + '%', 'height': '2px'};
-                if ($scope.nbvcxz.score == 0)
-                    $scope.strengthError.strength = true;
-                if ($scope.nbvcxz.score == 1) {
-                    $scope.pwStyle['background-color'] = '#FFC107';
-                    $scope.strengthError.strength = true;
-                }
-                if ($scope.nbvcxz.score == 2) {
-                    $scope.pwStyle['background-color'] = '#FFC107';
-                    $scope.strengthError.strength = true;
-                }
-                if ($scope.nbvcxz.score == 3) {
-                    $scope.pwStyle['background-color'] = 'green';
-                    $scope.strengthError = {};
-                }
-                if ($scope.nbvcxz.score == 4) {
-                    $scope.pwStyle['background-color'] = 'green';
-                    $scope.strengthError = {};
-                }
-
-                return $scope.nbvcxz;
-            };
+            $scope.$watch('user.username', function(newVal, oldVal) {
+               if (!angular.equals(newVal, oldVal)) {
+                   $http.head('/api/admin/user/' + newVal).then(function(res) {
+                       $scope.userError.user = !(res.status === 404);
+                   }, function(err) {
+                       $scope.userError.user = !(err.status === 404);
+                   })
+               }
+            });
 
             $scope.submit = function(){
-                if ($scope.strengthError.strength){
+                if ($scope.error.strength) {
                     return;
                 }
 
@@ -58,20 +40,5 @@
 
 
         }])
-        .directive('diffValidator', function(){
-            return {
-                restrict: 'A',
-                require: 'ngModel',
-                link: function(scope, el, attr, ngModelCtrl){
-                    ngModelCtrl.$validators.diff = function(modelVal) {
-                        if (modelVal !== null && modelVal !== '') {
-                            return scope.user.password === modelVal;
-                        } else {
-                            return true;
-                        }
-                    }
-                }
-            }
-        })
 
 })();
