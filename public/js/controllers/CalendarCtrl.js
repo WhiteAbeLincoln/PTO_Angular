@@ -42,13 +42,22 @@
                 var parentEl = angular.element(document.body);
                 $mdDialog.show({
                     parent: parentEl,
-                    controller: 'CreateEventCtrl',
+                    controller: ['$scope', '$mdDialog', function($scope, $mdDialog) {
+                        $scope.cancel = function(){
+                            $mdDialog.cancel();
+                        };
+
+                        $scope.submit = function(data){
+                            $mdDialog.hide(data);
+                        }
+                    }],
                     templateUrl: 'partials/admin/event.tmpl.html',
                     targetEvent: ev
                 }).then(function(answer) {
                     var event = new Calendar(answer);
-                    event.$save();
-                    $window.location.reload();
+                    event.$save(function() {
+                        $window.location.reload();
+                    });
                 });
 
             };
@@ -80,15 +89,6 @@
                 })
             };
 
-        }])
-        .controller('CreateEventCtrl', ['$scope', '$mdDialog', function($scope, $mdDialog) {
-            $scope.cancel = function(){
-                $mdDialog.cancel();
-            };
-
-            $scope.submit = function(data){
-                $mdDialog.hide(data);
-            }
         }])
 
 })();

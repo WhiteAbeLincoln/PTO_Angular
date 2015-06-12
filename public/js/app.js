@@ -49,7 +49,7 @@
                     .when('/admin/new-article', {
                         templateUrl: 'partials/admin/news.tmpl.html',
                         controller: 'CreateArticleCtrl',
-                        restricted: ['news', 'admin']
+                        restricted: ['admin']
                     })
                     .when('/admin/new-download', {
                         templateUrl: 'partials/admin/download.tmpl.html',
@@ -58,7 +58,8 @@
                     })
                     .when('/admin/calendar', {
                         templateUrl: 'partials/admin/calendar.tmpl.html',
-                        controller: 'CalendarCtrl'
+                        controller: 'CalendarCtrl',
+                        restricted: ['admin']
                     })
                     .when('/downloads', {
                         templateUrl: 'partials/downloads.tmpl.html',

@@ -21,9 +21,9 @@
         }])
         .factory('ErrorInterceptor', ['$q','$window', function($q, $window){
             return {
-                responseError: function(rejection){
-                    if (rejection.status){
-                        if (rejection.config.method !== "POST"){
+                responseError: function(rejection) {
+                    if (rejection.status) {
+                        if (rejection.config.method == "GET") {
 
                             switch(rejection.status){
                                 case 404:
