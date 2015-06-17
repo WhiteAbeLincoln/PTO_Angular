@@ -107,10 +107,7 @@
                     .icon('file:powerpoint', 'img/icons/file-powerpoint-box.svg')
                     .icon('file:word', 'img/icons/file-word-box.svg')
                     .icon('file:file', 'img/icons/file.svg')
-                    .icon('file:markdown', 'img/icons/file-markdown.svg')
-                    .icon('social:facebook', 'img/icons/social-facebook.svg')
-                    .icon('social:google_plus', 'img/icons/social-google_plus.svg')
-                    .icon('social:twitter', 'img/icons/social-twitter.svg');
+                    .icon('file:markdown', 'img/icons/file-markdown.svg');
 
             }])
         .run(['$rootScope', '$location', '$route', 'Session', 'AuthService', function($rootScope, $location, $route, Session, AuthService){

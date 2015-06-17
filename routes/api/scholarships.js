@@ -163,6 +163,47 @@ router.get('/:id', expressJwt({secret: mySecret}), function (req, res) {
 
 });
 
+router.delete('/', expressJwt({secret: mySecret}), function(req, res, next) {
+    var ids = [];
+    var promises = [];
+    var func = db.scholarship.delete;
+
+    if (req.query["ids"]) {
+        ids = req.query["ids"].split(',');
+    }
+
+    if (req.query["sub"]) {
+        switch (req.query["sub"]) {
+            case "activities":
+                func = db.scholarship.activities.delete;
+                break;
+            case "classes":
+                func = db.scholarship.classes.delete;
+                break;
+            case "employment":
+                func = db.scholarship.employment.delete;
+                break;
+            case "honors":
+                func = db.scholarship.honors.delete;
+                break;
+            default:
+                res.status(404).send("Sub table '" + req.query["sub"] + "' not found");
+                return;
+                break;
+        }
+    }
+
+    ids.forEach(function(id) {
+        promises.push(func([id]));
+    });
+
+    Q.all(promises).catch(function(err) {
+        if (err) return next(err);
+    }).done(function(values) {
+        res.status(204).send();
+    });
+});
+
 function exportAsWord(app, id, callback) {
     getActivities(id, function(err, activities) {
         if (err) console.log('ERROR: ', err);

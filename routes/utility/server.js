@@ -11,9 +11,9 @@ function Server(module) {
     var db = mysql.createConnection({
         host: process.env.PTOMYSQL || 'localhost',
         port: '3306',
-        user: 'chudi',
-        password: 'm!sQlp4$$w0rd',
-        database: 'pto_dev'
+        user: 'root',
+        password: 'CHANGE_THIS_PASSWORD',
+        database: 'pto'
     });
 
     db.connect(function (error) {
@@ -73,6 +73,10 @@ function Server(module) {
             + "JOIN `M_Students` AS Students "
             + "ON Members.id = Students.parentId "
             + "GROUP BY Members.id"),
+
+        delete: Q.nbind(db.query, db,
+            "DELETE FROM Members WHERE id = ?"),
+
         students: {
 
             /**
@@ -92,7 +96,9 @@ function Server(module) {
             queryAll: Q.nbind(db.query, db,
                 "SELECT Students.id, Students.firstName, Students.lastName, "
                 + "Students.grade, Students.unit, Students.parentId "
-                + "FROM `M_Students` AS Students")
+                + "FROM `M_Students` AS Students"),
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM M_Students WHERE id = ?")
         },
         payments: {
             /**
@@ -143,7 +149,10 @@ function Server(module) {
             queryAll: Q.nbind(db.query, db,
                 "SELECT Payments.id, Payments.charge, Payments.nameFirst, "
                 +   "Payments.nameLast, Payments.amount, Payments.memberId "
-                +   "FROM `M_Payments` AS Payments")
+                +   "FROM `M_Payments` AS Payments"),
+
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM M_Payments WHERE id = ?")
         }
     };
 
@@ -300,6 +309,8 @@ function Server(module) {
             +   "LEFT JOIN `S_Employment` AS Employment ON Scholarships.id = Employment.applicationId "
             +   "LEFT JOIN `S_Honors` AS Honors ON Scholarships.id = Honors.applicationId "
             +   "GROUP BY Scholarships.id"),
+        delete: Q.nbind(db.query, db,
+            "DELETE FROM Scholarships WHERE id = ?"),
 
         activities: {
             insert: Q.nbind(db.query, db,
@@ -309,7 +320,9 @@ function Server(module) {
                 + "(?,?,?,?,?,?,?,?,?)"),
             query: Q.nbind(db.query, db,
                 "SELECT * FROM S_Activities "
-                + "WHERE applicationId = ?")
+                + "WHERE applicationId = ?"),
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM S_Activities WHERE id = ?")
         },
         classes: {
             insert: Q.nbind(db.query, db,
@@ -319,7 +332,9 @@ function Server(module) {
                 + "(?,?,?,?,?)"),
             query: Q.nbind(db.query, db,
                 "SELECT * FROM S_Classes "
-                + "WHERE applicationId = ?")
+                + "WHERE applicationId = ?"),
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM S_Classes WHERE id = ?")
         },
         employment: {
             insert: Q.nbind(db.query, db,
@@ -329,7 +344,9 @@ function Server(module) {
                 + "(?,?,?,?,?,?,?,?)"),
             query: Q.nbind(db.query, db,
                 "SELECT * FROM S_Employment "
-                + "WHERE applicationId = ?")
+                + "WHERE applicationId = ?"),
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM S_Employment WHERE id = ?")
         },
         honors: {
             insert: Q.nbind(db.query, db,
@@ -339,7 +356,9 @@ function Server(module) {
                 + "(?,?,?,?,?,?)"),
             query: Q.nbind(db.query, db,
                 "SELECT * FROM S_Honors "
-                + "WHERE applicationId = ?")
+                + "WHERE applicationId = ?"),
+            delete: Q.nbind(db.query, db,
+                "DELETE FROM S_Honors WHERE id = ?")
         }
     };
 

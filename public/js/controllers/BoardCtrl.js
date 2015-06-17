@@ -1,83 +1,38 @@
 (function(){
     angular.module('myApp.controllers')
-        .controller('BoardCtrl', ['$scope', '$log', '$http', 'Board', function($scope, $log, $http, Board){
-            $scope.updateTitle("Board Membership Application");
+        .controller('BoardCtrl', ['$scope', function($scope){
+            $scope.updateTitle("Meet the Board");
 
-            $scope.num = 0;
-            $scope.data = {
-                'accepted': false,
-                'index': 0,
-                'accept': function(){
-                    this.accepted = true;
-                    this.index = 1;
-                }
-            };
-            $scope.user = {
-                "first":"",
-                "middle":"",
-                "last":"",
-                "address":"",
-                "city":"",
-                "state":"",
-                "postalCode":"",
-                "homephone":"",
-                "workphone":"",
-                "email":"",
-                "essay":"",
-                "Children": [
+            $scope.board =
+                [
                     {
-                        "name": "",
-                        "school": ""
+                        "name": "Mr. President",
+                        "position": "President",
+                        "phone": "555-5555",
+                        "email": "pres@example.com",
+                        "image": "../img/profile_pic.jpeg"
+                    },
+                    {
+                        "name": "Mr. VP",
+                        "position": "Vice President",
+                        "phone": "555-5555",
+                        "email": "vp@example.com",
+                        "image": "../img/profile_pic.jpeg"
+                    },
+                    {
+                        "name": "Mr. Secretary",
+                        "position": "Secretary",
+                        "phone": "555-5555",
+                        "email": "secretary@example.com",
+                        "image": "../img/profile_pic.jpeg"
+                    },
+                    {
+                        "name": "Mr. Treasurer",
+                        "position": "Treasurer",
+                        "phone": "555-5555",
+                        "email": "tresurer@example.com",
+                        "image": "../img/profile_pic.jpeg"
                     }
-                ],
-                "daymorn": false,
-                "endmorn": false,
-                "dayafter": false,
-                "endafter": false,
-                "dayeve": false,
-                "endeve": false,
-                "volcoor":"",
-                "newsweb":"",
-                "fair":"",
-                "tours":"",
-                "hos":"",
-                "member":"",
-                "event":"",
-                "scholar":"",
-                "fund":"",
-                "or":"",
-                "mail":"",
-                "pride":"",
-                "skills":"",
-                "experience":"",
-                "why":"",
-                "position":''
-            };
-            $scope.changeChildren = function(num){
-                var oldLength = this.user.Children.length;
-                if (num > oldLength){
-                    for (var i = 0; i < (num - oldLength); i++){
-                        this.user.Children.push({
-                            "name": "",
-                            "school": ""
-                        });
-                    }
-                } else {
-                    for (var i = 0; i < (oldLength - num); i++){
-                        this.user.Children.pop();
-                    }
-                }
-            };
-
-            $scope.newBoard = function() {
-                $scope.postData = {};
-                $scope.postData.user = $scope.user;
-                $scope.board = new Board($scope.postData);
-
-                $log.debug($scope.postData);
-
-                //sends the post data to the server.
-                $scope.board.$save();
-            }
+                ];
     }]);
 })();

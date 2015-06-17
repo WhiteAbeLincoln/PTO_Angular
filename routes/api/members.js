@@ -121,4 +121,39 @@ router.get('/', expressJwt({secret: mySecret}), function (req, res, next) {
     });
 });
 
+router.delete('/', expressJwt({secret: mySecret}), function(req, res, next) {
+    var ids = [];
+    var promises = [];
+    var func = db.members.delete;
+
+    if (req.query["ids"]) {
+        ids = req.query["ids"].split(',');
+    }
+
+    if (req.query["sub"]) {
+        switch (req.query["sub"]) {
+            case "students":
+                func = db.members.students.delete;
+                break;
+            case "payments":
+                func = db.members.payments.delete;
+                break;
+            default:
+                res.status(404).send("Sub table '" + req.query["sub"] + "' not found");
+                return;
+                break;
+        }
+    }
+
+    ids.forEach(function(id) {
+        promises.push(func([id]));
+    });
+
+    Q.all(promises).catch(function(err) {
+        if (err) return next(err);
+    }).done(function(values) {
+        res.status(204).send();
+    });
+});
+
 module.exports = router;

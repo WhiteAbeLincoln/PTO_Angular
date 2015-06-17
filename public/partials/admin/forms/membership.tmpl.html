@@ -3,7 +3,7 @@
                     mdt-headers="memberHeaders"
                     mdt-data="members"
                     mdt-props="['id', 'lastName', 'firstName', 'address', 'city', 'state', 'zipCode', 'studentIds']"
-                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-on-delete="deleteSelected(deleted, '')"
                     mdt-search="true">
         <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(members, '')">Export Selected</md-button></mdt-select-actions>
     </mdt-data-table>
@@ -12,7 +12,7 @@
                     mdt-headers="studentHeaders"
                     mdt-data="students"
                     mdt-props="['id', 'lastName', 'firstName', 'grade', 'unit', 'parentId']"
-                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-on-delete="deleteSelected(deleted, 'students')"
                     mdt-search="true">
         <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(students, 'students')">Export Selected</md-button></mdt-select-actions>
     </mdt-data-table>
@@ -21,7 +21,7 @@
                     mdt-headers="paymentHeaders"
                     mdt-data="payments"
                     mdt-props="['id', 'charge', 'nameFirst', 'nameLast', 'amount', 'memberId']"
-                    mdt-on-delete="deleteSelected(deleted)"
+                    mdt-on-delete="deleteSelected(deleted, 'payments')"
                     mdt-search="true">
         <mdt-select-actions><md-button class="md-primary" ng-click="exportSelected(payments, 'payments')">Export Selected</md-button></mdt-select-actions>
     </mdt-data-table>

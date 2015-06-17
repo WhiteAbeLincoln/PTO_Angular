@@ -2,11 +2,15 @@
  * Created by 31160 on 4/16/2015.
  */
 angular.module('myApp.controllers')
-    .controller('MembershipViewCtrl', ['$scope', 'Member', '$mdToast', '$http', 'FileDownload', function($scope, Member, $mdToast, $http, FileDownload){
+    .controller('MembershipViewCtrl', ['$scope', 'Member', '$mdToast', '$http', 'FileDownload', '$timeout', function($scope, Member, $mdToast, $http, FileDownload, $timeout) {
         $scope.updateTitle('PTO Members');
-        $scope.members = Member.query();
-        $scope.students = Member.query({sub: 'students'});
-        $scope.payments = Member.query({sub: 'payments'});
+        function load() {
+            $scope.members = Member.query();
+            $scope.students = Member.query({sub: 'students'});
+            $scope.payments = Member.query({sub: 'payments'});
+        }
+
+        load();
 
         $scope.memberHeaders = [
             {title:'Membership Id'},
@@ -38,6 +42,37 @@ angular.module('myApp.controllers')
         ];
 
         $scope.exportSelected = function(data, apiUrl) {
+            $http.get(constructUrl(data, apiUrl, 'csv')).then(function(data){
+                console.log(data);
+                FileDownload(data.data, {filename: 'export.csv', mime: 'text/csv'});
+            }).catch(function(err){
+                console.log(err);
+            });
+
+        };
+
+        $scope.deleteSelected = function(deletedItems, table) {
+            var message = deletedItems.length == 1 ? '1 Row Deleted' : deletedItems.length + ' Rows Deleted';
+
+            var toast = $mdToast.simple()
+                .content(message)
+                .action('UNDO')
+                .highlightAction(true)
+                .position('bottom left')
+                .hideDelay(4000);
+
+            var timeout = $timeout(function() {
+                $http.delete(constructUrl(deletedItems, table));
+                load();
+            }, 4001);
+
+            $mdToast.show(toast).then(function() {
+                $timeout.cancel(timeout);
+                load();
+            });
+        };
+
+        function constructUrl(data, apiUrl, mode) {
             var ids = [];
             data.forEach(function(el){
                 if (el.$checked){
@@ -51,28 +86,12 @@ angular.module('myApp.controllers')
                 apiUrl = '?'
             }
 
-            $http.get('/api/members'+apiUrl+'mode=csv&ids='+ids.join(',')).then(function(data){
-                console.log(data);
-                FileDownload(data.data, {filename: 'export.csv', mime: 'text/csv'});
-            }).catch(function(err){
-                console.log(err);
-            });
+            if (mode) {
+                mode = 'mode='+mode+'&';
+            } else {
+                mode = '';
+            }
 
-        };
-
-        $scope.deleteSelected = function(deletedItems) {
-            var message = deletedItems.length == 1 ? '1 Row Deleted' : deletedItems.length + ' Rows Deleted';
-
-            var toast = $mdToast.simple()
-                .content(message)
-                .action('UNDO')
-                .highlightAction(true)
-                .position('bottom left')
-                .hideDelay(4000);
-
-            $mdToast.show(toast).then(function(){
-                $scope.members = Member.query();
-                $scope.students = Member.query({sub:'students'});
-            });
-        };
+            return '/api/members'+apiUrl+mode+'ids='+ids.join(',');
+        }
     }]);

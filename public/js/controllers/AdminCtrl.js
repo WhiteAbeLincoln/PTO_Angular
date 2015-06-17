@@ -3,7 +3,7 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('AdminCtrl', ['$scope', 'AuthService', '$mdDialog', '$http', function($scope, AuthService, $mdDialog, $http){
+        .controller('AdminCtrl', ['$scope', 'AuthService', '$mdDialog', '$http', '$window', function($scope, AuthService, $mdDialog, $http, $window) {
             $scope.updateTitle("Admin Tools");
             $scope.edit = false;
 

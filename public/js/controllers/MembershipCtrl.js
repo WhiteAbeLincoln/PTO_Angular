@@ -3,7 +3,7 @@
  */
 (function(){
     angular.module('myApp.controllers')
-        .controller('MembershipCtrl', ['$scope', '$window', 'Member', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', function($scope, $window, Member, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS){
+        .controller('MembershipCtrl', ['$scope', '$window', 'Member', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', '$location', function($scope, $window, Member, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS, $location) {
             $scope.updateTitle("Membership Application");
             $scope.changeArray = ChangeArray;
             $scope.regexs = REGEX_VALIDATORS;
@@ -60,9 +60,7 @@
                 //sends the post data to the server.
                 console.log($scope.member);
                $scope.member.$save(function(data, headers){
-                    console.log(data);
-                    console.log(headers("Location"));
-                    //$window.location.href = '/';
+                    $location.url("/");
                 });
 
 

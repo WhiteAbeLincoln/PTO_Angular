@@ -3,12 +3,15 @@
  */
 (function () {
     angular.module('myApp.controllers')
-        .controller('ScholarshipViewCtrl', ['$scope', 'Scholar','$mdToast', '$http', 'FileDownload', '$mdDialog',
-        function($scope, Scholar, $mdToast, $http, FileDownload, $mdDialog) {
+        .controller('ScholarshipViewCtrl', ['$scope', 'Scholar','$mdToast', '$http', 'FileDownload', '$mdDialog', '$timeout',
+        function($scope, Scholar, $mdToast, $http, FileDownload, $mdDialog, $timeout) {
             $scope.updateTitle('PTO Scholarships');
-            $scope.scholarships = Scholar.query();
 
-            console.log($scope.scholarships);
+            function load() {
+                $scope.scholarships = Scholar.query();
+            }
+
+            load();
 
             $scope.scholarshipHeaders = [
                 {title: 'Scholarship Id'},
@@ -23,29 +26,6 @@
                 {title: 'Email Address'},
                 {title: 'gpa'}
             ];
-
-            $scope.exportSelected = function(data, apiUrl) {
-                var ids = [];
-                data.forEach(function(el){
-                    if (el.$checked){
-                        ids.push(el.id);
-                    }
-                });
-
-                if (apiUrl.length){
-                    apiUrl = '?sub='+apiUrl+'&';
-                } else {
-                    apiUrl = '?'
-                }
-
-                $http.get('/api/members'+apiUrl+'mode=csv&ids='+ids.join(',')).then(function(data){
-                    console.log(data);
-
-                }).catch(function(err){
-                    console.log(err);
-                });
-
-            };
 
             $scope.exportSingle = function(data, ev) {
                 var ids = [];
@@ -85,6 +65,50 @@
                     .catch(function(err) {
                         console.log(err);
                     });
+            };
+
+            $scope.deleteSelected = function(deletedItems, table) {
+                var message = deletedItems.length == 1 ? '1 Row Deleted' : deletedItems.length + ' Rows Deleted';
+
+                var toast = $mdToast.simple()
+                    .content(message)
+                    .action('UNDO')
+                    .highlightAction(true)
+                    .position('bottom left')
+                    .hideDelay(4000);
+
+                var timeout = $timeout(function() {
+                    $http.delete(constructUrl(deletedItems, table));
+                    load();
+                }, 4001);
+
+                $mdToast.show(toast).then(function() {
+                    $timeout.cancel(timeout);
+                    load();
+                });
+            };
+
+            function constructUrl(data, apiUrl, mode) {
+                var ids = [];
+                data.forEach(function(el){
+                    if (el.$checked){
+                        ids.push(el.id);
+                    }
+                });
+
+                if (apiUrl && apiUrl.length) {
+                    apiUrl = '?sub='+apiUrl+'&';
+                } else {
+                    apiUrl = '?'
+                }
+
+                if (mode) {
+                    mode = 'mode='+mode+'&';
+                } else {
+                    mode = '';
+                }
+
+                return '/api/scholarships'+apiUrl+mode+'ids='+ids.join(',');
             }
         }]);
 })();

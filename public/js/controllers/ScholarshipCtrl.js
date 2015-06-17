@@ -3,7 +3,7 @@
  */
 (function() {
     angular.module('myApp.controllers')
-        .controller('ScholarshipCtrl', ['$scope', 'Scholar', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', function($scope, Scholar, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS){
+        .controller('ScholarshipCtrl', ['$scope', 'Scholar', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', '$location', function($scope, Scholar, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS, $location) {
             $scope.updateTitle("Scholarship Application");
 
             $scope.regexs = REGEX_VALIDATORS;
@@ -121,7 +121,9 @@
                 console.log($scope.postData);
 
                 //sends the post data to the server.
-                $scope.scholar.$save();
+                $scope.scholar.$save(function(data) {
+                    $location.url('/');
+                });
             }
     }]);
 
