@@ -4,6 +4,26 @@
 module.exports = function(grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        concat: {
+            options: {
+                //define a string to put between each file in the concatenated output
+                separator: ';'
+            },
+            dist: {
+                src: ['js/**/*.js'],
+                dest: 'scripts/js/main.js'
+            }
+        },
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
+            },
+            dist: {
+                files: {
+                    'scripts/js/main.min.js': ['<%= concat.dist.dest %>']
+                }
+            }
+        },
         wiredep: {
 
             task: {
@@ -11,11 +31,7 @@ module.exports = function(grunt) {
                 // Point to the files that should be updated when
                 // you run `grunt wiredep`
                 src: [
-                    'index.html',
-                    'app/views/**/*.html',   // .html support...
-                    'app/views/**/*.jade',   // .jade support...
-                    'app/styles/main.scss',  // .scss & .sass support...
-                    'app/config.yml'         // and .yml & .yaml support out of the box!
+                    'index.html'
                 ],
                 // ignorepath: '^/',
                 options: {
@@ -25,8 +41,24 @@ module.exports = function(grunt) {
                     // https://github.com/taptapship/wiredep#configuration
                 }
             }
+        },
+        processhtml: {
+            options: {
+
+            },
+            dist: {
+                files: {
+                    'index.html': ['index.html']
+                }
+            }
+
         }
     });
 
     grunt.loadNpmTasks('grunt-wiredep');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-processhtml');
+
+    grunt.registerTask('build', ['concat', 'uglify', 'processhtml', 'wiredep']);
 };
