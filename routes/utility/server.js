@@ -9,10 +9,10 @@ var stripe = require('stripe')("sk_test_BQokikJOvBiI2HlWgH4olfQ2");
  */
 function Server(module) {
     var db = mysql.createConnection({
-        host: process.env.PTOMYSQL || 'localhost',
-        port: '3306',
-        user: 'root',
-        password: 'CHANGE_THIS_PASSWORD',
+        host: process.env.PTOMYSQL_IP || 'localhost',
+        port: process.env.PTOMYSQL_PORT || '3306',
+        user: process.env.PTOMYSQL_USER || 'root',
+        password: process.env.PTOMYSQL_PASSWORD || 'CHANGE_THIS_PASSWORD',
         database: 'pto'
     });
 
