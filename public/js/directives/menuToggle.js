@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp')
     .directive('menuToggle',['$timeout', function($timeout) {
         return {
@@ -51,4 +51,4 @@
             }
         };
     }]);
-})();
+})(window.angular);

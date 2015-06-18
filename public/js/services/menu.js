@@ -1,6 +1,6 @@
-(function () {
+(function (angular) {
     angular.module('myApp')
-        .factory('menu', ['$location', '$rootScope', '$log', function ($location, $rootScope, $log) {
+        .factory('menu', ['$location', '$rootScope', function ($location, $rootScope) {
 
             var sections = [];
 
@@ -74,4 +74,4 @@
                 });
             }
         }]);
-})();
+})(window.angular);

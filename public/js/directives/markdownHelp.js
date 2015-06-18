@@ -1,7 +1,7 @@
 /**
  * Created by abe on 6/10/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .directive('markdownHelp', function() {
             return {
@@ -25,4 +25,4 @@
                 }]
             }
         });
-})();
+})(window.angular);

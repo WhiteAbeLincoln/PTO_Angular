@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
 angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
     .config(['markedProvider', 'gravatarServiceProvider', function(markedProvider, gravatarSP) {
         markedProvider.setOptions(
@@ -203,4 +203,4 @@ angular.module('myApp.controllers', ['ui.gravatar', 'hc.marked'])
         };
     });
 	
-})();
+})(window.angular);

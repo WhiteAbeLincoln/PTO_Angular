@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp')
         .factory('ChangeArray', function() {
             return function(num, array, object){
@@ -14,4 +14,4 @@
                 }
             };
         })
-})();
+})(window.angular);

@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp.controllers')
         .controller('BoardCtrl', ['$scope', function($scope){
             $scope.updateTitle("Meet the Board");
@@ -35,4 +35,4 @@
                     }
                 ];
     }]);
-})();
+})(window.angular);

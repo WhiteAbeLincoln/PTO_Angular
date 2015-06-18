@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp')
         .factory('UserFactory', ['$q', '$http', 'AuthTokenFactory',function UserFactory($q, $http, AuthTokenFactory){
             'use strict';
@@ -21,4 +21,4 @@
                 AuthTokenFactory.setToken();
             }
         }])
-})();
+})(window.angular);

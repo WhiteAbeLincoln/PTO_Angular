@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/11/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')     //Not sure why I need Session anymore
         .factory('AuthService', ['$q', '$http', 'Session', 'AuthTokenFactory','$window', function($q, $http, Session, AuthTokenFactory, $window){
             var authService = {};
@@ -50,4 +50,4 @@
 
             return authService;
         }])
-})();
+})(window.angular);

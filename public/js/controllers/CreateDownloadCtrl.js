@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp.controllers')
         .controller('CreateDownloadCtrl', ['$scope', 'FileReader', '$http', 'Download', '$location', function($scope, FileReader, $http, Download, $location) {
             $scope.debug = {};
@@ -60,7 +60,6 @@
                 $scope.$apply(function(){
                     for (var i = 0; i < document.getElementById('fileInput').files.length; i++){
                         $scope.download.files.push(document.getElementById('fileInput').files[i]);
-                        console.log($scope.download.files);
                     }
                 });
 
@@ -123,4 +122,4 @@
             }
 
         }]);
-})();
+})(window.angular);

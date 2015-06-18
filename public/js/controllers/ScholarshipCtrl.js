@@ -1,7 +1,7 @@
 /**
  * Created by abe on 2/3/15.
  */
-(function() {
+(function(angular) {
     angular.module('myApp.controllers')
         .controller('ScholarshipCtrl', ['$scope', 'Scholar', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', '$location', function($scope, Scholar, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS, $location) {
             $scope.updateTitle("Scholarship Application");
@@ -127,4 +127,4 @@
             }
     }]);
 
-})();
+})(window.angular);

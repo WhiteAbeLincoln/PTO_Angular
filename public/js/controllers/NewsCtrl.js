@@ -1,7 +1,7 @@
 /**
  * Created by abe on 4/12/15.
  */
-(function(){
+(function(angular) {
     angular.module('myApp.controllers')
         .controller('NewsCtrl', ['$scope', '$mdMedia', '$location', 'Article', 'ArticleService', '$mdToast', '$timeout', function($scope, $mdMedia, $location, Article, ArticleService, $mdToast, $timeout) {
             $scope.updateTitle("News");
@@ -65,4 +65,4 @@
                 }
             };
         }]);
-})();
+})(window.angular);

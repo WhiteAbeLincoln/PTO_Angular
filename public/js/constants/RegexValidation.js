@@ -1,7 +1,7 @@
 /**
  * Created by abe on 4/23/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .constant('REGEX_VALIDATORS', {
             //patterns from developers.google.com/web/fundamentals/input/form/provide-real-time-validation
@@ -250,4 +250,4 @@
                 }
             ]
         })
-})();
+})(window.angular);

@@ -1,7 +1,7 @@
 /**
  * Created by abe on 4/22/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .directive('checkboxGroup', function(){
             return {
@@ -33,4 +33,4 @@
                 }
             }
         })
-})();
+})(window.angular);

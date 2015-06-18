@@ -1,7 +1,7 @@
 /**
  * Created by abe on 4/20/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .directive('mdtDataTable', DataTable);
     function DataTable() {
@@ -280,4 +280,4 @@
                 return input.slice(start);
             }
         })
-})();
+})(window.angular);

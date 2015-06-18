@@ -1,7 +1,7 @@
 /**
  * Created by 31160 on 3/11/2015.
  */
-(function(){
+(function(angular) {
     angular.module('myApp')
         .factory('AuthInterceptor', ['AuthTokenFactory', function AuthInterceptor(AuthTokenFactory){
             'use strict';
@@ -46,4 +46,4 @@
             }
 
         }])
-})();
+})(window.angular);

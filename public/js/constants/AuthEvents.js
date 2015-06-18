@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/8/15.
  */
-(function(){
+(function(angular){
  angular.module('myApp')
      .constant('AUTH_EVENTS', {
          loginSuccess: 'auth-login-success',
@@ -17,4 +17,4 @@
          editor: 'editor',
          guest: 'guest'
      });
-})();
+})(window.angular);

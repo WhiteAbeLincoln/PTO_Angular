@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/21/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .constant('ICON_STYLES', {
             pdf: {
@@ -133,4 +133,4 @@
                 icon: 'file'
             }
         });
-})();
+})(window.angular);

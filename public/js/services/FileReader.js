@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/17/15.
  */
-(function(){
+(function(angular, FileReader, document) {
     angular.module('myApp')
         .factory('FileReader', ['$q', function($q){
             var onLoad = function(reader, deferred, scope){
@@ -111,4 +111,4 @@
 
             return constructor;
         })
-})();
+})(window.angular, window.FileReader, window.document);

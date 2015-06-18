@@ -1,4 +1,4 @@
-(function(){
+(function(angular) {
     angular.module('myApp')
     .directive('menuLink', function() {
         return {
@@ -23,4 +23,4 @@
         };
 
     });
-})();
+})(window.angular);

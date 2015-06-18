@@ -1,7 +1,7 @@
 /**
  * Created by abe on 5/26/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('ScholarshipViewCtrl', ['$scope', 'Scholar','$mdToast', '$http', 'FileDownload', '$mdDialog', '$timeout',
         function($scope, Scholar, $mdToast, $http, FileDownload, $mdDialog, $timeout) {
@@ -52,8 +52,6 @@
                     method: 'GET',
                     responseType: 'arraybuffer'
                 }).then(function(data) {
-                        console.log(data);
-
                         var cd = data.headers('Content-Disposition');
                         var idx = cd.indexOf('filename="') + 'filename="'.length;
 
@@ -111,4 +109,4 @@
                 return '/api/scholarships'+apiUrl+mode+'ids='+ids.join(',');
             }
         }]);
-})();
+})(window.angular);

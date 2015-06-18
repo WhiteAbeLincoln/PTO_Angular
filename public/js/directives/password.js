@@ -1,7 +1,7 @@
 /**
  * Created by abe on 6/11/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .directive('diffValidator', function() {
             return {
@@ -59,4 +59,4 @@
                 }]
             }
         })
-})();
+})(window.angular);

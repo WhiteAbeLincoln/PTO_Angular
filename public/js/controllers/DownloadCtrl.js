@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/5/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('DownloadCtrl', ['$scope', 'Download', 'ICON_STYLES', '$mdToast', '$timeout', '$window', function ($scope, Download, ICON_STYLES, $mdToast, $timeout, $window) {
             $scope.updateTitle("Downloads");
@@ -113,4 +113,4 @@
             }
 
         }]);
-})();
+})(window.angular);

@@ -1,7 +1,7 @@
 /**
  * Created by abe on 6/9/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('CalendarCtrl', ['$scope', 'Calendar', '$mdDialog', '$mdToast', '$timeout', 'FileDownload', '$window',
         function($scope, Calendar, $mdDialog, $mdToast, $timeout, FileDownload, $window) {
@@ -91,4 +91,4 @@
 
         }])
 
-})();
+})(window.angular);

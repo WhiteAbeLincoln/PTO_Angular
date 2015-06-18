@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/11/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .service('Session', ['AuthTokenFactory', function(AuthTokenFactory){
             this.create = function (token, user) {
@@ -17,4 +17,4 @@
                 return JSON.parse(AuthTokenFactory.getToken('user'));
             }
         }])
-})();
+})(window.angular);

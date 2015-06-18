@@ -1,7 +1,7 @@
 /**
  * Created by abe on 6/9/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp')
         .directive('calendar', function() {
             return {
@@ -12,4 +12,4 @@
                 }]
             }
         });
-})();
+})(window.angular);

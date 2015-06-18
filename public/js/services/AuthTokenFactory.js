@@ -1,7 +1,7 @@
 /**
  * Created by 31160 on 3/11/2015.
  */
-(function(){
+(function(angular) {
     angular.module('myApp')
         .factory('AuthTokenFactory', ['$window',function AuthTokenFactory($window){
             var store = $window.localStorage;
@@ -37,4 +37,4 @@
                 }
             }
         }]);
-})();
+})(window.angular);

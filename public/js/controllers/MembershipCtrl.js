@@ -1,7 +1,7 @@
 /**
  * Created by abe on 2/3/15.
  */
-(function(){
+(function(angular) {
     angular.module('myApp.controllers')
         .controller('MembershipCtrl', ['$scope', '$window', 'Member', 'ChangeArray', 'REGEX_VALIDATORS', 'COMMON_OBJECTS', '$location', function($scope, $window, Member, ChangeArray, REGEX_VALIDATORS, COMMON_OBJECTS, $location) {
             $scope.updateTitle("Membership Application");
@@ -82,4 +82,4 @@
                 }
             }
         })
-})();
+})(window.angular);

@@ -1,7 +1,7 @@
 /**
  * Created by abe on 5/5/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('AdminRegisterCtrl', ['$scope', '$http', '$window', function($scope, $http, $window){
             $scope.updateTitle("Register Administrator");
@@ -41,4 +41,4 @@
 
         }])
 
-})();
+})(window.angular);

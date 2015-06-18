@@ -1,7 +1,7 @@
 /**
  * Created by abe on 1/7/15.
  */
-(function () {
+(function (angular) {
     var myApp = angular.module('myApp', ['ngMaterial', 'ngRoute', 'ngResource', 'ngMessages', 'myApp.controllers'])
         .config(['$mdThemingProvider', '$routeProvider', '$mdIconProvider', '$httpProvider',
             function ($mdThemingProvider, $routeProvider, $mdIconProvider, $httpProvider) {
@@ -137,4 +137,4 @@
                 return (!value) ? '' : value.replace(/ /g, '');
             };
         });
-})();
+})(window.angular);

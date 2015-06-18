@@ -1,4 +1,4 @@
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('LoginCtrl',
         ['$scope', '$rootScope', 'AuthService', 'AUTH_EVENTS','$http', '$location', function ($scope, $rootScope, AuthService, AUTH_EVENTS, $http, $location) {
@@ -38,4 +38,4 @@
 
         }]);
 
-})();
+})(window.angular);

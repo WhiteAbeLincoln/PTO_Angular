@@ -1,7 +1,7 @@
 /**
  * Created by abe on 3/19/15.
  */
-(function () {
+(function (angular) {
     angular.module('myApp.controllers')
         .controller('AdminCtrl', ['$scope', 'AuthService', '$mdDialog', '$http', '$window', function($scope, AuthService, $mdDialog, $http, $window) {
             $scope.updateTitle("Admin Tools");
@@ -96,4 +96,4 @@
             $scope.accountAge = moment($scope.currentUser.registrationDate).fromNow(true);
 
         }])
-})();
+})(window.angular);
