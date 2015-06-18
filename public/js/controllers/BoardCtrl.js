@@ -8,7 +8,7 @@
                     {
                         "name": "Brent Moore",
                         "position": "President",
-                        "phone": "555-5555",
+                        "phone": "(937) 672-5460",
                         "email": "Brent@eaglemarketingllc.com",
                         "image": "../img/profile_pic.jpeg"
                     },
