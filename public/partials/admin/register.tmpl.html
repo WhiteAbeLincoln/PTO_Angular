@@ -51,8 +51,6 @@
 
         <password pw="user.password" error="error"></password>
 
-        <pre>{{user | json}}</pre>
-
         <md-button class="md-warn" type="button" ng-href="#/admin">Cancel</md-button>
         <md-button type="submit" ng-disabled="registerForm.$invalid || userError.user" ng-click="submit()">Submit</md-button>
     </form>
