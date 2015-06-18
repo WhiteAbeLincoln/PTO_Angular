@@ -6,17 +6,17 @@
             $scope.board =
                 [
                     {
-                        "name": "Mr. President",
+                        "name": "Brent Moore",
                         "position": "President",
                         "phone": "555-5555",
-                        "email": "pres@example.com",
+                        "email": "Brent@eaglemarketingllc.com",
                         "image": "../img/profile_pic.jpeg"
                     },
                     {
-                        "name": "Mr. VP",
+                        "name": "Talmadge \"Tal\" Gaither",
                         "position": "Vice President",
-                        "phone": "555-5555",
-                        "email": "vp@example.com",
+                        "phone": "(210) 632-8343",
+                        "email": "tgaither2@woh.rr.com",
                         "image": "../img/profile_pic.jpeg"
                     },
                     {
