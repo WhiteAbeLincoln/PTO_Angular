@@ -7,8 +7,8 @@ All you have control over is the display of the text—stuff like making things 
 
 ## Phrase Emphasis ##
 
-	*italic*   **bold**
-	_italic_   __bold__
+    *italic*   **bold**
+    _italic_   __bold__
 	
 ## Strikethrough ##
 
@@ -18,77 +18,79 @@ All you have control over is the display of the text—stuff like making things 
 
 Inline:
 
-	An [example](http://url.com/ "Title")
+    An [example](http://url.com/ "Title")
 
 Reference-style labels (titles are optional):
 
-	An [example][id]. Then, anywhere
-	else in the doc, define the link:
+    An [example][id]. Then, anywhere
+    else in the doc, define the link:
 	
-	  [id]: http://example.com/  "Title"
-
+    [id]: http://example.com/  "Title"
 
 ## Images ##
 
 Inline (titles are optional):
 
-	![alt text](http://url.com/img.jpg "Title")
+    ![alt text](http://url.com/img.jpg "Title")
 
 Reference-style:
 
-	![alt text][id]
+    ![alt text][id]
 
-	[id]: /url/to/img.jpg "Title"
+    [id]: /url/to/img.jpg "Title"
 
 
 ## Headers ##
 
 Setext-style:
 
-	Header 1
-	========
+    Header 1
+    ========
 	
-	Header 2
-	--------
+    Header 2
+    --------
 
 atx-style (closing #'s are optional):
 
-	# Header 1 #
+    # Header 1 #
 
-	## Header 2 ##
+    ## Header 2 ##
 
     ### Header 3
 
-and so on, up to
-    
-	###### Header 6
 
+and so on, up to
+
+    ###### Header 6
 
 ## Lists ##
 
 Ordered, without paragraphs:
 
-	1.  Foo
-	2.  Bar
+    1.  Foo
+    2.  Bar
+
 
 Unordered, with paragraphs:
 
-	*   A list item.
+    *   A list item.
 	
-		With multiple paragraphs.
+        With multiple paragraphs.
 
-	*   Bar
+    *   Bar
+
 
 You can nest them:
 
-	*   Abacus
-		* answer
-	*   Bubbles
-		1.  bunk
-		2.  bupkis
-			* BELITTLER
-		3. burper
-	*   Cunning
+    *   Abacus
+	    * answer
+    *   Bubbles
+	    1.  bunk
+        2.  bupkis
+		    * BELITTLER
+        3. burper
+    *   Cunning
+
 	
 
 ## Tables ##
@@ -115,34 +117,37 @@ You can use colons ``:`` within the header row to define text to be left-aligned
 
 ## Blockquotes ##
 
-	> Email-style angle brackets
-	> are used for blockquotes.
+    > Email-style angle brackets
+    > are used for blockquotes.
 	
-	> > And, they can be nested.
+    > > And, they can be nested.
 
-	> #### Headers in blockquotes
-	> 
-	> * You can quote a list.
-	> * Etc.
+    > #### Headers in blockquotes
+    > 
+    > * You can quote a list.
+    > * Etc.
 
 
 ## Code Spans ##
 
-	`<code>` spans are delimited
-	by backticks.
 
-	You can include literal backticks
-	like `` `this` ``.
+    `<code>` spans are delimited
+    by backticks.
+
+    You can include literal backticks
+    like `` `this` ``.
 
 
 ## Preformatted Code Blocks ##
 
 Indent every line of a code block by at least 4 spaces or 1 tab.
 
-	This is a normal paragraph.
 
-	    This is a preformatted
-	    code block.
+    This is a normal paragraph.
+
+        This is a preformatted
+        code block.
+
 
 Or use a fenced code block
 
@@ -156,8 +161,8 @@ Or use a fenced code block
 
 Three or more dashes or asterisks:
 
-	---
+    ---
 	
-	* * *
+    * * *
 	
-	- - - - 
+    - - - - 
