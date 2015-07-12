@@ -21,6 +21,7 @@ Built using the angular material library
 2. Optionally make pm2 stay alive over server restarts (`pm2 startup`)
 3. Edit the www.sh file to contain your mysql server specific variables
 4. Start the server using `pm2 start ./www.sh` from the root project directory
+5. The default username for the admin account. u: Admin p: C3nterv!llePTO
 
 ## Attribution
 + Google [material design icons](https://github.com/google/material-design-icons/)
