@@ -2,6 +2,12 @@
 Website for Centerville PTO
 Built using the angular material library
 
+## Authors
++ Abraham White
++ Ali Abibia
++ Chudi Archimalo
++ Ashley Roselius
+
 ## Building
 
 1. Download and install [node](http://nodejs.org/) and npm.
