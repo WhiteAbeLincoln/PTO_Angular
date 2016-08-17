@@ -4,7 +4,7 @@ Built using the angular material library
 
 ## Authors
 + Abraham White
-+ Ali Abibia
++ Ali Abiba
 + Chudi Archimalo
 + Ashley Roselius
 
