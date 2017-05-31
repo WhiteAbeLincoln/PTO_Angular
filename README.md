@@ -2,6 +2,14 @@
 Website for Centerville PTO
 Built using the angular material library
 
+## Screenshots
+![Home Desktop](https://github.com/WhiteAbeLincoln/PTO_Angular/raw/master/pictures/home.png)
+<img src="https://github.com/WhiteAbeLincoln/PTO_Angular/raw/master/pictures/new_article-m.png" alt="Article Mobile" height="500px"/>
+<img src="https://github.com/WhiteAbeLincoln/PTO_Angular/raw/master/pictures/new_download-m.png" alt="Download Mobile" height="500px"/>
+<img src="https://github.com/WhiteAbeLincoln/PTO_Angular/raw/master/pictures/downloads-m.png" alt="Create Download Mobile" height="500px"/>
+
+See more in the [pictures directory](https://github.com/WhiteAbeLincoln/PTO_Angular/tree/master/pictures/)
+
 ## Authors
 + Abraham White
 + Ali Abiba
